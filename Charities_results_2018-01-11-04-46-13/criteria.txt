@@ -1,0 +1,14 @@
+Advanced Search Criteria
+
+Charity name:                             
+BN/Registration number:                   
+Charity status:                           Registered
+Effective date of status (yyyy-mm-dd):    
+Sanction:                                 
+City:                                     
+Province, territory, outside of Canada:   ON
+Country:                                  CA
+Postal code/Zip code:                     
+Designation:                              
+Charity type:                             All
+Category:                                 All
