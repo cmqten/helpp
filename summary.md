@@ -5,9 +5,11 @@ This project is designed to provide an enjoyable, convenient and rewarding mobil
 
 ## Key Personas:
 
-Jon Verleni, a young adult that wants to give back to the world.
+Jon Verleni, a young adult that has little time but still wants to give back to the disadvantaged in some way.
 
 Margaret O'Neal, an elderly not so tech savvy woman who wants to give back to her community. She really believes in getting close and personal with the people that she wants to donate too.
+
+Carl Sanchez, is a young undergraduate student that lacks time or money but like every decent human being wants to give back to the world in some way.
 
 
 ## Key Scenarios:
