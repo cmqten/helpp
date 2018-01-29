@@ -5,7 +5,7 @@ This project is designed to provide an enjoyable, convenient and rewarding mobil
 
 ## Key Personas:
 
-Jon Smith, a young tech-savvy adult that wants to give back to the world in some way.
+Jon Verleni, a young adult that wants to give back to the world.
 
 Margaret O'Neal, an elderly not so tech savvy woman who wants to give back to her community. She really believes in getting close and personal with the people that she wants to donate too.
 
