@@ -7,7 +7,7 @@ We have been making decisions by everyone giving their opnions and voting on ide
 ## Communication/meetings
 Our group mainly communicated through Facebook messenger on when we could meet up, and what everyone would be responsible for. 
 We tried to meet up once a week to discuss where everyone was on the project and if everyone understood what was going on.
-We also made sure to update each other the ideas our concerns we had for the project.
+We also made sure to update each other on ideas or concerns we had for the project.
 
 ## Next phase
 For the next phase of this project we will continue communicate through messenger, but maybe meet up in person more often, 
