@@ -1,0 +1,1845 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<Workbook xmlns:html='http://www.w3.org/TR/REC-html40'
+          xmlns:o='urn:schemas-microsoft-com:office:office'
+          xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'
+          xmlns:x='urn:schemas-microsoft-com:office:excel'
+          xmlns='urn:schemas-microsoft-com:office:spreadsheet'>
+  <DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'>
+    <LastAuthor>Jonathan Wang</LastAuthor>
+    <Created>2018-02-01 16:49:15 UTC</Created>
+    <LastSaved>%= Time.now.utc %></LastSaved>
+    <Version>1.0</Version>
+  </DocumentProperties>
+  <OfficeDocumentSettings xmlns='urn:schemas-microsoft-com:office:office'>
+    <AllowPNG />
+  </OfficeDocumentSettings>
+  <ExcelWorkbook xmlns='urn:schemas-microsoft-com:office:excel'>
+    <ProtectStructure>False</ProtectStructure>
+    <ProtectWindows>False</ProtectWindows>
+  </ExcelWorkbook>
+  <Styles>
+    <Style ss:ID='Default' ss:Name='Normal'>
+      <Alignment ss:Vertical='Top' ss:WrapText='1' />
+      <Borders />
+      <Font ss:Color='#000000' ss:FontName='Calibri' ss:Size='12' x:Family='Swiss' />
+      <Interior />
+      <NumberFormat />
+      <Protection />
+    </Style>
+    <Style ss:ID='title'>
+      <Alignment ss:Vertical='Bottom' ss:WrapText='1' />
+      <Font ss:Bold='1' ss:Color='#000000' ss:FontName='Calibri' ss:Size='15' />
+    </Style>
+    <Style ss:ID='top-base-stats'>
+      <Alignment ss:Horizontal='Right' ss:Vertical='Center' ss:WrapText='1' />
+      <Font ss:Bold='0' ss:Color='#000000' ss:FontName='Calibri' ss:Size='11' />
+    </Style>
+    <Style ss:ID='table-header'>
+      <Alignment ss:Horizontal='Center' ss:Vertical='Center' ss:WrapText='1' />
+      <Font ss:Bold='1' ss:Color='#000000' ss:FontName='Calibri' ss:Size='12' />
+      <Interior ss:Color='#CCFFFF' ss:Pattern='Solid' />
+    </Style>
+    <Style ss:ID='numeric'>
+      <Alignment ss:Horizontal='Right' ss:Vertical='Top'/>
+      <Font ss:Bold='0' ss:Color='#000000' ss:FontName='Calibri' ss:Size='12' />
+    </Style>
+    <Style ss:ID='theme-summary'>
+      <Alignment ss:Horizontal='Left' ss:Vertical='Top' ss:WrapText='1' />
+      <Font ss:Color='#000000' ss:FontName='Calibri' ss:Size='12' />
+      <Interior ss:Color='#C0C0C0' ss:Pattern='Solid' />
+    </Style>
+    <Style ss:ID='theme-total'>
+      <Alignment ss:Horizontal='Right' ss:Vertical='Bottom' ss:WrapText='1' />
+      <Font ss:Bold='1' ss:Color='#000000' ss:FontName='Calibri' ss:Size='12' />
+      <Interior ss:Color='#C0C0C0' ss:Pattern='Solid' />
+    </Style>
+    <Style ss:ID='theme-cell'>
+      <Alignment ss:Vertical='Top' ss:WrapText='1' />
+      <Font ss:Bold='1' ss:Color='#000000' ss:FontName='Calibri' ss:Size='12' />
+    </Style>
+    <Style ss:ID='backlog-summary'>
+      <Alignment ss:Horizontal='Left' ss:Vertical='Top' ss:WrapText='1' />
+      <Font ss:Bold='1' ss:Color='#000000' ss:FontName='Calibri' ss:Size='14' />
+      <Interior ss:Color='#CCFFFF' ss:Pattern='Solid' />
+    </Style>
+    <Style ss:ID='backlog-total'>
+      <Alignment ss:Horizontal='Right' ss:Vertical='Bottom' ss:WrapText='1' />
+      <Font ss:Bold='1' ss:Color='#000000' ss:FontName='Calibri' ss:Size='14' />
+      <Interior ss:Color='#CCFFFF' ss:Pattern='Solid' />
+    </Style>
+    
+  </Styles>
+  <Worksheet ss:Name='Backlog Report'>
+  <Table>
+    <Column ss:AutoFitWidth="1" ss:Width="90" /> <!--Theme-->
+    <Column ss:AutoFitWidth="1" ss:Width="45" /> <!--ID-->
+    <Column ss:AutoFitWidth="1" ss:Width="240" /> <!--User Story-->
+    <Column ss:AutoFitWidth="1" ss:Width="240" /> <!--Acceptance Criteria-->
+    <Column ss:AutoFitWidth="1" ss:Width="240" /> <!--Comments-->
+    <Column ss:AutoFitWidth="1" ss:Width="50" /> <!--Sprint-->
+    <Column ss:AutoFitWidth="1" ss:Width="90" /> <!--Status-->
+      <Column ss:AutoFitWidth="1" ss:Width="45" /> <!--Score -->
+    <Row ss:AutoFitHeight='0' ss:Height='18'>
+      <Cell ss:MergeAcross='3' ss:StyleID='title'>
+        <Data ss:Type='String'>CSC301</Data>
+      </Cell>
+      <Cell ss:MergeAcross='4' ss:StyleID='top-base-stats'>
+        <Data ss:Type='String'></Data>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Theme</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>ID</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>User Story</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Acceptance Criteria</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Comments</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Sprint</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Status</Data>
+      </Cell>
+        <Cell ss:StyleID='table-header'>
+          <Data ss:Type='String'><span class="translation_missing" title="translation missing: en.backlog.points">Points</span></Data>
+        </Cell>
+    </Row>
+        <Row>
+      <Cell ss:MergeDown='30' ss:StyleID='theme-cell'>
+        <Data ss:Type='String'>Charity App Product Backlog </Data>
+      </Cell>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to login to my profile using my Gmail account that is already associated with my Android phone
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> not have to create an additional new username and password just for this app.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can simply enter my gmail and password and access the app</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Login/Signup (Gmail, Facebook, or own authentication service)</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT2</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> generate money for my favourite charities through watching adds
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> give to charity, with out taking money out of my own pocket because I am broke </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can apply the points that I have earned from the ads that I watched to my favourite charity without spending my own money.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement Google Adsense</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT3</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> keep track of how much revenue I have generated by watching ads
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> allocate the appropriate amount of money to charitably organizations of the my choice. </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can see my current points balance</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement user profile points system for watching ads</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT4</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> know how much the in app points I generated are worth in real world currency 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> know how much I am donating  financially to Ducks Unlimited.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) In my points balance, I can see how much it converts to in real world currency</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement how in app points translated to charitable donations</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT5</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> know how organised the people hosting the &quot;Run for the Cure&quot; diabetes event are
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> know whether I should go help volunteer.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity, I can see its ratings and reviews</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Event organization rating system (just the average of all the ratings given from past events)&#10;&#13;</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>20.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT6</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> know what events they have held in the past
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> know if the revenue they spent towards events is really being used in a way I would like to support.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity, I can see many things about that charity Including their events history</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Event sign up/organized history</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT7</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> everyone to know what I still look like
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> get the social recognition from my friends for helping feed the homeless at the local shelter.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can upload a picture that represents my profile</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement: Upload Profile Picture</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT8</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> see each charity&#x27;s logo
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> immediately recognize an organization so I get to read titles as passively as possible. while I sip my morning coffee</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) when i scroll down the list of charities, i can see their logo beside their name</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement: Get and display the organization&#x27;s logo</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT9</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> host a lung cancer awareness BBQ
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> raise money for lung cancer research</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can make an event, state the description of my event, mention the time and where it is taking place </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Create an event (need to categorize same as the charities)&#10;&#13;</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT10</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> let others know how much I enjoyed the computer science charity event
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> help him out by letting others know next years event will likely be worth attending.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can leave a rating and a review about a particular event that I attended</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Event Rating</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>8.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT12</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> let the local homeless shelter near my university know I am coming to help out at their Christmas soup kitchen free food giveaway
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> share  my amazing cooking with the homeless and have some company</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can find charities near me including a homeless shelter within the app and notify that I intend to attend</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Event Sign Up</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>8.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT13</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> only see charitable events happening around me, without needing to see all the organisations who are always located near by
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> just get necessary volunteer hours to put on my resume</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can view charities near me, max 8 charities at a time</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>On the home screen have two buttons, events and charities, once they select, the rest of the UI would be the same, just have different queries on the backend&#10;&#13;</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>8.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT14</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> to be able to turn location services on and off anytime
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> control when I want to share my location in order to find charities near me</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) i can choose when I want my location to be serviced</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Ability to toggle location services on or off</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT15</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to look up charities based on my current address
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> accurately find the charities near me</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I turn on location services, I can see a map that shows my current location and the charities around me within a given radius. and also a list view</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Enter current address and list all nearby charities</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT16</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to find accurate directions from my current location to a charity
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> get to their location without getting lost</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity, I can find out how to get there from my current location and have  the option to see how to get there via driving, walking, transit</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Directions from current address to charity</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT17</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to control the zoom of the map of charities
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> zoom in and out to help me find my location and the charity I&#x27;m interested in</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) when i pinch my fingers on the map or press the minus button, the map zooms out and vice versa whenI do the opposite</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Zoom in and out of the charity map</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT18</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to adjust my search radius
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> view more or less charities around me depending on their distance from my current location</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can change the search radius from 5km to 1km and return a list of charities that doesn&#x27;t include make-a-wish because make-a-wish is 4km from where I am</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Adjust search radius</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT19</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to filter charities based on their radius from my current location
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> find the charities that require the least amount of travelling</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can change the search radius from 5km to 1km and return a list of charities that doesn&#x27;t include make-a-wish because make-a-wish is 4km from where I am&#10;&#13;</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Find charities based on radius</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT20</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> visualise charities on the map as pins
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> easily spot them on the map</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I turn on location services, I can see a map that shows my current location and the charities around me as pins</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Visualize charities as pins</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT21</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl, Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to drag a pin around which represents my location
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> change my location with ease</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can drag the pin that represents my current location and the app uses that as my new current lcoation</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Drag a pin around the map to change locations</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>20.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT22</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> view a quick summary of the charity I am interested in while on the way to work
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> decide if I want to donate to it or not</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity I can see many things about that charity including their summary</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement charity summary </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT23</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to click a &quot;more info&quot; button 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> find out more information about the company I want to donate to</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can click a Button that links to organisation website if available</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement &quot;more info&quot; button</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT24</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to easily click a &quot;donate&quot; button
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> donate to the organisation using the credit Carl her nephew got for her </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Donate button gives a link to the donate page of the charity</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>implement a &quot;Donate&quot; button</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT25</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl, Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to click the &quot;social media&quot; button
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> get access to an organisation on social media to get alerts during their busy day.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Social media button gives a link to the social media of the organisation if available </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement a &quot;Social media&quot; button</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT26</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to pull up financial data about an organisation I am interested in 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> be more financially informed about that organisation and better decide if they should have my money</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Show pretty stats about the organization finances</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Need to hash out what that would look like.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT27</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to see the vision/opinions of an organisation 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> decide if or not my vision/opinions are conservative.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Show the ways the organization is allocating their resources</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Need to flesh out how this will be shown.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT28</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> the product owner
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> have address, name, postal code, type and category changed into json format 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> have it easily passed on to the UI in form of data about company summaries, addresses and other information</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Parse address, name, postal code, type and category from data file</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Clean up the dataset to remove inactive organizations</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT29</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> the product owner
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> Integrate database in Android App (Firebase)
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> have data on companies easily available and updated in real time</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) If a new charity was built near me, my query to includes this new charity</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT30</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> Get compensation and revenue expense data of organisations for all years available 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> view the financial legitimacy of the company I am interested in donating to</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity I can see many things about that charity including proof of their financial legitimacy</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT31</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to just look up “adopt cat” and all the charities pertaining to that would pop up
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> donate to charities that help people adopt cats.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can search for a charity using a keyword and return a list of charities related to that keyword</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+  <Row>
+    <Cell ss:Index='2' ss:MergeAcross='2' ss:StyleID='theme-summary'>
+      <Data ss:Type='String'>Total for theme &#x27;Charity App Product Backlog &#x27;</Data>
+    </Cell>
+    <Cell ss:MergeAcross='4' ss:StyleID='theme-total'>
+      <Data ss:Type='String'>750.0 points</Data>
+    </Cell>
+  </Row>
+  <Row ss:AutoFitHeight='0' ss:Height='5'>
+    <Cell ss:MergeAcross='7' />
+  </Row>
+
+    <Row ss:AutoFitHeight='0' ss:Height='18'>
+      <Cell ss:MergeAcross='3' ss:StyleID='backlog-summary'>
+        <Data ss:Type='String'>Total for backlog &#x27;CSC301&#x27;</Data>
+      </Cell>
+      <Cell ss:MergeAcross='4' ss:StyleID='backlog-total'>
+        <Data ss:Type='String'>750.0 points</Data>
+      </Cell>
+    </Row>
+  </Table>
+  <WorksheetOptions xmlns='urn:schemas-microsoft-com:office:excel'>
+    <PageLayoutZoom>0</PageLayoutZoom>
+    <Selected />
+    <Panes />
+    <ProtectObjects>False</ProtectObjects>
+    <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+</Worksheet>
+  <Worksheet ss:Name='Story List'>
+  <Table>
+    <Column ss:AutoFitWidth="1" ss:Width="90" /> <!--Theme-->
+    <Column ss:AutoFitWidth="1" ss:Width="45" /> <!--ID-->
+    <Column ss:AutoFitWidth="1" ss:Width="240" /> <!--User Story-->
+    <Column ss:AutoFitWidth="1" ss:Width="240" /> <!--Acceptance Criteria-->
+    <Column ss:AutoFitWidth="1" ss:Width="240" /> <!--Comments-->
+    <Column ss:AutoFitWidth="1" ss:Width="50" /> <!--Sprint-->
+    <Column ss:AutoFitWidth="1" ss:Width="50" /> <!--Status-->
+      <Column ss:AutoFitWidth="1" ss:Width="45" /> <!--Score -->
+    <Row>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Theme</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>ID</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>User Story</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Acceptance Criteria</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Comments</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Sprint</Data>
+      </Cell>
+      <Cell ss:StyleID='table-header'>
+        <Data ss:Type='String'>Status</Data>
+      </Cell>
+        <Cell ss:StyleID='table-header'>
+          <Data ss:Type='String'><span class="translation_missing" title="translation missing: en.backlog.points">Points</span></Data>
+        </Cell>
+    </Row>
+        <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to login to my profile using my Gmail account that is already associated with my Android phone
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> not have to create an additional new username and password just for this app.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can simply enter my gmail and password and access the app</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Login/Signup (Gmail, Facebook, or own authentication service)</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT2</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> generate money for my favourite charities through watching adds
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> give to charity, with out taking money out of my own pocket because I am broke </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can apply the points that I have earned from the ads that I watched to my favourite charity without spending my own money.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement Google Adsense</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT3</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> keep track of how much revenue I have generated by watching ads
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> allocate the appropriate amount of money to charitably organizations of the my choice. </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can see my current points balance</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement user profile points system for watching ads</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT4</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> know how much the in app points I generated are worth in real world currency 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> know how much I am donating  financially to Ducks Unlimited.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) In my points balance, I can see how much it converts to in real world currency</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement how in app points translated to charitable donations</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT5</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> know how organised the people hosting the &quot;Run for the Cure&quot; diabetes event are
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> know whether I should go help volunteer.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity, I can see its ratings and reviews</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Event organization rating system (just the average of all the ratings given from past events)&#10;&#13;</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>20.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT6</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> know what events they have held in the past
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> know if the revenue they spent towards events is really being used in a way I would like to support.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity, I can see many things about that charity Including their events history</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Event sign up/organized history</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT7</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> everyone to know what I still look like
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> get the social recognition from my friends for helping feed the homeless at the local shelter.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can upload a picture that represents my profile</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement: Upload Profile Picture</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT8</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> see each charity&#x27;s logo
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> immediately recognize an organization so I get to read titles as passively as possible. while I sip my morning coffee</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) when i scroll down the list of charities, i can see their logo beside their name</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement: Get and display the organization&#x27;s logo</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT9</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> host a lung cancer awareness BBQ
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> raise money for lung cancer research</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can make an event, state the description of my event, mention the time and where it is taking place </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Create an event (need to categorize same as the charities)&#10;&#13;</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT10</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> let others know how much I enjoyed the computer science charity event
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> help him out by letting others know next years event will likely be worth attending.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can leave a rating and a review about a particular event that I attended</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Event Rating</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>8.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT12</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> let the local homeless shelter near my university know I am coming to help out at their Christmas soup kitchen free food giveaway
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> share  my amazing cooking with the homeless and have some company</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can find charities near me including a homeless shelter within the app and notify that I intend to attend</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Feature: Event Sign Up</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>8.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT13</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> only see charitable events happening around me, without needing to see all the organisations who are always located near by
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> just get necessary volunteer hours to put on my resume</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can view charities near me, max 8 charities at a time</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>On the home screen have two buttons, events and charities, once they select, the rest of the UI would be the same, just have different queries on the backend&#10;&#13;</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>8.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT14</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> to be able to turn location services on and off anytime
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> control when I want to share my location in order to find charities near me</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) i can choose when I want my location to be serviced</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Ability to toggle location services on or off</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT15</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to look up charities based on my current address
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> accurately find the charities near me</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I turn on location services, I can see a map that shows my current location and the charities around me within a given radius. and also a list view</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Enter current address and list all nearby charities</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT16</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to find accurate directions from my current location to a charity
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> get to their location without getting lost</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity, I can find out how to get there from my current location and have  the option to see how to get there via driving, walking, transit</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Directions from current address to charity</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT17</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to control the zoom of the map of charities
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> zoom in and out to help me find my location and the charity I&#x27;m interested in</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) when i pinch my fingers on the map or press the minus button, the map zooms out and vice versa whenI do the opposite</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Zoom in and out of the charity map</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT18</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to adjust my search radius
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> view more or less charities around me depending on their distance from my current location</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can change the search radius from 5km to 1km and return a list of charities that doesn&#x27;t include make-a-wish because make-a-wish is 4km from where I am</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Adjust search radius</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT19</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to filter charities based on their radius from my current location
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> find the charities that require the least amount of travelling</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can change the search radius from 5km to 1km and return a list of charities that doesn&#x27;t include make-a-wish because make-a-wish is 4km from where I am&#10;&#13;</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Find charities based on radius</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT20</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> visualise charities on the map as pins
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> easily spot them on the map</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I turn on location services, I can see a map that shows my current location and the charities around me as pins</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Visualize charities as pins</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT21</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl, Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to drag a pin around which represents my location
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> change my location with ease</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can drag the pin that represents my current location and the app uses that as my new current lcoation</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Drag a pin around the map to change locations</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>20.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT22</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> view a quick summary of the charity I am interested in while on the way to work
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> decide if I want to donate to it or not</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity I can see many things about that charity including their summary</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement charity summary </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT23</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to click a &quot;more info&quot; button 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> find out more information about the company I want to donate to</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can click a Button that links to organisation website if available</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement &quot;more info&quot; button</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT24</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to easily click a &quot;donate&quot; button
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> donate to the organisation using the credit Carl her nephew got for her </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Donate button gives a link to the donate page of the charity</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>implement a &quot;Donate&quot; button</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT25</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Carl, Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to click the &quot;social media&quot; button
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> get access to an organisation on social media to get alerts during their busy day.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Social media button gives a link to the social media of the organisation if available </Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Implement a &quot;Social media&quot; button</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT26</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to pull up financial data about an organisation I am interested in 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> be more financially informed about that organisation and better decide if they should have my money</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Show pretty stats about the organization finances</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Need to hash out what that would look like.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT27</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to see the vision/opinions of an organisation 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> decide if or not my vision/opinions are conservative.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Show the ways the organization is allocating their resources</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Need to flesh out how this will be shown.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT28</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> the product owner
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> have address, name, postal code, type and category changed into json format 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> have it easily passed on to the UI in form of data about company summaries, addresses and other information</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) Parse address, name, postal code, type and category from data file</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Clean up the dataset to remove inactive organizations</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT29</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> the product owner
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> Integrate database in Android App (Firebase)
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> have data on companies easily available and updated in real time</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) If a new charity was built near me, my query to includes this new charity</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>13.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT30</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Jon
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> Get compensation and revenue expense data of organisations for all years available 
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> view the financial legitimacy of the company I am interested in donating to</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) When I select a charity I can see many things about that charity including proof of their financial legitimacy</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>Sprint 1</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>In progress</Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>21.0</Data>
+  </Cell>
+
+    </Row>
+    <Row>
+      <Cell>
+  <Data ss:Type='String'>Charity App Product Backlog </Data>
+</Cell>
+<Cell ss:Index='2'>
+  <Data ss:Type='String'>PDT31</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'><Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">As</Font> Margaret
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">I want to</Font> be able to just look up “adopt cat” and all the charities pertaining to that would pop up
+&#10;&#13;<Font html:Color="#999999" xmlns="http://www.w3.org/TR/REC-html40">So I can</Font> donate to charities that help people adopt cats.</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'>a) I can search for a charity using a keyword and return a list of charities related to that keyword</Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+<Cell>
+  <Data ss:Type='String'></Data>
+</Cell>
+  <Cell ss:StyleID='numeric'>
+    <Data ss:Type='String'>40.0</Data>
+  </Cell>
+
+    </Row>
+
+  </Table>
+  <WorksheetOptions xmlns='urn:schemas-microsoft-com:office:excel'>
+    <PageLayoutZoom>0</PageLayoutZoom>
+    <Selected />
+    <Panes />
+    <ProtectObjects>False</ProtectObjects>
+    <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+  <AutoFilter x:Range='R1C1:R1C8' xmlns='urn:schemas-microsoft-com:office:excel'></AutoFilter>
+</Worksheet>
+</Workbook>
