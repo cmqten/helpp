@@ -20,14 +20,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Double latitude;
     private Double longitude;
+    private Geocoder geocoder;
+    private Address address;
+    private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            geocoder = new Geocoder(this);
             mMap = googleMap;
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
@@ -80,37 +82,36 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                         }
                     }
             });
-
-
-
-
-
         }
-        List<String> address = new ArrayList<>();
-        for(String s : address){
+
+        String[] adrs = {
+                "41 STONEMEADOW DR\tKANATA\tON\tCA\tK2M2J9",
+                "6 DEERGLEN DR\tBRAMPTON\tON\tCA\tL6R1L9\t",
+                "305 Thirteen STREET WEST\tCORNWALL\tON\tCA\tK6J3G7",
+                "6328 SABLEWOOD PLACE\tOTTAWA\tON\tCA\tK1C7M4",
+                "363 WORTHINGTON AVE\tRICHMOND HILL\tON\tCA\tL4E4S3"
+        };
+
+        for(String s : adrs){
             try {
-                onMapSearch("1813 The Chase, Mississauga, ON L5M 2Y8");
+                onMapSearch(s);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
+
 
 
     }
     public void onMapSearch(String adrs) throws IOException {
-        Geocoder geocoder = new Geocoder(this);
-        Address address = geocoder.getFromLocationName(adrs, 1).get(0);
-        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+        address = geocoder.getFromLocationName(adrs, 1).get(0);
+        latLng = new LatLng(address.getLatitude(), address.getLongitude());
         mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
     }
 
 
-    public void getLastLocation(){
-
-    }
 
 
     @Override
