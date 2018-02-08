@@ -17,14 +17,13 @@ def parse_charity_file(filename):
     # file contains French characters
     with open(filename, encoding='ISO-8859-15') as file:
         file.readline()
-        
+
+        limit = 50
+        count = 0
         for line in file:
             line_data = line.split('\t')
             data = {'registration':    line_data[0],
                     'name':            line_data[1],
-                    'status':          line_data[2],
-                    'dateOfStatus':    line_data[3],
-                    'sanction':        line_data[4],
                     'designationCode': line_data[5],
                     'categoryCode':    line_data[6],
                     'address':         line_data[7],
@@ -34,6 +33,11 @@ def parse_charity_file(filename):
                     'postalCode':      line_data[11]
                    }
             charity_data.append(data)
+
+            # small data only for testing, comment out when not testing
+            count += 1
+            if count > limit: 
+                break
 
     charity_data = {'data': charity_data}
     
@@ -50,7 +54,7 @@ def save_to_json(data):
     Returns:
         None
     """
-    with open('charity_data_json.txt', 'w', encoding='ISO-8859-15') as file:
+    with open('charity_data_json.json', 'w', encoding='ISO-8859-15') as file:
         json.dump(data, file)
 
 
