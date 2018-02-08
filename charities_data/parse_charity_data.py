@@ -50,7 +50,7 @@ def save_to_json(data):
     Returns:
         None
     """
-    with open('charity_data_json.txt', 'w', encoding='ISO-8859-15') as file:
+    with open('charity_data_json.json', 'w', encoding='ISO-8859-15') as file:
         json.dump(data, file)
 
 
