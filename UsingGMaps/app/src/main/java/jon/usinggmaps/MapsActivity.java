@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
@@ -85,21 +86,21 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
 
         }
-        try {
-            onMapSearch( );
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<String> address = new ArrayList<>();
+        for(String s : address){
+            try {
+                onMapSearch("1813 The Chase, Mississauga, ON L5M 2Y8");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
 
     }
-    public void onMapSearch( ) throws IOException {
-
-        List<Address> addressList = null;
-
+    public void onMapSearch(String adrs) throws IOException {
         Geocoder geocoder = new Geocoder(this);
-        addressList = geocoder.getFromLocationName("1813 The Chase, Mississauga, ON L5M 2Y8", 1);
-        Address address = addressList.get(0);
+        Address address = geocoder.getFromLocationName(adrs, 1).get(0);
         LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
         mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
