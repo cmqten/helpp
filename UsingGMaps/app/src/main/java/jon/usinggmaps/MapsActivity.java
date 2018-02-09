@@ -24,11 +24,18 @@ import java.io.IOException;
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Double latitude;
-    private Double longitude;
-    private Geocoder geocoder;
+    private Geocoder geoCoder;
     private Address address;
-    private LatLng latLng;
+
+    //We will get rid of this
+    private String[] adrs = {
+            "41 STONEMEADOW DR\tKANATA\tON\tCA\tK2M2J9",
+            "6 DEERGLEN DR\tBRAMPTON\tON\tCA\tL6R1L9\t",
+            "305 Thirteen STREET WEST\tCORNWALL\tON\tCA\tK6J3G7",
+            "6328 SABLEWOOD PLACE\tOTTAWA\tON\tCA\tK1C7M4",
+            "363 WORTHINGTON AVE\tRICHMOND HILL\tON\tCA\tL4E4S3",
+            "2682 EGLITON AVENUE           P.O. BOX 44577\tSCARBOROUGH\tON\tCA\tM1K5K2"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
 
@@ -54,10 +60,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            geocoder = new Geocoder(this);
+            geoCoder = new Geocoder(this);
             mMap = googleMap;
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
@@ -70,12 +74,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                            LatLng sydney = new LatLng(latitude, longitude);
-                            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,18));
+                           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                   new LatLng(location.getLatitude(), location.getLongitude()),18));
                         }
                         else {
                             Toast.makeText(MapsActivity.this, "Cannot get Current location ", Toast.LENGTH_SHORT).show();
@@ -83,14 +83,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                     }
             });
         }
-
-        String[] adrs = {
-                "41 STONEMEADOW DR\tKANATA\tON\tCA\tK2M2J9",
-                "6 DEERGLEN DR\tBRAMPTON\tON\tCA\tL6R1L9\t",
-                "305 Thirteen STREET WEST\tCORNWALL\tON\tCA\tK6J3G7",
-                "6328 SABLEWOOD PLACE\tOTTAWA\tON\tCA\tK1C7M4",
-                "363 WORTHINGTON AVE\tRICHMOND HILL\tON\tCA\tL4E4S3"
-        };
 
         for(String s : adrs){
             try {
@@ -104,15 +96,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
     }
     public void onMapSearch(String adrs) throws IOException {
-        address = geocoder.getFromLocationName(adrs, 1).get(0);
-        latLng = new LatLng(address.getLatitude(), address.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
+        address = geoCoder.getFromLocationName(adrs, 1).get(0);
+        mMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())).title("Marker"));
     }
-
-
-
 
     @Override
     public boolean onMyLocationButtonClick() {
