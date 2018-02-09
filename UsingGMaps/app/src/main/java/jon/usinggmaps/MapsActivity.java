@@ -8,6 +8,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
@@ -15,18 +18,22 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 
+import static android.R.attr.radius;
+
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Geocoder geoCoder;
     private Address address;
-
+    private int radius;
     //We will get rid of this
     private String[] adrs = {
             "41 STONEMEADOW DR\tKANATA\tON\tCA\tK2M2J9",
@@ -45,6 +52,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+
     }
 
 
@@ -71,11 +81,36 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
-                    public void onSuccess(Location location) {
+                    public void onSuccess(final Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                   new LatLng(location.getLatitude(), location.getLongitude()),18));
+
+                           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),18));
+                           final CircleOptions circleop = new CircleOptions();
+                           circleop.center(new LatLng(location.getLatitude(), location.getLongitude()));
+                           circleop.strokeWidth(0f).fillColor(0x550000FF);
+                           circleop.visible(false);
+                            final Circle mycirc = mMap.addCircle(circleop);
+                            SeekBar mySeek = findViewById(R.id.seekbar);
+
+                            mySeek.setMax(15000);
+                            mySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                                @Override
+                                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                                    mycirc.setRadius(i);
+                                    System.out.println(mycirc.getRadius());
+                                }
+
+                                @Override
+                                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                                }
+
+                                @Override
+                                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                                }
+                            });
                         }
                         else {
                             Toast.makeText(MapsActivity.this, "Cannot get Current location ", Toast.LENGTH_SHORT).show();
