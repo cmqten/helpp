@@ -15,7 +15,7 @@ BN/Registration Number	Charity Name	Charity Status	Effective Date of Status	Sanc
 809939887RR0001	Église missionnaire chrétienne d'Ottawa (EMCO) / Missionary Christian Church of Ottawa (MCCO)	Registered	2012-05-15		C	39	967 ST. LAURENT BLVD	OTTAWA	ON	CA	K1K3B1	
 812189553RR0001	Église Baptiste de la Sainteté de Toronto - Toronto Holiness Baptist Church	Registered	2010-06-17		C	31	28 HOWDEN RD	SCARBOROUGH	ON	CA	M1R3C7	
 832347736RR0001	Église Baptiste Salem d'Ottawa	Registered	2013-08-19		C	31	2732 COLMAN ST	OTTAWA	ON	CA	K1V8J9	
-820506244RR0001	Église Catholique Eucharistique/The Eucharistic Catholic C hurch	Registered	2014-01-30		C	39	250 SEATON STREET	TORONTO	ON	CA	M5A2T4	
+820506244RR0001	Église Catholique Eucharistique/The Eucharistic Catholic Church	Registered	2014-01-30		C	39	250 SEATON STREET	TORONTO	ON	CA	M5A2T4	
 801801713RR0001	Église Chrétienne Apostolique (ECA)	Registered	2012-03-13		C	39	597 PETRICHOR CRES	ORLEANS	ON	CA	K4A0Y4	
 817998305RR0001	Église Nouvel Espoir	Registered	2000-06-01		C	39	2224 RUE INNES	OTTAWA	ON	CA	K1B4C4	
 811795632RR0001	Église Pentecôte francophone de Sudbury	Registered	2014-02-12		C	39	PO BOX 22032, NEW SUDBURY PLAZ555 BARRY DOWNE ROAD	SUDBURY	ON	CA	P3A3T1	
