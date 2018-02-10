@@ -1,4 +1,6 @@
 import json, sys
+from scrape_charity_data import get_revenue, get_expenses, \
+     get_ongoing_programs, scrape_cra_charities
 
 
 def parse_charity_file(filename):
@@ -12,7 +14,7 @@ def parse_charity_file(filename):
     Returns:
         dict : dictionary containing all the data from the text file
     """
-    charity_data = []
+    charity_data = dict()
     
     # file contains French characters
     with open(filename, encoding='ISO-8859-15') as file:
@@ -22,8 +24,8 @@ def parse_charity_file(filename):
         count = 0
         for line in file:
             line_data = line.split('\t')
-            data = {'registration':    line_data[0],
-                    'name':            line_data[1],
+            registration = line_data[0]
+            data = {'name':            line_data[1],
                     'designationCode': line_data[5],
                     'categoryCode':    line_data[6],
                     'address':         line_data[7],
@@ -32,14 +34,12 @@ def parse_charity_file(filename):
                     'country':         line_data[10],
                     'postalCode':      line_data[11]
                    }
-            charity_data.append(data)
+            charity_data[registration] = data
 
             # small data only for testing, comment out when not testing
             count += 1
             if count > limit: 
                 break
-
-    charity_data = {'data': charity_data}
     
     return charity_data
 
@@ -62,7 +62,9 @@ def main(argc, argv):
     if argc != 2:
         print('Usage: parse_charity_data.py CHARITY_RAW_DATA_FILE')
 
-    save_to_json(parse_charity_file(argv[1]))
+    charities = parse_charity_file(argv[1])
+    scrape_cra_charities(charities)
+    save_to_json(charities)
 
 
 if __name__ == '__main__':
