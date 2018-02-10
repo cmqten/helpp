@@ -21,10 +21,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.R.attr.radius;
 
@@ -33,9 +36,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     private GoogleMap mMap;
     private Geocoder geoCoder;
     private Address address;
-    private int radius;
+    private ArrayList<Marker> myList;
     //We will get rid of this
     private String[] adrs = {
+            "5100 Erin Mills Pkwy\tMississauga\tON\tCA\tL5M4Z5",
+            "3636 Hawkestone Rd\tMississauga\tON\tCA\tL5C2V2",
             "41 STONEMEADOW DR\tKANATA\tON\tCA\tK2M2J9",
             "6 DEERGLEN DR\tBRAMPTON\tON\tCA\tL6R1L9\t",
             "305 Thirteen STREET WEST\tCORNWALL\tON\tCA\tK6J3G7",
@@ -52,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        myList = new ArrayList<>();
 
 
     }
@@ -68,14 +73,13 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             geoCoder = new Geocoder(this);
             mMap = googleMap;
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
-
             //We are getting the last know location of the device, which is often the current location
             //Right now this is just making a single request when the map is ready so we can open up to where the user currently is
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
@@ -84,21 +88,28 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                     public void onSuccess(final Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-
-                           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),18));
-                           final CircleOptions circleop = new CircleOptions();
-                           circleop.center(new LatLng(location.getLatitude(), location.getLongitude()));
-                           circleop.strokeWidth(0f).fillColor(0x550000FF);
-                           circleop.visible(false);
+                        System.out.println("hello");
+                            final LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
+                           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myCoords,18));
+                            final CircleOptions circleop = new CircleOptions();
+                            circleop.center(new LatLng(location.getLatitude(), location.getLongitude()));
+                            circleop.strokeWidth(0f).fillColor(0x550000FF);
+                            circleop.visible(false);
                             final Circle mycirc = mMap.addCircle(circleop);
                             SeekBar mySeek = findViewById(R.id.seekbar);
-
-                            mySeek.setMax(15000);
+                            mySeek.setMax(30000);
                             mySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                                 @Override
                                 public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                                     mycirc.setRadius(i);
                                     System.out.println(mycirc.getRadius());
+                                    for(Marker marker:myList){
+                                        if(SphericalUtil.computeDistanceBetween(myCoords,marker.getPosition())<i){
+                                            marker.setVisible(true);
+                                        }else{
+                                            marker.setVisible(false);
+                                        }
+                                    }
                                 }
 
                                 @Override
@@ -110,29 +121,37 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                                 public void onStopTrackingTouch(SeekBar seekBar) {
 
                                 }
+
+
                             });
+
                         }
                         else {
                             Toast.makeText(MapsActivity.this, "Cannot get Current location ", Toast.LENGTH_SHORT).show();
                         }
-                    }
-            });
-        }
 
-        for(String s : adrs){
-            try {
-                onMapSearch(s);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    }
+
+            });
+            for(String s : adrs){
+                try {
+                    onMapSearch(s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+
+
+
 
 
 
     }
     public void onMapSearch(String adrs) throws IOException {
         address = geoCoder.getFromLocationName(adrs, 1).get(0);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())).title("Marker"));
+        Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())).title("Marker").visible(false));
+        myList.add(marker);
     }
 
     @Override
@@ -140,6 +159,5 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
-
 
 }
