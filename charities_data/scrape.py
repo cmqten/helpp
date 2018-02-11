@@ -208,5 +208,5 @@ def scrape_cra_charities(charities):
 
             sleep(1)
 
-        if attempts == 5:
+        if success == 0:
             print(reg_number, ': scraping failed')
