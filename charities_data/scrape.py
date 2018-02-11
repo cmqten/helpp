@@ -180,7 +180,7 @@ def scrape_cra_charities(charities):
         match = REG_NUMBER_REGEX.match(reg_number)
         
         if not match:
-            print('{} does not match the registration format'.format(reg_number))
+            print(reg_number, 'does not match the registration format')
             continue
 
         # Attempt to scrape a website 5 times before moving on if errors occur
@@ -208,3 +208,5 @@ def scrape_cra_charities(charities):
 
             sleep(1)
 
+        if attempts == 5:
+            print(reg_number, ': scraping failed')
