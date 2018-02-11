@@ -71,36 +71,20 @@ def get_revenue(soup):
 
     # Class names are based on their color on the pie chart, there shouldn't be
     # other tags that used the same class names
-    receipted_donations = soup.find('li', class_='legend-li-red')
-    receipted_donations = '$0' if not receipted_donations \
-                           else str(receipted_donations.contents[0])
-    data['receipted_donations'] = extract_currency(receipted_donations)
-    
-    non_receipted_donations = soup.find('li', class_='legend-li-yellow')
-    non_receipted_donations = '$0' if not non_receipted_donations \
-                              else str(non_receipted_donations.contents[0])
-    data['non_receipted_donations'] = extract_currency(non_receipted_donations)
-    
-    gifts_from_other_charities = soup.find('li', class_='legend-li-blue')
-    gifts_from_other_charities = '$0' if not gifts_from_other_charities \
-                                 else str(gifts_from_other_charities.contents[0])
-    data['gifts_from_other_charities'] = extract_currency(
-        gifts_from_other_charities)
+    field_class = {'receipted_donations': 'legend-li-red',
+                   'non_receipted_donations': 'legend-li-yellow',
+                   'gifts_from_other_charities': 'legend-li-blue',
+                   'government_funding': 'legend-li-green',
+                   'other': 'legend-li-aqua'}
 
-    government_funding = soup.find('li', class_='legend-li-green')
-    government_funding = '$0' if not government_funding \
-                          else str(government_funding.contents[0])
-    data['government_funding'] = extract_currency(government_funding)
-    
-    other = soup.find('li', class_='legend-li-aqua')
-    other = '$0' if not other else str(other.contents[0])
-    data['other'] = extract_currency(other)
+    for field, class_name in field_class.items():
+        field_value = soup.find('li', class_=class_name)
+        field_value = '$0' if not field_value else str(field_value.contents[0])
+        data[field] = extract_currency(field_value)
 
-    data['total'] = data['receipted_donations'] + \
-                    data['non_receipted_donations'] + \
-                    data['gifts_from_other_charities'] + \
-                    data['government_funding'] + \
-                    data['other']
+    total = sum(list(data.values()))
+
+    data['total'] = total
 
     return data
 
@@ -122,42 +106,21 @@ def get_expenses(soup):
 
     # Class names are based on their color on the pie chart, there shouldn't be
     # other tags that used the same class names
-    charitable_program = soup.find('li', class_='legend-li-hot-pink')
-    charitable_program = '$0' if not charitable_program \
-                           else str(charitable_program.contents[0])
-    data['charitable_program'] = extract_currency(charitable_program)
-    
-    management_and_admin = soup.find('li',class_='legend-li-azure-radiance-blue')
-    management_and_admin = '$0' if not management_and_admin \
-                              else str(management_and_admin.contents[0])
-    data['management_and_admin'] = extract_currency(management_and_admin)
-    
-    fundraising = soup.find('li', class_='legend-li-pearl-peach')
-    fundraising = '$0' if not fundraising \
-                  else str(fundraising.contents[0])
-    data['fundraising'] = extract_currency(fundraising)
+    field_class = {'charitable_program': 'legend-li-hot-pink',
+                   'management_and_admin': 'legend-li-azure-radiance-blue',
+                   'fundraising': 'legend-li-pearl-peach',
+                   'political_activities': 'legend-li-blue-kimberly',
+                   'gifts_to_other': 'legend-li-orange',
+                   'other': 'legend-li-dark-green'}
 
-    political_activities = soup.find('li', class_='legend-li-blue-kimberly')
-    political_activities = '$0' if not political_activities \
-                           else str(political_activities.contents[0])
-    data['political_activities'] = extract_currency(political_activities)
-    
-    gifts_to_other = soup.find('li', class_='legend-li-orange')
-    gifts_to_other = '$0' if not gifts_to_other \
-                     else ' '.join(remove_tags(gifts_to_other.contents))
-    data['gifts_to_other'] = extract_currency(gifts_to_other)
+    for field, class_name in field_class.items():
+        field_value = soup.find('li', class_=class_name)
+        field_value = '$0' if not field_value else str(field_value.contents[0])
+        data[field] = extract_currency(field_value)
 
-    other = soup.find('li', class_='legend-li-dark-green')
-    other = '$0' if not other \
-            else ' '.join(remove_tags(other.contents))
-    data['other'] = extract_currency(other)
+    total = sum(list(data.values()))
 
-    data['total'] = data['charitable_program'] + \
-                    data['management_and_admin'] + \
-                    data['fundraising'] + \
-                    data['political_activities'] + \
-                    data['gifts_to_other'] + \
-                    data['other']
+    data['total'] = total
 
     return data
 
