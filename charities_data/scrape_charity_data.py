@@ -1,6 +1,7 @@
 import bs4, re, urllib.request
 from bs4 import BeautifulSoup
 from time import sleep
+from user_agent import generate_user_agent
 
 
 REG_NUMBER_REGEX = re.compile('^([0-9]+)RR([0-9]+)$')
@@ -222,10 +223,13 @@ def scrape_cra_charities(charities):
         # Attempt to scrape a website 5 times before moving on if errors occur
         while success == 0 and attempts < 5:
             attempts += 1
+            user_agent_random = generate_user_agent(device_type='desktop')
             
             try:
                 website = urllib.request.urlopen(
-                    CRA_SEARCH_LINK.format(match.group(1), match.group(2)))
+                    urllib.request.Request(
+                        CRA_SEARCH_LINK.format(match.group(1), match.group(2)),
+                        headers={'User-Agent': user_agent_random}))
 
                 soup = BeautifulSoup(website, 'lxml')
 
@@ -239,5 +243,5 @@ def scrape_cra_charities(charities):
                 print(reg_number, ':', e)
                 continue
 
-        sleep(0.5)
+            sleep(1)
 
