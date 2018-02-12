@@ -1,5 +1,6 @@
 import bs4, re, urllib.request
 from bs4 import BeautifulSoup
+from geopy.geocoders import ArcGIS
 from time import sleep
 from user_agent import generate_user_agent
 
@@ -8,6 +9,23 @@ REG_NUMBER_REGEX = re.compile('^([0-9]+)RR([0-9]+)$')
 CRA_SEARCH_LINK = 'http://www.cra-arc.gc.ca/ebci/haip/srch/\
 advancedsearchresult-eng.action?b={}&q={}'
 CURRENCY_REGEX = re.compile('(\$[0-9,]+)')
+
+
+def get_latitude_longitude(geolocator, address):
+    '''
+    Converts an address into latitude and longitude.
+
+    Args:
+        geolocator : an instance of a geocoder from the geopy library
+        address (str) : an address
+        
+    Returns:
+        (float, float) : latitude and longitude
+    '''
+    location = geolocator.geocode(address)
+    if not location:
+        return (0, 0)
+    return (location.latitude, location.longitude)
 
 
 def remove_tags(contents):
@@ -174,6 +192,8 @@ def scrape_cra_charities(charities):
     Returns:
         None
     '''
+    geolocator = ArcGIS()
+    
     for reg_number in charities:
         success = 0
         attempts = 0
@@ -189,6 +209,12 @@ def scrape_cra_charities(charities):
             user_agent_random = generate_user_agent(device_type='desktop')
             
             try:
+                address = charities[reg_number]['address'] + ' ' + \
+                          charities[reg_number]['city'] + ' ' + \
+                          charities[reg_number]['province'] + ' ' + \
+                          charities[reg_number]['country'] + ' ' + \
+                          charities[reg_number]['postalCode']
+                
                 website = urllib.request.urlopen(
                     urllib.request.Request(
                         CRA_SEARCH_LINK.format(match.group(1), match.group(2)),
@@ -196,15 +222,18 @@ def scrape_cra_charities(charities):
 
                 soup = BeautifulSoup(website, 'lxml')
 
+                latitude, longitude = get_latitude_longitude(geolocator, address)
+
+                charities[reg_number]['latitude'] = latitude
+                charities[reg_number]['longitude'] = longitude
                 charities[reg_number]['revenue'] = get_revenue(soup)
                 charities[reg_number]['expenses'] = get_expenses(soup)
-                charities[reg_number]['ongoing_programs'] = \
+                charities[reg_number]['ongoingPrograms'] = \
                     get_ongoing_programs(soup)
                 success = 1
 
             except Exception as e:
                 print(reg_number, ':', e)
-                continue
 
             sleep(1)
 

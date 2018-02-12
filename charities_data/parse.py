@@ -30,7 +30,14 @@ def parse_charity_file(filename):
                     'city':            line_data[8],
                     'province':        line_data[9],
                     'country':         line_data[10],
-                    'postalCode':      line_data[11]
+                    'postalCode':      line_data[11],
+                    'twitter':         'None',
+                    'instagram':       'None',
+                    'facebook':        'None',
+                    'youtube':         'None',
+                    'website':         'None',
+                    'summary':         'None',
+                    'logo':            'None'
                    }
             charity_data[registration] = data
 
