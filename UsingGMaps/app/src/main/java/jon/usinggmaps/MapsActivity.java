@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -16,7 +20,6 @@ import jon.usinggmaps.listeners.LocationSuccessListener;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
     private SupportMapFragment mapFragment;
-    private LocationSuccessListener locationSuccessListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,14 +31,44 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     @Override
     public void onMapReady(final GoogleMap mMap) {
         mMap.setOnCameraMoveListener(new CameraMoveListener(mMap));
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+
+            }
+
+            @Override
+            public void onError(Status status) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
 
-            locationSuccessListener = new LocationSuccessListener(this,mMap);
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
-                    .addOnSuccessListener(this,locationSuccessListener );
+                    .addOnSuccessListener(this,new LocationSuccessListener(this,mMap) );
         }
+
     }
     @Override
     public boolean onMyLocationButtonClick() {
