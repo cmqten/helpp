@@ -42,6 +42,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                     .addOnSuccessListener(this,new LocationSuccessListener(this,mMap) );
         }
 
+        //This code launches google maps on the persons phone and gives directions to the pasted in location
+//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                Uri.parse("google.navigation:q=24 Amethyst Dr, Richmond Hill, Ontario"));
+//        startActivity(intent);
+
     }
     @Override
     public boolean onMyLocationButtonClick() {
