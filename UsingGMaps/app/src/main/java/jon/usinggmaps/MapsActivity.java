@@ -6,17 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import jon.usinggmaps.listeners.CameraMoveListener;
 import jon.usinggmaps.listeners.LocationSuccessListener;
+import jon.usinggmaps.listeners.PlaceSelectListener;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
     private SupportMapFragment mapFragment;
@@ -34,31 +32,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-
-            }
-
-            @Override
-            public void onError(Status status) {
-
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectListener(mMap));
 
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
