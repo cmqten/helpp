@@ -17,14 +17,13 @@ import jon.usinggmaps.listeners.LocationSuccessListener;
 import jon.usinggmaps.listeners.PlaceSelectListener;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
-    private SupportMapFragment mapFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
-        this.mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        this.mapFragment.getMapAsync(this);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
     @Override
     public void onMapReady(final GoogleMap mMap) {

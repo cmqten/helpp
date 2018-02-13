@@ -1,6 +1,5 @@
 package jon.usinggmaps.listeners;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -15,10 +14,8 @@ public class CameraMoveListener implements GoogleMap.OnCameraMoveListener{
     }
     @Override
     public void onCameraMove() {
-        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-        //query and return a datastructure of all the charities that fall within thses latlngBounds
-
-        //bounds.contains(marker.getPosition())
+//        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
+//        bounds.contains(marker.getPosition())
         //onMapSearch();
 
     }
