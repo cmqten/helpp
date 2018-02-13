@@ -32,10 +32,10 @@ def main(argc, argv):
     charities = parse_charity_file(argv[1])
     charities_keys = list(charities.keys())
     charities_count = len(charities)
-    chunk_size = int(charities_count / 4)
+    chunk_size = int(charities_count / NUM_PROCESSES)
 
-    # Split charities dictionary into four parts
-    charities_chunks = [dict(), dict(), dict(), dict()]
+    # Split charities dictionary into NUM_PROCESSES parts
+    charities_chunks = [dict() for i in range(NUM_PROCESSES)]
 
     for i in range(0, NUM_PROCESSES-1):
         for j in range(chunk_size * i, chunk_size * (i+1)):
@@ -45,7 +45,7 @@ def main(argc, argv):
         charities_chunks[NUM_PROCESSES-1][charities_keys[i]] = \
             charities[charities_keys[i]]
 
-    # Spawn four processes to do work on each chunk
+    # Spawn NUM_PROCESSES processes to do work on each chunk
     output = mp.Queue()
     processes = [mp.Process(target=scrape_cra_charities_thread,
                             args=(charities_chunks[i], output)) \

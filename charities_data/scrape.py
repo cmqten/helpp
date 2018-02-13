@@ -192,8 +192,9 @@ def scrape_cra_charities(charities):
     Returns:
         None
     '''
-    geolocator = ArcGIS()
+    print('CRA website')
     
+    # Scrape CRA website
     for reg_number in charities:
         success = 0
         attempts = 0
@@ -209,12 +210,6 @@ def scrape_cra_charities(charities):
             user_agent_random = generate_user_agent(device_type='desktop')
             
             try:
-                address = charities[reg_number]['address'] + ' ' + \
-                          charities[reg_number]['city'] + ' ' + \
-                          charities[reg_number]['province'] + ' ' + \
-                          charities[reg_number]['country'] + ' ' + \
-                          charities[reg_number]['postalCode']
-                
                 website = urllib.request.urlopen(
                     urllib.request.Request(
                         CRA_SEARCH_LINK.format(match.group(1), match.group(2)),
@@ -222,10 +217,6 @@ def scrape_cra_charities(charities):
 
                 soup = BeautifulSoup(website, 'lxml')
 
-                latitude, longitude = get_latitude_longitude(geolocator, address)
-
-                charities[reg_number]['latitude'] = latitude
-                charities[reg_number]['longitude'] = longitude
                 charities[reg_number]['revenue'] = get_revenue(soup)
                 charities[reg_number]['expenses'] = get_expenses(soup)
                 charities[reg_number]['ongoingPrograms'] = \
@@ -239,3 +230,41 @@ def scrape_cra_charities(charities):
 
         if success == 0:
             print(reg_number, ': scraping failed')
+
+    print('Longitude and latitude')
+
+    geolocator = ArcGIS()
+
+    # Get latitude and longitude
+    for reg_number in charities:
+        success = 0
+        attempts = 0
+        match = REG_NUMBER_REGEX.match(reg_number)
+        
+        if not match:
+            print(reg_number, 'does not match the registration format')
+            continue
+
+        while success == 0 and attempts < 5:
+            attempts += 1
+
+            try:
+                address = charities[reg_number]['address'] + ' ' + \
+                          charities[reg_number]['city'] + ' ' + \
+                          charities[reg_number]['province'] + ' ' + \
+                          charities[reg_number]['country'] + ' ' + \
+                          charities[reg_number]['postalCode']
+
+                latitude, longitude = get_latitude_longitude(geolocator, address)
+                charities[reg_number]['latitude'] = latitude
+                charities[reg_number]['longitude'] = longitude
+                success = 1
+
+            except Exception as e:
+                print(reg_number, ':', e)
+
+            sleep(1)
+
+        if success == 0:
+            print(reg_number, ': latitude and longitude failed')
+            
