@@ -1,21 +1,21 @@
-major release goals
+## major release goals
 
 - an app where we can search up a location and find a charity in that location.
 
-- when a user is expected to open a charity we would have an backend google api to get all social media links and siplay them so user can see them if available. If they click the link they will got to the social media. show all availbe.
+- when a user opens a charity we would have a backend google api to get all social media links and 
+display them, so the user can see them if available. If they click the link they will got to the social media. show all available.
 
 - when user slects a charity they will be able to see logo of the company and summary.
 
-- crawl the charity website to get summary and their logo if it exists.
+- crawl the charity websites to get summary, their logo if it exists and a donation link if it exists.
 
-- for locations when u first load page it will load your location and the mark charities within that radius. All charities will be displayed in a list.
-
-
-
-release plan
+- for locations when a user first loads a page it will load their location and the mark charities within that radius. All charities will be displayed in a list.
 
 
-sprint goals
+## release plan
 
 
-completion date
+## sprint goals
+
+
+## completion date
