@@ -40,7 +40,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
 
 
-
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
@@ -53,7 +52,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 //        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
 //                Uri.parse("google.navigation:q=24 Amethyst Dr, Richmond Hill, Ontario"));
 //        startActivity(intent);
-
 
 
     }
