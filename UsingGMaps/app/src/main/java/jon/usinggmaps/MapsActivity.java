@@ -2,6 +2,8 @@ package jon.usinggmaps;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -11,13 +13,16 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
 
 import jon.usinggmaps.listeners.CameraMoveListener;
 import jon.usinggmaps.listeners.LocationSuccessListener;
 import jon.usinggmaps.listeners.PlaceSelectListener;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
-
 
 
     @Override
@@ -32,7 +37,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     }
     @Override
     public void onMapReady(final GoogleMap mMap) {
-        mMap.setOnCameraMoveListener(new CameraMoveListener(mMap));
+        CameraMoveListener myCam = new CameraMoveListener(mMap,this);
+        mMap.setOnCameraMoveListener(myCam);
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -55,6 +61,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
 
     }
+
+
+
+
     @Override
     public boolean onMyLocationButtonClick() {
         return false;
