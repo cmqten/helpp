@@ -1,13 +1,11 @@
 package jon.usinggmaps.listeners;
 import android.app.Activity;
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -27,14 +25,28 @@ public class CameraMoveListener implements GoogleMap.OnCameraMoveListener{
             "305 Thirteen STREET WEST\tCORNWALL\tON\tCA\tK6J3G7", "305 Thirteen STREET WEST\tCORNWALL\tON\tCA\tK6J3G7",
             "6328 SABLEWOOD PLACE\tOTTAWA\tON\tCA\tK1C7M4", "6328 SABLEWOOD PLACE\tOTTAWA\tON\tCA\tK1C7M4",
             "363 WORTHINGTON AVEte\tRICHMOND HILL\tON\tCA\tL4E4S3", "363 WORTHINGTON AVE\tRICHMOND HILL\tON\tCA\tL4E4S3"
-};
-private ArrayList<MarkerOptions> myList;
-public CameraMoveListener(GoogleMap mMap, Activity activity){
-        this.mMap = mMap;
-        myList = new ArrayList<MarkerOptions>();
-        this.geoCoder = new Geocoder(activity, Locale.getDefault());
-        onMapSearch(adrs);
+    };
+    private ArrayList<MarkerOptions> myList;
+
+
+    public CameraMoveListener(GoogleMap mMap, Activity activity){
+            this.mMap = mMap;
+            myList = new ArrayList<MarkerOptions>();
+            this.geoCoder = new Geocoder(activity, Locale.getDefault());
+            onMapSearch(adrs);
+
+
+            mMap.setOnMarkerClickListener(new MarkerClickerListener(activity));
+
+
+
+
+
+
+
     }
+
+
     @Override
     public void onCameraMove() {
         LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
@@ -43,9 +55,6 @@ public CameraMoveListener(GoogleMap mMap, Activity activity){
                 s.visible(true);
             }
         }
-
-
-
     }
 
     public void onMapSearch(String[] adrs) {
@@ -55,7 +64,7 @@ public CameraMoveListener(GoogleMap mMap, Activity activity){
             markerOptions = new MarkerOptions();
             address = geoCoder.getFromLocationName(s, 1).get(0);
             markerOptions.position(new LatLng(address.getLatitude(), address.getLongitude()));
-            markerOptions.title("Hello");
+            markerOptions.title(s);
             mMap.addMarker(markerOptions);
             markerOptions.visible(false);
             myList.add(markerOptions);
