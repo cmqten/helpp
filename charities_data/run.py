@@ -6,7 +6,7 @@ from parse import parse_charity_file, save_to_json
 from scrape import scrape_cra_charities
 
 
-NUM_PROCESSES = 1
+NUM_PROCESSES = 4
 
 
 def scrape_cra_charities_thread(data, output, tid):
@@ -31,7 +31,6 @@ def main(argc, argv):
         print('Usage: parse_charity_data.py CHARITY_RAW_DATA_FILE')
 
     charities = parse_charity_file(argv[1])
-    '''
     charities_keys = list(charities.keys())
     charities_count = len(charities)
     chunk_size = int(charities_count / NUM_PROCESSES)
@@ -67,9 +66,6 @@ def main(argc, argv):
     for p in processes:
         p.join()
         print("join")
-    '''
-
-    scrape_cra_charities(charities)
 
     save_to_json(charities)
 

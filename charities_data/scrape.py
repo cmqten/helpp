@@ -219,9 +219,10 @@ def scrape_cra_charities(charities, tid=0):
                 website = urllib.request.urlopen(
                     urllib.request.Request(
                         CRA_SEARCH_LINK.format(match.group(1), match.group(2)),
-                        headers={'User-Agent': user_agent_random}))
+                        headers={'User-Agent': user_agent_random}),
+                        timeout=5)
 
-                soup = BeautifulSoup(website, 'lxml')
+                soup = BeautifulSoup(website, 'html.parser')
 
                 charities[reg_number]['revenue'] = get_revenue(soup)
                 charities[reg_number]['expenses'] = get_expenses(soup)
@@ -232,7 +233,7 @@ def scrape_cra_charities(charities, tid=0):
             except Exception as e:
                 print(tid, reg_number, ':', e)
 
-            sleep(0.25)
+            sleep(1)
 
         if success == 0:
             failed_scrape.append(reg_number)
@@ -275,7 +276,7 @@ def scrape_cra_charities(charities, tid=0):
             except Exception as e:
                 print(tid, reg_number, ':', e)
 
-            sleep(0.25)
+            sleep(1)
 
         if success == 0:
             failed_location.append(reg_number)
