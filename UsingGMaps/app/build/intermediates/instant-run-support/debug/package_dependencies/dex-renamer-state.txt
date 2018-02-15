@@ -1,0 +1,4 @@
+#Wed Feb 14 21:51:18 EST 2018
+base.0=/Users/Jon/Downloads/3rdyear/Winter/CSC301/Project/UsingGMaps/app/build/intermediates/transforms/dexMerger/debug/10
+path.0=classes.dex
+renamed.0=classes.dex
