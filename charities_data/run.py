@@ -6,10 +6,10 @@ from parse import parse_charity_file, save_to_json
 from scrape import scrape_cra_charities
 
 
-NUM_PROCESSES = 4
+NUM_PROCESSES = 1
 
 
-def scrape_cra_charities_thread(data, output):
+def scrape_cra_charities_thread(data, output, tid):
     '''
     Each thread will scrape their own portion of the charity data from the txt
     file.
@@ -17,11 +17,12 @@ def scrape_cra_charities_thread(data, output):
     Args:
         data (dict) : dictionary of charity data
         output (multiprocessing.Queue) : output queue of results
+        tid (int) : thread id in a multithreaded context
 
     Returns:
         None
     '''
-    scrape_cra_charities(data)
+    scrape_cra_charities(data, tid)
     output.put(data)
 
 
@@ -30,6 +31,7 @@ def main(argc, argv):
         print('Usage: parse_charity_data.py CHARITY_RAW_DATA_FILE')
 
     charities = parse_charity_file(argv[1])
+    '''
     charities_keys = list(charities.keys())
     charities_count = len(charities)
     chunk_size = int(charities_count / NUM_PROCESSES)
@@ -48,18 +50,26 @@ def main(argc, argv):
     # Spawn NUM_PROCESSES processes to do work on each chunk
     output = mp.Queue()
     processes = [mp.Process(target=scrape_cra_charities_thread,
-                            args=(charities_chunks[i], output)) \
+                            args=(charities_chunks[i], output, i)) \
                  for i in range(0, NUM_PROCESSES)]
 
     for p in processes:
         p.start()
 
-    for p in processes:
-        p.join()
+    print("update")
 
     # Update charities data based on info scraped by processes, then save to json
     for i in range(0, NUM_PROCESSES):
         charities.update(output.get())
+
+    print("update done")
+
+    for p in processes:
+        p.join()
+        print("join")
+    '''
+
+    scrape_cra_charities(charities)
 
     save_to_json(charities)
 

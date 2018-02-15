@@ -13,12 +13,12 @@ def parse_charity_file(filename):
         dict : dictionary containing all the data from the text file
     '''
     charity_data = dict()
-    
+
     # file contains French characters
     with open(filename, encoding='ISO-8859-15') as file:
         file.readline()
 
-        limit = 50
+        limit = 10
         count = 0
         for line in file:
             line_data = line.split('\t')
@@ -42,10 +42,13 @@ def parse_charity_file(filename):
             charity_data[registration] = data
 
             # small data only for testing, comment out when not testing
+            '''
             count += 1
-            if count >= limit: 
+            if count >= limit:
                 break
-    
+            '''
+
+
     return charity_data
 
 
