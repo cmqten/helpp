@@ -26,6 +26,10 @@ Story:
 "As Margaret, I want to be able to click a "more info" button, so I can find out more information about the company I want to donate to"
 Tasks:
 
+- created a scraper that would scrape the CRA's website
+
+- saved the financial info to a json file
+
 Story:
 "As Jon, I want to be able to adjust my search radius, so I can view more or fewer charities around me depending on their distance from my current location"
 Tasks:
@@ -45,7 +49,11 @@ Tasks:
 
 Story:
 "As Margaret, I want to be able to see the vision/opinions of an organization so I can decide if or not my vision/opinions are conservative."
-Tasks:
+Tasks: 
+
+- created a scraper that would scrape the CRA's website
+
+- saved charity's vision to a json file
 
 Story:
 "As Jon, I want to be able to pull up financial data about an organization I am interested in so I can be more financially informed about that organization and better decide if they should have my money"
