@@ -8,7 +8,7 @@ Edmond Osemudiamen Umolu, umoluedm
 
 Gary Liton, litongar
 
-Carl Marqeuz, marque67
+Carl Marquez, marque67
 
 Kenny Chen, chenken9
 
