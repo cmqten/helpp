@@ -9,6 +9,7 @@ Jonathan Wang
 Kenny Chen
 Carl Marquez
 Edmond Umolu 
+Shuprio Shourov
 
 ##Sprint Backlog
 Story:
@@ -76,3 +77,12 @@ Story:
 Tasks:
 -figure out how to start a google maps activity
 -trigger that activity when the markers of a charity on the map is clicked
+
+Story:
+"As Rio, I want to be able to find a donation link for a charity if it exists."
+Tasks:
+-parse through the charity website if there is one
+-use google to find the write website
+-look through html tags to find key words like donate, donations, give, etc
+-take href link if there is one (this would be the donate link)
+-execute the script everytime we are on a specific charity within app

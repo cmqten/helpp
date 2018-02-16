@@ -2,9 +2,6 @@
 - an app where we can search up a location and find a charity in that location.
 - when user slects a charity they will be able to see logo of the company, summary, social and donation links.
 
-## release plan
-
-
 ## sprint goals
 - crawl the charity websites to get summary, their logo and a donation link if it exists.
 - for locations when a user first loads a page it will load their location and the mark charities within that radius. All charities will be displayed in a list.
