@@ -1,6 +1,6 @@
 ## major release goals
 - an app where we can search up a location and find a charity in that location.
-- when user slects a charity they will be able to see logo of the company, summary, social and donation links.
+- when user selects a charity they will be able to see logo of the company, summary, social and donation links.
 
 ## sprint goals
 - crawl the charity websites to get summary, their logo and a donation link if it exists.
