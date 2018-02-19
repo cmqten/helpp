@@ -7,7 +7,7 @@ from user_agent import generate_user_agent
 
 REG_NUMBER_REGEX = re.compile('^([0-9]+)RR([0-9]+)$')
 CRA_SEARCH_LINK = 'http://www.cra-arc.gc.ca/ebci/haip/srch/\
-advancedsearchresult-eng.action?b={}&q={}'
+advancedsearchresult-eng.action?b={}&q={}&fpe={}-12-31'
 CURRENCY_REGEX = re.compile('(\$[0-9,]+)')
 
 
@@ -97,7 +97,8 @@ def get_revenue(soup):
 
     for field, class_name in field_class.items():
         field_value = soup.find('li', class_=class_name)
-        field_value = '$0' if not field_value else str(field_value.contents[0])
+        field_value = '$0' if not field_value else \
+                      ''.join(remove_tags(field_value.contents))
         data[field] = extract_currency(field_value)
 
     total = sum(list(data.values()))
@@ -133,7 +134,8 @@ def get_expenses(soup):
 
     for field, class_name in field_class.items():
         field_value = soup.find('li', class_=class_name)
-        field_value = '$0' if not field_value else str(field_value.contents[0])
+        field_value = '$0' if not field_value else \
+                      ''.join(remove_tags(field_value.contents))
         data[field] = extract_currency(field_value)
 
     total = sum(list(data.values()))
@@ -180,6 +182,40 @@ def get_ongoing_programs(soup):
     return re.sub('\s+', ' ', ongoing_programs).strip()
 
 
+def scrape_charity_data(reg_number, year):
+    '''
+    Scrapes expenses, revenue, and ongoing programs for a charity specified by
+    the registration number given for a certain year. Throws an exception.
+
+    Args:
+        reg_number (str) : charity registration number
+        year (int) : year for which the financial info will be scraped
+
+    Returns:
+        dict : charity data mentioned above, empty dictionary if reg_number is
+               invalid
+    '''
+    match = REG_NUMBER_REGEX.match(reg_number)
+
+    if not match:
+        print(reg_number, 'does not match the registration format')
+        return dict()
+    
+    user_agent_random = generate_user_agent(device_type='desktop')
+    
+    website = urllib.request.urlopen(
+        urllib.request.Request(CRA_SEARCH_LINK.format(match.group(1),
+                                                      match.group(2), year),
+                               headers={'User-Agent': user_agent_random}),
+        timeout=5)
+
+    soup = BeautifulSoup(website, 'html.parser')
+    
+    return {'revenue': get_revenue(soup),
+            'expenses': get_expenses(soup),
+            'ongoingPrograms': get_ongoing_programs(soup)}
+
+
 def scrape_cra_charities(charities, tid=0):
     '''
     Using the registration numbers from the text file, scrape additional info
@@ -204,30 +240,13 @@ def scrape_cra_charities(charities, tid=0):
     for reg_number in charities:
         success = 0
         attempts = 0
-        match = REG_NUMBER_REGEX.match(reg_number)
-
-        if not match:
-            print(reg_number, 'does not match the registration format')
-            continue
 
         # Attempt to scrape a website 5 times before moving on if errors occur
         while success == 0 and attempts < 5:
             attempts += 1
-            user_agent_random = generate_user_agent(device_type='desktop')
-
+            
             try:
-                website = urllib.request.urlopen(
-                    urllib.request.Request(
-                        CRA_SEARCH_LINK.format(match.group(1), match.group(2)),
-                        headers={'User-Agent': user_agent_random}),
-                        timeout=5)
-
-                soup = BeautifulSoup(website, 'html.parser')
-
-                charities[reg_number]['revenue'] = get_revenue(soup)
-                charities[reg_number]['expenses'] = get_expenses(soup)
-                charities[reg_number]['ongoingPrograms'] = \
-                    get_ongoing_programs(soup)
+                charities[reg_number].update(scrape_charity_data(reg_number))
                 success = 1
 
             except Exception as e:
@@ -238,6 +257,7 @@ def scrape_cra_charities(charities, tid=0):
         if success == 0:
             failed_scrape.append(reg_number)
             print(tid, reg_number, ': scraping failed')
+            
         else:
             num_scrape += 1
             print(tid, 'scraped:', num_scrape)
