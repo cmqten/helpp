@@ -33,7 +33,7 @@ public class LocationSuccessListener implements OnSuccessListener<Location> {
     @Override
     public void onSuccess(Location location) {
         if (location != null) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12));
         }
         else {
             GoogleApiClient googleApiClient = new GoogleApiClient.Builder(mapsActivity).addApi(LocationServices.API).build();

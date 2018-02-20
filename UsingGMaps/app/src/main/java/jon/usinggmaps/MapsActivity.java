@@ -1,9 +1,8 @@
 package jon.usinggmaps;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -13,10 +12,6 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.IOException;
 
 import jon.usinggmaps.listeners.CameraMoveListener;
 import jon.usinggmaps.listeners.LocationSuccessListener;
@@ -24,6 +19,14 @@ import jon.usinggmaps.listeners.PlaceSelectListener;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
 
+    private boolean Community;
+    private boolean Education;
+    private boolean Health;
+    private boolean Religion;
+    private boolean Welfare;
+    private boolean charitiesSelected;
+    private boolean eventsSelected;
+    private Intent typeIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,25 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        typeIntent = getIntent();
+        charitiesSelected = typeIntent.getBooleanExtra("charitiesSelected",true);
+        eventsSelected = typeIntent.getBooleanExtra("eventsSelected",true);
+        Community = typeIntent.getBooleanExtra("Community",true);
+        Education = typeIntent.getBooleanExtra("Education",true);
+        Health = typeIntent.getBooleanExtra("Health",true);
+        Religion = typeIntent.getBooleanExtra("Religion",true);
+        Welfare = typeIntent.getBooleanExtra("Welfare",true);
+
+
+
+
+
+
+
+
+
+
 
 
     }
@@ -53,13 +75,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
                     .addOnSuccessListener(this,new LocationSuccessListener(this,mMap) );
         }
-
-        //This code launches google maps on the persons phone and gives directions to the pasted in location
-//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-//                Uri.parse("google.navigation:q=24 Amethyst Dr, Richmond Hill, Ontario"));
-//        startActivity(intent);
-
-
     }
 
 

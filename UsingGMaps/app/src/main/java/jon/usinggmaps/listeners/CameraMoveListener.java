@@ -70,7 +70,6 @@ public class CameraMoveListener implements GoogleMap.OnCameraMoveListener{
             myList.add(markerOptions);
         }
        }catch(IOException e){
-           System.out.println("Caught Exception");
        }
     }
 }
