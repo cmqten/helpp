@@ -15,5 +15,5 @@ Working software: 6 marks if features work flawlessly, take away 1 mark for each
 Your mark: 6
 
 
-Total demo mark: 8.5/10
+Total demo mark: 9/10
 
