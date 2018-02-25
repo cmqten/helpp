@@ -1,13 +1,11 @@
 import bs4, re, urllib.request
 from bs4 import BeautifulSoup
-from geopy.geocoders import ArcGIS
-from time import sleep
 from user_agent import generate_user_agent
 
 
 REG_NUMBER_REGEX = re.compile('^([0-9]+)RR([0-9]+)$')
 CRA_SEARCH_LINK = 'http://www.cra-arc.gc.ca/ebci/haip/srch/\
-advancedsearchresult-eng.action?b={}&q={}&fpe={}-12-31'
+advancedsearchresult-eng.action?b={}&q={}'
 CURRENCY_REGEX = re.compile('(\$[0-9,]+)')
 
 
@@ -20,12 +18,12 @@ def get_latitude_longitude(geolocator, address):
         address (str) : an address
 
     Returns:
-        (float, float) : latitude and longitude
+        [float, float] : latitude and longitude
     '''
     location = geolocator.geocode(address)
     if not location:
-        return (0, 0)
-    return (location.latitude, location.longitude)
+        return [0, 0]
+    return [location.latitude, location.longitude]
 
 
 def remove_tags(contents):
@@ -214,96 +212,3 @@ def scrape_charity_data(reg_number, year):
     return {'revenue': get_revenue(soup),
             'expenses': get_expenses(soup),
             'ongoingPrograms': get_ongoing_programs(soup)}
-
-
-def scrape_cra_charities(charities, tid=0):
-    '''
-    Using the registration numbers from the text file, scrape additional info
-    about each charity from the CRA website.
-
-    Args:
-        charities (dict) : a dictionary from json in which the keys are the
-                           registration numbers and the values are charity info.
-
-        tid (int) : thread id in a multithreaded context
-
-    Returns:
-        None
-    '''
-    num_scrape = 0
-    failed_scrape = []
-    failed_location = []
-
-    print('CRA website')
-
-    # Scrape CRA website
-    for reg_number in charities:
-        success = 0
-        attempts = 0
-
-        # Attempt to scrape a website 5 times before moving on if errors occur
-        while success == 0 and attempts < 5:
-            attempts += 1
-            
-            try:
-                charities[reg_number].update(scrape_charity_data(reg_number))
-                success = 1
-
-            except Exception as e:
-                print(tid, reg_number, ':', e)
-
-            sleep(1)
-
-        if success == 0:
-            failed_scrape.append(reg_number)
-            print(tid, reg_number, ': scraping failed')
-            
-        else:
-            num_scrape += 1
-            print(tid, 'scraped:', num_scrape)
-
-    print('Longitude and latitude')
-
-    geolocator = ArcGIS()
-
-    num_scrape = 0
-
-    # Get latitude and longitude
-    for reg_number in charities:
-        success = 0
-        attempts = 0
-        match = REG_NUMBER_REGEX.match(reg_number)
-
-        if not match:
-            print(reg_number, 'does not match the registration format')
-            continue
-
-        while success == 0 and attempts < 5:
-            attempts += 1
-
-            try:
-                address = charities[reg_number]['address'] + ' ' + \
-                          charities[reg_number]['city'] + ' ' + \
-                          charities[reg_number]['province'] + ' ' + \
-                          charities[reg_number]['country'] + ' ' + \
-                          charities[reg_number]['postalCode']
-
-                latitude, longitude = get_latitude_longitude(geolocator, address)
-                charities[reg_number]['latitude'] = latitude
-                charities[reg_number]['longitude'] = longitude
-                success = 1
-
-            except Exception as e:
-                print(tid, reg_number, ':', e)
-
-            sleep(1)
-
-        if success == 0:
-            failed_location.append(reg_number)
-            print(tid, reg_number, ': latitude and longitude failed')
-        else:
-            num_scrape += 1
-            print(tid, 'scraped:', num_scrape)
-
-    print(failed_scrape)
-    print(failed_location)
