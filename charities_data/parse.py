@@ -50,15 +50,16 @@ def parse_charity_file(filename):
     return charity_data
 
 
-def save_to_json(data):
+def save_to_json(data, path):
     '''
     Saves data to json file.
 
     Args:
         data (dict) : dictionary containing data to be saved to json file
+        path (str) : path to file
 
     Returns:
         None
     '''
-    with open('charity_data_json.json', 'w', encoding='ISO-8859-15') as file:
+    with open(path, 'w', encoding='ISO-8859-15') as file:
         json.dump(data, file)

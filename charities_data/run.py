@@ -1,7 +1,7 @@
 #!/bin/python3
 
 import multiprocessing as mp
-import sys
+import json, os, sys
 from geopy.geocoders import ArcGIS
 from parse import parse_charity_file, save_to_json
 from scrape import get_latitude_longitude, scrape_charity_data
@@ -24,40 +24,8 @@ def scrape_cra_charities_thread(data, output, tid):
     Returns:
         None
     '''
-    num_scraped = 0
-    failed_scrape = []
-
-    print(tid, 'CRA website')
-
-    # Scrape CRA website
-    for reg_number in data:
-        success = 0
-        attempts = 0
-
-        # 5 attempts before moving on
-        while success == 0 and attempts < 5:
-            attempts += 1
-            try:
-                data[reg_number].update(scrape_charity_data(reg_number, 2016))
-                success = 1
-                
-            except Exception as e:
-                print(tid, reg_number, ':', e)
-                
-            sleep(1)
-
-        if success == 0:
-            failed_scrape.append(reg_number)
-            print(tid, reg_number, ': scraping failed')
-
-        else:
-            num_scraped += 1
-            print(tid, 'scraped:', num_scraped)
-
-    print(tid, 'coordinates')
-
     geolocator = ArcGIS()
-    num_scraped = 0
+    num_located = 0
     failed_location = []
 
     # Get coordinates
@@ -77,7 +45,8 @@ def scrape_cra_charities_thread(data, output, tid):
                     data[reg_number]['postalCode']
                 )
                 coordinates = get_latitude_longitude(geolocator, address)
-                data[reg_number]['coordinates'] = coordinates
+                data[reg_number]['latitude'] = coordinates[0]
+                data[reg_number]['longitude'] = coordinates[1]
                 success = 1
                 
             except Exception as e:
@@ -87,23 +56,56 @@ def scrape_cra_charities_thread(data, output, tid):
 
         if success == 0:
             failed_location.append(reg_number)
-            print(tid, reg_number, ': coordinates failed')
+            print(tid, 'coordinates failed:', reg_number)
             
         else:
-            num_scraped += 1
-            print(tid, 'scraped:', num_scraped)
+            num_located += 1
+            print(tid, 'located:', num_located)
 
-    print('Failed scrape:', failed_scrape)
     print('Failed coordinates:', failed_location)
         
     output.put(data)
 
 
-def main(argc, argv):
-    if argc != 2:
-        print('Usage: parse_charity_data.py CHARITY_RAW_DATA_FILE')
+def split_charities_json(data):
+    '''
+    Splits the charities data into multiple json files of 1000 entries each.
 
-    charities = parse_charity_file(argv[1])
+    Args:
+        data (dict) : dictionary of charity data
+
+    Returns:
+        None
+    '''
+    chunk = None
+    i = 0
+    count = 0
+    for key in data:
+        if i % 100 == 0:
+            if chunk:
+                save_to_json(chunk, 'json_parts/charity_data_{}.json'.format(
+                    count))
+                count += 1
+            chunk = dict()
+
+        chunk[key] = data[key]
+        i += 1
+
+    if chunk:
+        save_to_json(chunk, 'json_parts/charity_data_{}.json'.format(count))
+    
+
+def get_location_info(path):
+    '''
+    Get location for every charity in the json provided by the path.
+
+    Args:
+        path (str) : path to the json file
+
+    Returns:
+        None
+    '''
+    charities = json.load(open(path, encoding='ISO-8859-15'))
     charities_keys = list(charities.keys())
     charities_count = len(charities)
     chunk_size = int(charities_count / NUM_PROCESSES)
@@ -134,10 +136,17 @@ def main(argc, argv):
 
     for p in processes:
         p.join()
-        print("join")
+        print('join')
 
-    save_to_json(charities)
+    save_to_json(charities, 'json_parts_located/' + os.path.basename(path))
+    print('saved to', 'json_parts_located/' + os.path.basename(path))
+
+
+def main():
+    for i in range(29, 864):
+        get_location_info('json_parts/charity_data_{}.json'.format(i))            
 
 
 if __name__ == '__main__':
-    main(len(sys.argv), sys.argv)
+    #split_charities_json(parse_charity_file(sys.argv[1]))
+    main()
