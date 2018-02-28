@@ -42,11 +42,11 @@ def parse_charity_file(filename):
             charity_data[registration] = data
 
             # small data only for testing, comment out when not testing
-            
+            '''
             count += 1
             if count >= limit:
                 break
-
+            '''
     return charity_data
 
 

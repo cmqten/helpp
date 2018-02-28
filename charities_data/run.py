@@ -128,13 +128,13 @@ def main(argc, argv):
     for p in processes:
         p.start()
 
-    for p in processes:
-        p.join()
-        print("join")
-
     # Update charities data based on info scraped by processes, then save to json
     for i in range(0, NUM_PROCESSES):
         charities.update(output.get())
+
+    for p in processes:
+        p.join()
+        print("join")
 
     save_to_json(charities)
 

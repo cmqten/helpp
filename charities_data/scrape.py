@@ -6,7 +6,10 @@ from user_agent import generate_user_agent
 REG_NUMBER_REGEX = re.compile('^([0-9]+)RR([0-9]+)$')
 CRA_SEARCH_LINK = 'http://www.cra-arc.gc.ca/ebci/haip/srch/\
 advancedsearchresult-eng.action?b={}&q={}'
+CRA_SEARCH_LINK_YEAR = 'http://www.cra-arc.gc.ca/ebci/haip/srch/\
+advancedsearchresult-eng.action?b={}&q={}&fpe={}'
 CURRENCY_REGEX = re.compile('(\$[0-9,]+)')
+DATE_REGEX = re.compile('^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$')
 
 
 def get_latitude_longitude(geolocator, address):
@@ -87,11 +90,11 @@ def get_revenue(soup):
 
     # Class names are based on their color on the pie chart, there shouldn't be
     # other tags that used the same class names
-    field_class = {'receipted_donations': 'legend-li-red',
-                   'non_receipted_donations': 'legend-li-yellow',
-                   'gifts_from_other_charities': 'legend-li-blue',
-                   'government_funding': 'legend-li-green',
-                   'other': 'legend-li-aqua'}
+    field_class = {'revenue_receipted_donations': 'legend-li-red',
+                   'revenue_non_receipted_donations': 'legend-li-yellow',
+                   'revenue_gifts_from_other_charities': 'legend-li-blue',
+                   'revenue_government_funding': 'legend-li-green',
+                   'revenue_other': 'legend-li-aqua'}
 
     for field, class_name in field_class.items():
         field_value = soup.find('li', class_=class_name)
@@ -101,7 +104,7 @@ def get_revenue(soup):
 
     total = sum(list(data.values()))
 
-    data['total'] = total
+    data['revenue_total'] = total
 
     return data
 
@@ -123,12 +126,13 @@ def get_expenses(soup):
 
     # Class names are based on their color on the pie chart, there shouldn't be
     # other tags that used the same class names
-    field_class = {'charitable_program': 'legend-li-hot-pink',
-                   'management_and_admin': 'legend-li-azure-radiance-blue',
-                   'fundraising': 'legend-li-pearl-peach',
-                   'political_activities': 'legend-li-blue-kimberly',
-                   'gifts_to_other': 'legend-li-orange',
-                   'other': 'legend-li-dark-green'}
+    field_class = {'expenses_charitable_program': 'legend-li-hot-pink',
+                   'expenses_management_and_admin': \
+                       'legend-li-azure-radiance-blue',
+                   'expenses_fundraising': 'legend-li-pearl-peach',
+                   'expenses_political_activities': 'legend-li-blue-kimberly',
+                   'expenses_gifts_to_other': 'legend-li-orange',
+                   'expenses_other': 'legend-li-dark-green'}
 
     for field, class_name in field_class.items():
         field_value = soup.find('li', class_=class_name)
@@ -138,7 +142,7 @@ def get_expenses(soup):
 
     total = sum(list(data.values()))
 
-    data['total'] = total
+    data['expenses_total'] = total
 
     return data
 
@@ -180,14 +184,47 @@ def get_ongoing_programs(soup):
     return re.sub('\s+', ' ', ongoing_programs).strip()
 
 
-def scrape_charity_data(reg_number, year):
+def get_financial_dates(soup):
+    '''
+    Scrapes all the dates in which the charity submitted financial information.
+
+    Args:
+        soup (BeautifulSoup) : a data structure that represents an HTML document
+
+    Returns:
+        [str] : list of dates
+    '''
+    if not soup:
+        return []
+
+    list_dates = soup.find('ul', class_='list-unstyled mrgn-lft-md')
+
+    if not list_dates:
+        return []
+
+    list_dates = list_dates.find_all('li')
+
+    if not list_dates:
+        return []
+    
+    dates = []
+    
+    for date in list_dates:
+        date_clean = ''.join(remove_tags(date.contents)).strip()
+        if DATE_REGEX.match(date_clean):
+            dates.append(date_clean)
+
+    return dates
+
+
+def scrape_charity_data(reg_number, date=None):
     '''
     Scrapes expenses, revenue, and ongoing programs for a charity specified by
     the registration number given for a certain year. Throws an exception.
 
     Args:
         reg_number (str) : charity registration number
-        year (int) : year for which the financial info will be scraped
+        date (str) : date for which the financial info will be scraped
 
     Returns:
         dict : charity data mentioned above, empty dictionary if reg_number is
@@ -195,20 +232,29 @@ def scrape_charity_data(reg_number, year):
     '''
     match = REG_NUMBER_REGEX.match(reg_number)
 
+    data = dict()
+
     if not match:
         print(reg_number, 'does not match the registration format')
         return dict()
     
     user_agent_random = generate_user_agent(device_type='desktop')
+
+    cra_url = CRA_SEARCH_LINK.format(match.group(1), match.group(2)) \
+              if date is None else \
+              CRA_SEARCH_LINK_YEAR.format(match.group(1), match.group(2),
+                                          date)
     
     website = urllib.request.urlopen(
-        urllib.request.Request(CRA_SEARCH_LINK.format(match.group(1),
-                                                      match.group(2), year),
+        urllib.request.Request(cra_url,
                                headers={'User-Agent': user_agent_random}),
         timeout=5)
 
     soup = BeautifulSoup(website, 'html.parser')
+
+    data.update(get_revenue(soup))
+    data.update(get_expenses(soup))
+    data['ongoingPrograms'] = get_ongoing_programs(soup)
+    data['financialDates'] = get_financial_dates(soup)
     
-    return {'revenue': get_revenue(soup),
-            'expenses': get_expenses(soup),
-            'ongoingPrograms': get_ongoing_programs(soup)}
+    return data
