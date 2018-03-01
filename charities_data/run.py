@@ -2,7 +2,7 @@
 
 import multiprocessing as mp
 import json, os, sys
-from geopy.geocoders import ArcGIS
+from geopy.geocoders import ArcGIS, GoogleV3
 from parse import parse_charity_file, save_to_json
 from scrape import get_latitude_longitude, scrape_charity_data
 from time import sleep
@@ -163,13 +163,74 @@ def get_location_info(path):
     print('saved to', 'json_parts_located/' + os.path.basename(path))
 
 
+def get_failed_location(charity_data_path, failed_path):
+    '''
+    Gathers all charities without location info and returns them in a dictionary
+
+    Args:
+        data (dict) : dictionary of charity data
+        failed_path : path of text file containing id of charities that failed
+
+    Returns:
+        dict : dictionary of charity data without location info
+    '''
+    failed = dict()
+
+    with open(charity_data_path, encoding='ISO-8859-15') as charity_file:
+        data = json.load(charity_file)
+
+        with open(failed_path) as file:
+            for line in file:
+                line = line.strip()
+                if line in data:
+                    failed[line] = data[line]
+
+    return failed
+
+
 def main():
     '''
     for i in range(277, 864):
         get_location_info('json_parts/charity_data_{}.json'.format(i))
     '''
+    '''
     join_charities_json(['json_parts_located/charity_data_{}.json'.format(i) \
                          for i in range(864)], 'charity_data_located.json')
+    '''
+    '''
+    geolocator = GoogleV3()
+    num_located = 0
+    data = get_failed_location('charity_data_located_2.json', 'failed.txt')
+    failed = []
+
+    for reg_number in data:
+        success = 0
+        try:
+            address = '{} {} {} {} {}'.format(
+                data[reg_number]['address'],
+                data[reg_number]['city'],
+                data[reg_number]['province'],
+                data[reg_number]['country'],
+                data[reg_number]['postalCode']
+            )
+            coordinates = get_latitude_longitude(geolocator, address)
+            data[reg_number]['latitude'] = coordinates[0]
+            data[reg_number]['longitude'] = coordinates[1]
+            num_located += 1
+            print('located:', num_located)
+
+        except Exception as e:
+            failed.append(reg_number)
+            print(reg_number, ':', e)
+
+        sleep(10)
+
+    save_to_json(data, 'charity_data_failed_located_2.json')
+    '''
+
+    join_charities_json(['charity_data_located_2.json',
+                         'charity_data_failed_located_2.json'],
+                         'charity_data_located_3.json')
 
 
 if __name__ == '__main__':
