@@ -200,7 +200,7 @@ def main():
     '''
     geolocator = GoogleV3()
     num_located = 0
-    data = get_failed_location('charity_data_located_2.json', 'failed.txt')
+    data = get_failed_location('charity_data_located_5.json', 'failed.txt')
     failed = []
 
     for reg_number in data:
@@ -223,14 +223,17 @@ def main():
             failed.append(reg_number)
             print(reg_number, ':', e)
 
-        sleep(10)
+        sleep(60)
 
-    save_to_json(data, 'charity_data_failed_located_2.json')
+    save_to_json(data, 'charity_data_failed_located_5.json')
     '''
 
-    join_charities_json(['charity_data_located_2.json',
-                         'charity_data_failed_located_2.json'],
-                         'charity_data_located_3.json')
+    join_charities_json(['charity_data_located_5.json',
+                         'charity_data_failed_located_5.json'],
+                         'charity_data_located_6.json')
+
+
+
 
 
 if __name__ == '__main__':
