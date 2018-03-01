@@ -48,7 +48,7 @@ def scrape_cra_charities_thread(data, output, tid):
                 data[reg_number]['latitude'] = coordinates[0]
                 data[reg_number]['longitude'] = coordinates[1]
                 success = 1
-                
+
             except Exception as e:
                 print(tid, reg_number, ':', e)
 
@@ -57,13 +57,13 @@ def scrape_cra_charities_thread(data, output, tid):
         if success == 0:
             failed_location.append(reg_number)
             print(tid, 'coordinates failed:', reg_number)
-            
+
         else:
             num_located += 1
             print(tid, 'located:', num_located)
 
     print('Failed coordinates:', failed_location)
-        
+
     output.put(data)
 
 
@@ -93,7 +93,28 @@ def split_charities_json(data):
 
     if chunk:
         save_to_json(chunk, 'json_parts/charity_data_{}.json'.format(count))
-    
+
+
+def join_charities_json(src_paths, dst_path):
+    '''
+    Combines multiple json files containing charity data into one
+
+    Args:
+        src_paths ([str]) : list of paths of json files
+        dst_path (str) : output json file
+
+    Returns:
+        None
+    '''
+    data = dict()
+
+    for path in src_paths:
+        with open(path, encoding='ISO-8859-15') as file:
+            chunk = json.load(file)
+            data.update(chunk)
+
+    save_to_json(data, dst_path)
+
 
 def get_location_info(path):
     '''
@@ -143,8 +164,12 @@ def get_location_info(path):
 
 
 def main():
-    for i in range(29, 864):
-        get_location_info('json_parts/charity_data_{}.json'.format(i))            
+    '''
+    for i in range(277, 864):
+        get_location_info('json_parts/charity_data_{}.json'.format(i))
+    '''
+    join_charities_json(['json_parts_located/charity_data_{}.json'.format(i) \
+                         for i in range(864)], 'charity_data_located.json')
 
 
 if __name__ == '__main__':
