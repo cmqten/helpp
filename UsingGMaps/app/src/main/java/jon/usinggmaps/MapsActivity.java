@@ -48,14 +48,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
 
 
-
-
-
-
-
-
-
-
     }
     @Override
     public void onMapReady(final GoogleMap mMap) {
