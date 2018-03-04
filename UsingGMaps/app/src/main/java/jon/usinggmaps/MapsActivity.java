@@ -45,17 +45,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         Religion = typeIntent.getBooleanExtra("Religion",true);
         Welfare = typeIntent.getBooleanExtra("Welfare",true);
 
-
-
-
-
-
-
-
-
-
-
-
     }
     @Override
     public void onMapReady(final GoogleMap mMap) {
