@@ -2,7 +2,7 @@
 
 Objectives: Assign user stories to either individuals or pairs of people depending on the level of difficulty of each job. 
 
-Overview: This sprint we focused on
+Overview: This sprint we focused on inegration of all our different parts from sprint 1, along with changing our approach regarding data storage. We realized that it would be inefficient, to query the charitiy data from Firebase, so we decided to mirgrate the data into a MySQL database while still using Firebase to keep track of user profiles and user authentication. The goal of this sprint is to have the base functionality of the app completed this sprint.
 
 
 ## Participation:
