@@ -1,7 +1,4 @@
-
-
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_layout"
@@ -14,7 +11,6 @@
     sothree:umanoDragView="@+id/dragView"
     sothree:umanoOverlay="true"
     sothree:umanoScrollableView="@+id/list">
-
     <!-- MAIN CONTENT -->
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -35,7 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:background="?attr/colorBackgroundFloating"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton3"
@@ -53,7 +52,7 @@
             sothree:layout_constraintEnd_toEndOf="parent"
             sothree:layout_constraintStart_toStartOf="parent"
             sothree:layout_constraintTop_toTopOf="parent"
-            sothree:layout_constraintVertical_bias="0.094"
+            sothree:layout_constraintVertical_bias="0.097"
             sothree:srcCompat="@android:drawable/ic_menu_rotate" />
 
     </android.support.constraint.ConstraintLayout>
@@ -71,27 +70,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
+                android:gravity="center"
                 android:id="@+id/dragView"
+                android:background="@color/LimeGreen"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/name"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/Charities"
                     android:textSize="24sp"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:paddingLeft="10dp"/>
 
-                <Button
-                    android:id="@+id/follow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="14sp"
-                    android:gravity="center_vertical|right"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"/>
 
             </LinearLayout>
 

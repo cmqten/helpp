@@ -7,8 +7,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,7 +44,7 @@ import jon.usinggmaps.listeners.PlaceSelectListener;
 
 import static android.content.ContentValues.TAG;
 
-public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener,
+public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         ListingsAdapter.ItemClickListener, OnMapReadyCallback {
 
     private boolean Community;
