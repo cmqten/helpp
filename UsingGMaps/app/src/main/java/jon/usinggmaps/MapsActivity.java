@@ -38,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import jon.usinggmaps.listeners.MarkerClickerListener;
 import jon.usinggmaps.listeners.PlaceSelectListener;
@@ -95,7 +96,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         basicCharitiesView = findViewById(R.id.charitiesView);
         basicCharitiesView.setHasFixedSize(true);
 
-        basicCharitiesView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        basicCharitiesView.setLayoutManager(lm);
         basicCharitiesAdapter = new ListingsAdapter(this, basicCharities);
         basicCharitiesView.setAdapter(basicCharitiesAdapter);
 
@@ -193,7 +195,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 // Enter URL address where your php file resides
                 String x1;
 
-                url = new URL("http://72.139.72.18/mysql.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
+                url = new URL("http://72.139.72.18/getLongLat.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
@@ -248,6 +250,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 String a[] = result.split("~");
                 for(String i : a){
                     s = i.split("@");
+                    if(s.length<11){
+                        Log.d("MSD", Arrays.toString(s));
+                    }
                     temp = new LatLng(Float.parseFloat(s[9]),Float.parseFloat(s[10]));
                     String adr = s[2] + "\t" + s[3]  + ",\t" + s[4] +",\t"+ s[5] + ",\t" + s[6];
                     basicCharities.add(new BasicCharity(s[0],s[1],adr,s[7],s[8], temp, "N/A"));

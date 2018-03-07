@@ -50,6 +50,10 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     .transportMode(TransportMode.TRANSIT)
                     .unit(Unit.METRIC)
                     .execute(new DirectionListener(holder, basicCharities.get(position)));
+
+
+
+
         }
     }
 
