@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context="jon.usinggmaps.CharityTypeActivity">
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
-        android:layout_width="307dp"
-        android:layout_height="62dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="84dp"
-        android:gravity="center"
-        android:background="@drawable/roundbuttonwhite"
-        android:text="@string/Search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/nextButton"
         android:layout_width="347dp"
