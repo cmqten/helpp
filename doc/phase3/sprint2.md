@@ -39,6 +39,8 @@ Story:
 Get all the longitude and latitude values of each charity's location
 Tasks:
 
+Created a python script that would generate a json file containing the longitude and latitude of each charity
+
 Assigned to:
 Shuprio Shourov
 Story:
@@ -80,6 +82,8 @@ Carl Marquez, Maxim Chipeev
 Story:
 Use the search feature from the Canada revenue website as our search feature in the app
 Tasks:
+
+Created a python script that would generate a json file containing the longitude and latitude of each charity
 
 Assigned to:
 Edmond Umolu, Kenny Chen
