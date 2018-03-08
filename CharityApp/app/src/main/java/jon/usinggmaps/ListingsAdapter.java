@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
@@ -38,7 +39,8 @@ import static android.content.ContentValues.TAG;
 public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHolder> {
 
 
-    private String error;
+    private ViewGroup parent;
+    private String charityName;
 
     private ArrayList<BasicCharity> basicCharities;
     private LayoutInflater mInflater;
@@ -55,6 +57,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     // inflates the row layout from xml when needed
     @Override
     public ListingsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        this.parent = parent;
         return new ViewHolder(mInflater.inflate(R.layout.basic_charity_card, null,false));
     }
 
@@ -71,11 +74,11 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     .unit(Unit.METRIC)
                     .execute(new DirectionListener(holder, basicCharities.get(position)));
         }
-        if(basicCharities.get(position).getLogo() == null){
-            new stupidOse().execute(position);
-        }else{
-            holder.myImageView.setImageBitmap(basicCharities.get(position).getLogo());
-        }
+//        if(basicCharities.get(position).getLogo() == null){
+//            //new stupidOse().execute(position);
+//        }else{
+//            //holder.myImageView.setImageBitmap(basicCharities.get(position).getLogo());
+//        }
 
     }
 
@@ -104,14 +107,16 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         @Override
         public void onClick(View view) {
             if (mClickListener != null){
-                mClickListener.onItemClick(view, getAdapterPosition());
+                mClickListener.onItemClick(view, getAdapterPosition(),
+                        basicCharities.get(getAdapterPosition()).getId(),
+                        basicCharities.get(getAdapterPosition()).getName());
             }
         }
     }
 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, int position, String id, String name);
     }
 
     private class stupidOse extends AsyncTask<Integer, String, String> {
@@ -119,7 +124,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         protected String doInBackground(Integer... position) {
             try {
                 String encodedCharity = URLEncoder.encode(basicCharities.get(position[0]).getName(), "UTF-8");
-                String myUrl = "http://edmondumolu.me:3000/search/" + encodedCharity;
+                String myUrl = "http://6hax.ca:3000/search/" + encodedCharity;
                 HttpClient httpclient = new DefaultHttpClient();
 
                 HttpResponse response = httpclient.execute(new HttpGet(myUrl));

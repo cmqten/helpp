@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -170,9 +171,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemClick(View view, int position, String id, String name) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(basicCharities.get(position).getLatLng(), 18));
 
+        // call my activity
+        DescriptionsActivity.id = id;
+        DescriptionsActivity.name = name;
+        Intent startNewActivity = new Intent(this, DescriptionsActivity.class);
+        startActivity(startNewActivity);
     }
 
 
