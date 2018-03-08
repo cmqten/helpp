@@ -1,5 +1,7 @@
 package jon.usinggmaps;
 
+import android.graphics.Bitmap;
+
 import com.google.android.gms.maps.model.LatLng;
 
 public class BasicCharity {
@@ -10,6 +12,7 @@ public class BasicCharity {
     private String id;
     private int catagoryCode;
     private String travelTime;
+    private Bitmap Logo;
 
 
     public BasicCharity(String id, String name, String address,
@@ -23,6 +26,7 @@ public class BasicCharity {
         this.designationCode = designationCode;
         this.latLng = latLng;
         this.travelTime = travelTime;
+        this.Logo = null;
 
     }
     public String getName(){
@@ -37,6 +41,12 @@ public class BasicCharity {
         return this.travelTime;
     }
     public void setTravelTime(String travelTime){this.travelTime = travelTime;}
+    public Bitmap getLogo(){
+        return this.Logo;
+    }
+    public void setLogo(Bitmap Logo){
+        this.Logo = Logo;
+    }
 
 
 }

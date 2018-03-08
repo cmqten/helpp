@@ -68,7 +68,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private String swLng;
     private LatLngBounds bounds;
     private String s[];
-    private LatLng temp;
+
 
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
@@ -120,7 +120,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     @Override
     public void onMapReady(final GoogleMap Map) {
         mMap = Map;
-        mMap.setMinZoomPreference(13);
+        mMap.setMinZoomPreference(12);
         mMap.setOnMarkerClickListener(new MarkerClickerListener(this));
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -251,7 +251,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 for(String i : a){
                     s = i.split("@@@");
 
-                    temp = new LatLng(Float.parseFloat(s[9]),Float.parseFloat(s[10]));
+                    LatLng temp = new LatLng(Float.parseFloat(s[9]),Float.parseFloat(s[10]));
                     String adr = s[2] + "\t" + s[3]  + ",\t" + s[4] +",\t"+ s[5] + ",\t" + s[6];
                     basicCharities.add(new BasicCharity(s[0],s[1],adr,s[7],s[8], temp, "N/A"));
 
@@ -267,6 +267,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
         }
     }
+
 
 
 
