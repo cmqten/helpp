@@ -38,7 +38,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import jon.usinggmaps.listeners.MarkerClickerListener;
 import jon.usinggmaps.listeners.PlaceSelectListener;
@@ -121,6 +120,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     @Override
     public void onMapReady(final GoogleMap Map) {
         mMap = Map;
+        mMap.setMinZoomPreference(13);
         mMap.setOnMarkerClickListener(new MarkerClickerListener(this));
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -143,6 +143,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
                                 LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(LocationRequest.create());
                                 builder.setAlwaysShow(true);
+
 
                                 LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build())
                                         .setResultCallback(new ResultCallback<LocationSettingsResult>() {
@@ -185,7 +186,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         // This method does not interact with UI, You need to pass result to onPostExecute to display
@@ -249,10 +249,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
             if(!result.isEmpty()){
                 String a[] = result.split("~");
                 for(String i : a){
-                    s = i.split("@");
-                    if(s.length<11){
-                        Log.d("MSD", Arrays.toString(s));
-                    }
+                    s = i.split("@@@");
+
                     temp = new LatLng(Float.parseFloat(s[9]),Float.parseFloat(s[10]));
                     String adr = s[2] + "\t" + s[3]  + ",\t" + s[4] +",\t"+ s[5] + ",\t" + s[6];
                     basicCharities.add(new BasicCharity(s[0],s[1],adr,s[7],s[8], temp, "N/A"));

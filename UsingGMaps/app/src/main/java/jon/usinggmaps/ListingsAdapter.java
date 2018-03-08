@@ -21,6 +21,8 @@ import jon.usinggmaps.listeners.DirectionListener;
 public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHolder> {
 
 
+    private String error;
+
     private ArrayList<BasicCharity> basicCharities;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -43,6 +45,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.nameView.setText(basicCharities.get(position).getName());
         holder.travelView.setText("Transit Time: " + basicCharities.get(position).getTravelTime());
+
         if(location != null) {
             GoogleDirection.withServerKey("AIzaSyBaqjL31XMR4F6BW2KcCmRsBa4E_MkYA74")
                     .from(new LatLng(location.getLatitude(), location.getLongitude()))
@@ -50,9 +53,74 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     .transportMode(TransportMode.TRANSIT)
                     .unit(Unit.METRIC)
                     .execute(new DirectionListener(holder, basicCharities.get(position)));
-
-
-
+//
+//
+//
+//            String base = "http://edmondumolu.me:3000/search/";
+//            //String baseLocal = "http://142.1.2.13:3000/search/";
+//            String encodedCharity = "";
+//
+//            try {
+//                encodedCharity = URLEncoder.encode(basicCharities.get(position).getName(), "UTF-8");
+//            }catch(Exception e){
+//                error = e.toString();
+//                Log.v(TAG, e.toString());
+//            }
+//
+//            String myUrl = base + encodedCharity;
+//            try {
+//
+//                HttpClient httpclient = new DefaultHttpClient();
+//                HttpResponse response;
+//
+//                response = httpclient.execute(new HttpGet(myUrl));
+//                org.apache.http.StatusLine statusLine = response.getStatusLine();
+//                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+//                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+//                    response.getEntity().writeTo(out);
+//
+//                    String rawData = "";
+//                    rawData = out.toString();
+//
+//                    // get json out of summary
+//                    JSONObject data = new JSONObject(rawData);
+//
+//                    // get server error value
+//                    if (!data.getString("error").equals("")) {
+//                        error = "Server error, Could not get charity";
+//                        Log.v(TAG, error);
+//                    }
+//
+//                    String summary = data.getString("summary");
+//
+//
+//
+//                    //summary +="\nLogo Link:\n";
+//                    String logoLink = "https://logo.clearbit.com/" + data.getString("domain");
+//                    //summary += logoLink;
+//
+//                    // get img from link
+//                    URL url = new URL(logoLink);
+//                    Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                    holder.myImageView.setImageBitmap(bmp);
+//
+//                    out.close();
+//
+//                } else {
+//                    //Closes the connection.
+////                    summary = "Could not connect to server, Could not get charity";
+//                    Log.v(TAG, "Could not connect to server, Could not get charity");
+//                    response.getEntity().getContent().close();
+//                    throw new IOException(statusLine.getReasonPhrase());
+//                }
+//
+//            }catch (Exception e) {
+//                // TODO Auto-generated catch block
+////                summary = "An error occurred parsing, Could not get charity";
+//                Log.v(TAG, e.toString());
+//            }
+//
+//
 
         }
     }
