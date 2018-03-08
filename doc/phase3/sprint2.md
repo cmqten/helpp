@@ -20,32 +20,37 @@ Gary Liton
 Story:
 Be able to create/edit user profile data in the firebase json objects
 Tasks:
+-create a profile activity
 
 Assigned to:
 Gary Liton
 Story:
 Create user profile page
 Tasks:
+-watch a tutorial on facebook log in for android
 
 Assigned to:
 Edmond Umolu 
 Story:
 Integrate the social media, website, donation links, summary and logo scraping into 1 activity
 Tasks:
+-create description getter
+-merge description getter and links getter
+-merge everything to location services 
 
 Assigned to:
 Carl Marquez
 Story:
 Get all the longitude and latitude values of each charity's location
 Tasks:
-
-Created a python script that would generate a json file containing the longitude and latitude of each charity
+-Created a python script that would generate a json file containing the longitude and latitude of each charity
 
 Assigned to:
 Shuprio Shourov
 Story:
 Migrate charity data into sql database
 Tasks:
+-clean/convert the json data structure into table schema
 
 Assigned to:
 Jonathan Wang
@@ -76,6 +81,8 @@ Gary Liton
 Story:
 Login/Signup (Gmail, Facebook, or own authentication service) 
 Tasks:
+-create an activity for the sign up ad log in page
+-connect app to firebase
 
 Assigned to:
 Carl Marquez, Maxim Chipeev
@@ -90,3 +97,6 @@ Edmond Umolu, Kenny Chen
 Story:
 Create visuals for the statistics about the organization finances
 Tasks:
+-Create Revenue Pie chart
+-Create Expenses Pie Chart
+-Create Activities
