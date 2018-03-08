@@ -243,7 +243,7 @@ public class DescriptionsActivity extends AppCompatActivity {
             //String baseLocal = "http://142.1.2.13:3000/search/";
             String encodedCharity = "";
 
-            try {
+            t
 
                 // get the host of given link
 //                URI uri = new URI(charity);
