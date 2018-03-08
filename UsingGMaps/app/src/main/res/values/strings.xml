@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">UsingGMaps</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="Charities">Charities</string>
+    <string name="Events">Events</string>
+    <string name="Ads">Watch Ads</string>
+    <string name="Next">Next</string>
+    <string name="Check">✔</string>
+    <string name="Community">Community</string>
+    <string name="Education">Education</string>
+    <string name="Health">Health</string>
+    <string name="Religion">Religion</string>
+    <string name="Welfare">Welfare</string>
+    <string name="All">All</string>
+    <string name="Search">Search</string>
+    <string name="Clear">Clear</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_descriptions">DescriptionsActivity</string>
+
+
+</resources>
