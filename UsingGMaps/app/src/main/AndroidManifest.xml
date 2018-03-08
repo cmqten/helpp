@@ -48,6 +48,15 @@
         </activity>
         <activity android:name=".TypeActivity" />
         <activity android:name=".CharityTypeActivity" />
+        <activity
+            android:name=".DescriptionsActivity"
+            android:label="@string/title_activity_descriptions"
+            android:parentActivityName=".MapsActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="jon.usinggmaps.MapsActivity" />
+        </activity>
     </application>
 
 </manifest>
