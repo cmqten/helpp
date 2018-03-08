@@ -34,8 +34,8 @@ public class FinancialAsync extends Observable {
     HashMap<String, String> dataHash;
     ProgressDialog pdLoading;
     Observer observer;
-
-    public FinancialAsync(String charityID, ProgressDialog pdLoading, Observer observer){
+    String date;
+    public FinancialAsync(String charityID, ProgressDialog pdLoading, Observer observer, String date){
 
         // global variables
         //this.charityID = "101676864RR0001";
@@ -44,7 +44,7 @@ public class FinancialAsync extends Observable {
 
         // add observer
         this.observer = observer;
-
+        this.date=date;
         // call on an update
         //Log.d("MSG", dataHash.get("ongoingPrograms"));
 
@@ -75,8 +75,11 @@ public class FinancialAsync extends Observable {
             try {
                 // Enter URL address where your php file resides
 
-                url = new URL("http://72.139.72.18/getData.php/?id=" + charityID);
-                //url = new URL("http://72.139.72.18/getData.php/?id=" + charityID + "&date=" + date);
+
+                if(date==null){
+                    url = new URL("http://72.139.72.18/getData.php/?id=" + charityID);
+                }else{url = new URL("http://72.139.72.18/getData.php/?id=" + charityID+ "&date=" + date);}
+                //
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
@@ -142,8 +145,10 @@ public class FinancialAsync extends Observable {
 
             // update observer
             notifyObservers();
+            if (pdLoading != null && pdLoading.isShowing()) {
+                pdLoading.dismiss();
+            }
 
-            pdLoading.dismiss();
         }
     }
 

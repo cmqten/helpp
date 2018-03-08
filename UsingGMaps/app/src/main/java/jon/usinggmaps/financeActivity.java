@@ -37,26 +37,32 @@ public class financeActivity extends AppCompatActivity implements Observer {
     private String year;
     HashMap<String, String> myMap;
     Context activity;
-    PieChart myChart;
+    ArrayList<String> dates;
+    Observer obs;
     FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finance);
+        dates = new ArrayList<>();
          year = "2018";
+         obs = this;
         ProgressDialog myDiag = new ProgressDialog(this);
-        FinancialAsync myAsync = new FinancialAsync("101676864RR0001",myDiag,this);
+        FinancialAsync myAsync = new FinancialAsync("101676864RR0001",myDiag,this,null);
         findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(year!="2018"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(0));}
                 year = "2018";
             }
         });
 
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                if(year!="2017"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(1));}
                 year = "2017";
             }
         });
@@ -64,6 +70,7 @@ public class financeActivity extends AppCompatActivity implements Observer {
         findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(year!="2016"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(2));}
                 year = "2016";
             }
         });
@@ -71,6 +78,7 @@ public class financeActivity extends AppCompatActivity implements Observer {
         findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(year!="2015"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(3));}
                 year = "2015";
 
             }
@@ -78,6 +86,7 @@ public class financeActivity extends AppCompatActivity implements Observer {
         findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(year!="2014"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(4));}
                 year = "2014";
             }
         });
@@ -224,6 +233,13 @@ public class financeActivity extends AppCompatActivity implements Observer {
     public void update(Observable observable, Object o) {
         myMap = (HashMap<String,String>)o;
 
+            String mydates = myMap.get("financialDates");
+            mydates = mydates.substring(1,mydates.length()-1);
+            String[] dates = mydates.split(", ");
+            for(int i = 0 ; i< dates.length;i++){
+                this.dates.add(dates[i].substring(1,dates[i].length()-1));
+            }
+        
     }
 }
 
