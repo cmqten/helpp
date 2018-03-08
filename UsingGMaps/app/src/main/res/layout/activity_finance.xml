@@ -1,11 +1,140 @@
-<LinearLayout android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".financeActivity">
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/chart"
+    <HorizontalScrollView
+        android:id="@+id/Horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+
+        >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:background="#9AAA82"
+                android:text="2018"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+            <View android:layout_height="fill_parent"
+                android:layout_width="2px"
+                android:background="#000000"/>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:background="#9AAA82"
+                android:text="2017"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+            <View android:layout_height="fill_parent"
+                android:layout_width="2px"
+                android:background="#000000"/>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:background="#9AAA82"
+                android:text="2016"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+            <View android:layout_height="fill_parent"
+                android:layout_width="2px"
+                android:background="#000000"/>
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:background="#9AAA82"
+                android:text="2015"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+            <View android:layout_height="fill_parent"
+                android:layout_width="2px"
+                android:background="#000000"/>
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:background="#9AAA82"
+                android:text="2014"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/Horizontal"
+        >
 
+        <TableRow
+            android:id="@+id/TableRow01"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
-</LinearLayout>
+            <Button
+                android:id="@+id/activities"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_weight="1"
+                android:background="#007399"
+                android:text="Activities" />
+
+            <Button
+                android:id="@+id/revenue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_weight="1"
+                android:background="#ffff4d"
+                android:text="Revenue" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <Button
+                android:id="@+id/expenses"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ff3300"
+                android:text="Expenses" />
+
+            <Button
+                android:id="@+id/compensation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#9966ff"
+                android:text="Compensation" />
+        </TableRow>
+    </TableLayout>
+
+</RelativeLayout>

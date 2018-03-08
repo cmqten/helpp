@@ -1,133 +1,229 @@
 package jon.usinggmaps;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class financeActivity extends AppCompatActivity {
-    static class Points{
-        float y;
-        BarEntry myEntry;
-        public Points(float[] y, int count){
-            float j=0f;
-            for(int i =0; i<y.length;i++){
-                j+=y[i];
-            }
-            this.y = j;
-            myEntry = new BarEntry(count,this.y,y);
-        }
-
-        public float getY(){
-            return this.y;
-        }
-    }
+public class financeActivity extends AppCompatActivity implements Observer {
+    private String year;
+    HashMap<String, String> myMap;
+    Context activity;
+    PieChart myChart;
+    FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finance);
-
-        BarChart myBarChart = (findViewById(R.id.chart));
-        ArrayList<financeActivity.Points> myData = new ArrayList<financeActivity.Points>();
-        ArrayList<financeActivity.Points> myData2 = new ArrayList<financeActivity.Points>();
-        ArrayList<financeActivity.Points> myData3 = new ArrayList<financeActivity.Points>();
-
-        float year1R[] = {12f,15f,10f,23f,12f};
-        float year2R[] = {10f,11f,6f,19f,16f};
-        float year3R[] = {12f,14f,7f,19f,17f};
-
-        float year1E[] = {17f,12f,11f,12f,12f};
-        float year2E[] = {12f,15f,10f,23f,12f};
-        float year3E[] = {16f,18f,17f,24f,9f};
-
-        myData.add(new financeActivity.Points(year1R,0));
-        myData.add(new financeActivity.Points(year2R,1));
-        myData.add(new financeActivity.Points(year3R,2));
-
-        myData2.add(new financeActivity.Points(year1E,0));
-        myData2.add(new financeActivity.Points(year2E,1));
-        myData2.add(new financeActivity.Points(year3E,2));
-
-
-
-        List<BarEntry> revenue = new ArrayList<>();
-        List<BarEntry> expenses = new ArrayList<>();
-
-
-        for( int i =0; i<myData.size();i++) {
-            revenue.add(myData.get(i).myEntry);
-            expenses.add(myData2.get(i).myEntry);
-
-        }
-        BarDataSet set1 = new BarDataSet(revenue, "Revenue");
-        BarDataSet set2 = new BarDataSet(expenses, "Expenses");
-        set1.setColor(Color.parseColor("#f45642"));
-        set2.setColor(Color.parseColor("#fcce6c"));
-        float groupSpace = 0.06f;
-        float barSpace = 0.02f; // x2 dataset
-        float barWidth = 0.45f; // x2 dataset
-
-        BarData data = new BarData(set1, set2);
-        data.setBarWidth(barWidth); // set the width of each bar
-        myBarChart.setData(data);
-        myBarChart.groupBars(2015f, groupSpace, barSpace); // perform the "explicit" grouping
-        XAxis xAxis = myBarChart.getXAxis();
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setGranularity(1f);
-        xAxis.setAxisMinimum(2015f);
-        xAxis.setAxisMaximum(2018f);
-        xAxis.setLabelCount(3);
-        final ArrayList<String> xLabel = new ArrayList<>();
-
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
+         year = "2018";
+        ProgressDialog myDiag = new ProgressDialog(this);
+        FinancialAsync myAsync = new FinancialAsync("101676864RR0001",myDiag,this);
+        findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                DecimalFormat mFormat = new DecimalFormat("####");
-                return mFormat.format(value);
+            public void onClick(View view) {
+                year = "2018";
             }
         });
 
-        myBarChart.setDoubleTapToZoomEnabled(false);
-        myBarChart.invalidate();
-
-
-        myBarChart.setOnChartValueSelectedListener( new OnChartValueSelectedListener() {
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onValueSelected(Entry e,Highlight h) {
-                //fire up event
-
+            public void onClick(View view) {
+                year = "2017";
             }
+        });
 
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected() {
+            public void onClick(View view) {
+                year = "2016";
+            }
+        });
+
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                year = "2015";
 
             }
         });
-        //----------------------------------------------------------------
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                year = "2014";
+            }
+        });
+        findViewById(R.id.activities).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View vi = inflater.inflate(R.layout.pie_chart,null);
+                //TextView myText = (TextView)vi.findViewById(R.id.myText);
+                //myText.setText(myMap.get("ongoingPrograms"));
+                AlertDialog ad = new AlertDialog.Builder(financeActivity.this).setMessage("Ongoing Programs: "+myMap.get("ongoingPrograms")).create();
+                //.setView(myPie)
+                ad.show();
+                Display display =((WindowManager)getSystemService(financeActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
+                int width = display.getWidth();
+                int height=display.getHeight();
+                ad.getWindow().setLayout(width*9/10,height/2);
 
+            }
+        });
+        findViewById(R.id.expenses).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //this is expenses
+
+                LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View vi = inflater.inflate(R.layout.pie_chart,null);
+                PieChart myPie = (PieChart)vi.findViewById(R.id.myPie);
+                List<PieEntry> entries = new ArrayList<>();
+                Float expTot = Float.parseFloat(myMap.get("expenses_total"));
+                Float expMngmntAd = Float.parseFloat(myMap.get("expenses_management_and_admin"));
+
+                Float expFnd = Float.parseFloat(myMap.get("expenses_fundraising"));
+
+                Float expOthr = Float.parseFloat(myMap.get("expenses_other"));
+
+                Float expChrtPrg = Float.parseFloat(myMap.get("expenses_charitable_program"));
+
+                entries.add(new PieEntry(expMngmntAd / expTot, "Management and Admin"));
+                entries.add(new PieEntry(expFnd / expTot, "Fundraising"));
+                entries.add(new PieEntry(expOthr / expTot, "Other"));
+                entries.add(new PieEntry(expChrtPrg / expTot, "Charitable Programs"));
+                PieDataSet set = new PieDataSet(entries, "");
+                int mycolors[] = {Color.parseColor("#68E861"),Color.parseColor("#61ABE8"),Color.parseColor("#E261E8")
+                ,Color.parseColor("#E89F61")};
+                set.setColors(mycolors);
+                set.setDrawValues(false);
+                PieData data = new PieData(set);
+                myPie.setLayoutParams(new LinearLayout.LayoutParams(500,600));
+                myPie.setData(data);
+                myPie.setExtraBottomOffset(40f);
+                myPie.setDrawEntryLabels(false);
+                Description description = new Description();
+                description.setText("Expenses for year "+ year);
+                myPie.setDescription(description);
+                Legend legend = myPie.getLegend();
+                //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+                legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+                //legend.setForm(Legend.LegendForm.CIRCLE);
+                legend.setWordWrapEnabled(true);
+                legend.setDrawInside(false);
+                legend.getCalculatedLineSizes();
+
+                //myPie.setExtraTopOffset(10f);
+                myPie.invalidate();
+
+                //myPie.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                AlertDialog ad = new AlertDialog.Builder(financeActivity.this).setView(vi).create();
+                        //.setView(myPie)
+
+                ad.show();
+                Display display =((WindowManager)getSystemService(financeActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
+                int width = display.getWidth();
+                int height=display.getHeight();
+                ad.getWindow().setLayout(width*9/10,height/2);
+
+            }
+        });
+        findViewById(R.id.compensation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //this is compensation
+            }
+        });
+        findViewById(R.id.revenue).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Goes here");
+                LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View vi = inflater.inflate(R.layout.pie_chart,null);
+                PieChart myPie = (PieChart)vi.findViewById(R.id.myPie);
+                List<PieEntry> entries = new ArrayList<>();
+                Float revTot = Float.parseFloat(myMap.get("revenue_total"));
+                System.out.println(revTot);
+                Float revGvnmtFnd = Float.parseFloat(myMap.get("revenue_government_funding"));
+                Float revNonRecDon = Float.parseFloat(myMap.get("revenue_non_receipted_donations"));
+                Float revRecDon = Float.parseFloat(myMap.get("revenue_receipted_donations"));
+                Float revOther = Float.parseFloat(myMap.get("revenue_other"));
+                entries.add(new PieEntry(revGvnmtFnd / revTot, "Government Funding"));
+                entries.add(new PieEntry(revNonRecDon / revTot, "Non Receipted Donations"));
+                entries.add(new PieEntry(revRecDon / revTot, "Receipted Donations"));
+                entries.add(new PieEntry(revOther / revTot, "Other"));
+                PieDataSet set = new PieDataSet(entries, "");
+                int mycolors[] = {Color.parseColor("#68E861"),Color.parseColor("#61ABE8"),Color.parseColor("#E261E8")
+                        ,Color.parseColor("#E89F61")};
+                set.setColors(mycolors);
+                set.setDrawValues(false);
+
+                PieData data = new PieData(set);
+                myPie.setLayoutParams(new LinearLayout.LayoutParams(500,600));
+                myPie.setData(data);
+                myPie.setExtraBottomOffset(40f);
+                myPie.setDrawEntryLabels(false);
+                Description description = new Description();
+                description.setText("Revenues for year "+ year);
+                myPie.setDescription(description);
+                Legend legend = myPie.getLegend();
+                //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+                legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+                //legend.setForm(Legend.LegendForm.CIRCLE);
+                legend.setWordWrapEnabled(true);
+                legend.setDrawInside(false);
+                legend.getCalculatedLineSizes();
+
+                //myPie.setExtraTopOffset(10f);
+                myPie.invalidate();
+
+                //myPie.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                AlertDialog ad = new AlertDialog.Builder(financeActivity.this).setView(vi).create();
+                //.setView(myPie)
+
+                ad.show();
+                Display display =((WindowManager)getSystemService(financeActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
+                int width = display.getWidth();
+                int height=display.getHeight();
+                ad.getWindow().setLayout(width*9/10,height/2);
+            }
+        });
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        myMap = (HashMap<String,String>)o;
+
+    }
 }
 
