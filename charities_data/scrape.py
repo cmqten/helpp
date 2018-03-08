@@ -241,7 +241,7 @@ def scrape_charity_data(reg_number, date=None):
     user_agent_random = generate_user_agent(device_type='desktop')
 
     cra_url = CRA_SEARCH_LINK.format(match.group(1), match.group(2)) \
-              if date is None else \
+              if not date else \
               CRA_SEARCH_LINK_YEAR.format(match.group(1), match.group(2),
                                           date)
     
