@@ -80,7 +80,6 @@
             android:background="@drawable/roundbuttonbeige"
             android:onClick="onAll"
             android:text="@string/All" />
-
     </GridLayout>
 
 </android.support.constraint.ConstraintLayout>

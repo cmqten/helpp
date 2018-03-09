@@ -39,7 +39,6 @@ public class CharityTypeActivity extends AppCompatActivity {
         WelfareButton = findViewById(R.id.Welfare);
         AllButton  = findViewById(R.id.All);
         nextButton.setVisibility(View.INVISIBLE);
-
         Community = false;
         Education = false;
         Health = false;

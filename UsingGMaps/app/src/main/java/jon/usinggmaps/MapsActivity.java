@@ -96,6 +96,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         basicCharitiesView = findViewById(R.id.charitiesView);
         basicCharitiesView.setHasFixedSize(true);
 
+
         LinearLayoutManager lm = new LinearLayoutManager(this);
         basicCharitiesView.setLayoutManager(lm);
         basicCharitiesAdapter = new ListingsAdapter(this, basicCharities);
@@ -117,6 +118,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         new AsyncRetrieve().execute();
     }
 
+
+
+    }
 
     @Override
     public void onMapReady(final GoogleMap Map) {
