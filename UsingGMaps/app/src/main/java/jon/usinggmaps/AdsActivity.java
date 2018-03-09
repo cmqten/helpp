@@ -30,7 +30,7 @@ public class AdsActivity extends AppCompatActivity implements RewardedVideoAdLis
     }
 
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-2650389847656790~2722040847",
+        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
                 new AdRequest.Builder()
                         .addTestDevice("1D8CDD67796A84D4192A2C11A2AD9E11")  // An example device ID
                         .build());

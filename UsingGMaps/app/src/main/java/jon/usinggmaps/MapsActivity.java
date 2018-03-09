@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -125,7 +124,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     @Override
     public void onMapReady(final GoogleMap Map) {
         mMap = Map;
-        mMap.setMinZoomPreference(12);
+        mMap.setMinZoomPreference(15);
         mMap.setOnMarkerClickListener(new MarkerClickerListener(this));
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
