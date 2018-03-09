@@ -14,7 +14,7 @@ Shuprio Shourov
 Gary Liton
 Maxim Chipeev
 
-##Sprint Backlog
+## Sprint Backlog:
 Assigned to:
 Gary Liton
 Story:
@@ -75,6 +75,8 @@ Shuprio Shourov
 Story:
 Visualize organization activities data 
 Tasks:
+-create fragmenet to contain organization activities
+-create async task to scrap for the data
 
 Assigned to:
 Gary Liton
@@ -89,8 +91,7 @@ Carl Marquez, Maxim Chipeev
 Story:
 Use the search feature from the Canada revenue website as our search feature in the app
 Tasks:
-
-Created a python script that would generate a json file containing the longitude and latitude of each charity
+-Created a python script that would generate a json file containing the longitude and latitude of each charity
 
 Assigned to:
 Edmond Umolu, Kenny Chen
