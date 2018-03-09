@@ -58,12 +58,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="jon.usinggmaps.MapsActivity" />
         </activity>
-        <activity android:name=".AdsActivity"></activity>
+        <activity android:name=".AdsActivity">
 
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CharityTypeActivity" />
+        </activity>
+        <activity
+            android:name=".financeActivity"
+            android:label="@string/title_activity_finance"
+
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DescriptionActivity" />
         </activity>
     </application>
 

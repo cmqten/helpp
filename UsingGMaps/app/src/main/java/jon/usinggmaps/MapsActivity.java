@@ -120,7 +120,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
 
 
-    }
+
 
     @Override
     public void onMapReady(final GoogleMap Map) {
