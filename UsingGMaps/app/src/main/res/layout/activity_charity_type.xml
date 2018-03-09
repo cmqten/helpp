@@ -95,13 +95,6 @@
             android:background="@drawable/roundbuttonbeige"
             android:onClick="onAll"
             android:text="@string/All" />
-
-        <Button
-            android:id="@+id/finance"
-            android:layout_width="175dp"
-            android:layout_height="91dp"
-            android:background="@drawable/roundbuttonbeige"
-            android:text="@string/Finance" />
     </GridLayout>
 
 </android.support.constraint.ConstraintLayout>

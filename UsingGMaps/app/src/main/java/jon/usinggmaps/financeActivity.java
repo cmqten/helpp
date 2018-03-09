@@ -39,7 +39,6 @@ public class financeActivity extends AppCompatActivity implements Observer {
     Context activity;
     ArrayList<String> dates;
     Observer obs;
-    FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
@@ -93,12 +92,7 @@ public class financeActivity extends AppCompatActivity implements Observer {
         findViewById(R.id.activities).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View vi = inflater.inflate(R.layout.pie_chart,null);
-                //TextView myText = (TextView)vi.findViewById(R.id.myText);
-                //myText.setText(myMap.get("ongoingPrograms"));
                 AlertDialog ad = new AlertDialog.Builder(financeActivity.this).setMessage("Ongoing Programs: "+myMap.get("ongoingPrograms")).create();
-                //.setView(myPie)
                 ad.show();
                 Display display =((WindowManager)getSystemService(financeActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
                 int width = display.getWidth();
@@ -111,58 +105,10 @@ public class financeActivity extends AppCompatActivity implements Observer {
             @Override
             public void onClick(View view) {
                 //this is expenses
-
-                LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View vi = inflater.inflate(R.layout.pie_chart,null);
-                PieChart myPie = (PieChart)vi.findViewById(R.id.myPie);
-                List<PieEntry> entries = new ArrayList<>();
-                Float expTot = Float.parseFloat(myMap.get("expenses_total"));
-                Float expMngmntAd = Float.parseFloat(myMap.get("expenses_management_and_admin"));
-
-                Float expFnd = Float.parseFloat(myMap.get("expenses_fundraising"));
-
-                Float expOthr = Float.parseFloat(myMap.get("expenses_other"));
-
-                Float expChrtPrg = Float.parseFloat(myMap.get("expenses_charitable_program"));
-
-                entries.add(new PieEntry(expMngmntAd / expTot, "Management and Admin"));
-                entries.add(new PieEntry(expFnd / expTot, "Fundraising"));
-                entries.add(new PieEntry(expOthr / expTot, "Other"));
-                entries.add(new PieEntry(expChrtPrg / expTot, "Charitable Programs"));
-                PieDataSet set = new PieDataSet(entries, "");
-                int mycolors[] = {Color.parseColor("#68E861"),Color.parseColor("#61ABE8"),Color.parseColor("#E261E8")
-                ,Color.parseColor("#E89F61")};
-                set.setColors(mycolors);
-                set.setDrawValues(false);
-                PieData data = new PieData(set);
-                myPie.setLayoutParams(new LinearLayout.LayoutParams(500,600));
-                myPie.setData(data);
-                myPie.setExtraBottomOffset(40f);
-                myPie.setDrawEntryLabels(false);
-                Description description = new Description();
-                description.setText("Expenses for year "+ year);
-                myPie.setDescription(description);
-                Legend legend = myPie.getLegend();
-                //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-                //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-                legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-                //legend.setForm(Legend.LegendForm.CIRCLE);
-                legend.setWordWrapEnabled(true);
-                legend.setDrawInside(false);
-                legend.getCalculatedLineSizes();
-
-                //myPie.setExtraTopOffset(10f);
-                myPie.invalidate();
-
-                //myPie.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                AlertDialog ad = new AlertDialog.Builder(financeActivity.this).setView(vi).create();
-                        //.setView(myPie)
-
-                ad.show();
-                Display display =((WindowManager)getSystemService(financeActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
-                int width = display.getWidth();
-                int height=display.getHeight();
-                ad.getWindow().setLayout(width*9/10,height/2);
+                String[] portions = {"expenses_total","expenses_management_and_admin",
+                        "expenses_fundraising","expenses_other","expenses_charitable_program"};
+                String[] labels = {"Management and Admin","Fundraising","Other","Charitable Programs","Expenses for year "};
+                DrawPie(portions,labels);
 
             }
         });
@@ -175,71 +121,77 @@ public class financeActivity extends AppCompatActivity implements Observer {
         findViewById(R.id.revenue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Goes here");
-                LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View vi = inflater.inflate(R.layout.pie_chart,null);
-                PieChart myPie = (PieChart)vi.findViewById(R.id.myPie);
-                List<PieEntry> entries = new ArrayList<>();
-                Float revTot = Float.parseFloat(myMap.get("revenue_total"));
-                System.out.println(revTot);
-                Float revGvnmtFnd = Float.parseFloat(myMap.get("revenue_government_funding"));
-                Float revNonRecDon = Float.parseFloat(myMap.get("revenue_non_receipted_donations"));
-                Float revRecDon = Float.parseFloat(myMap.get("revenue_receipted_donations"));
-                Float revOther = Float.parseFloat(myMap.get("revenue_other"));
-                entries.add(new PieEntry(revGvnmtFnd / revTot, "Government Funding"));
-                entries.add(new PieEntry(revNonRecDon / revTot, "Non Receipted Donations"));
-                entries.add(new PieEntry(revRecDon / revTot, "Receipted Donations"));
-                entries.add(new PieEntry(revOther / revTot, "Other"));
-                PieDataSet set = new PieDataSet(entries, "");
-                int mycolors[] = {Color.parseColor("#68E861"),Color.parseColor("#61ABE8"),Color.parseColor("#E261E8")
-                        ,Color.parseColor("#E89F61")};
-                set.setColors(mycolors);
-                set.setDrawValues(false);
-
-                PieData data = new PieData(set);
-                myPie.setLayoutParams(new LinearLayout.LayoutParams(500,600));
-                myPie.setData(data);
-                myPie.setExtraBottomOffset(40f);
-                myPie.setDrawEntryLabels(false);
-                Description description = new Description();
-                description.setText("Revenues for year "+ year);
-                myPie.setDescription(description);
-                Legend legend = myPie.getLegend();
-                //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-                //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-                legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-                //legend.setForm(Legend.LegendForm.CIRCLE);
-                legend.setWordWrapEnabled(true);
-                legend.setDrawInside(false);
-                legend.getCalculatedLineSizes();
-
-                //myPie.setExtraTopOffset(10f);
-                myPie.invalidate();
-
-                //myPie.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                AlertDialog ad = new AlertDialog.Builder(financeActivity.this).setView(vi).create();
-                //.setView(myPie)
-
-                ad.show();
-                Display display =((WindowManager)getSystemService(financeActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
-                int width = display.getWidth();
-                int height=display.getHeight();
-                ad.getWindow().setLayout(width*9/10,height/2);
+                String[] portions= {"revenue_total","revenue_government_funding",
+                        "revenue_non_receipted_donations","revenue_receipted_donations"
+                ,"revenue_other"};
+                String [] labels = {"Government Funding","Non Receipted Donations",
+                        "Receipted Donations","Other","Revenues for year "};
+               DrawPie(portions,labels);
             }
         });
     }
-
+    public void DrawPie(String[] portions, String[] labels){
+        /*Inflates the layout so we can use the PieChart*/
+        LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View vi = inflater.inflate(R.layout.pie_chart,null);
+        PieChart myPie = (PieChart)vi.findViewById(R.id.myPie);
+        /*------------------------------------------------------------*/
+        /*Generates the portions of the pie chart and sets the data*/
+        List<PieEntry> entries = new ArrayList<>();
+        Float revTot = Float.parseFloat(myMap.get(portions[0]));
+        System.out.println(revTot);
+        Float revGvnmtFnd = Float.parseFloat(myMap.get(portions[1]));
+        Float revNonRecDon = Float.parseFloat(myMap.get(portions[2]));
+        Float revRecDon = Float.parseFloat(myMap.get(portions[3]));
+        Float revOther = Float.parseFloat(myMap.get(portions[4]));
+        entries.add(new PieEntry(revGvnmtFnd / revTot,labels[0]));
+        entries.add(new PieEntry(revNonRecDon / revTot,labels[1]));
+        entries.add(new PieEntry(revRecDon / revTot,labels[2]));
+        entries.add(new PieEntry(revOther / revTot, labels[3]));
+        PieDataSet set = new PieDataSet(entries, "");
+        int mycolors[] = {Color.parseColor("#68E861"),Color.parseColor("#61ABE8"),Color.parseColor("#E261E8")
+                ,Color.parseColor("#E89F61")};
+        set.setColors(mycolors);
+        set.setDrawValues(false);
+        PieData data = new PieData(set);
+        /*-------------------------------------------------------------*/
+        /*Sets up graph options---------------------------------------*/
+        myPie.setLayoutParams(new LinearLayout.LayoutParams(500,600));
+        myPie.setData(data);
+        myPie.setExtraBottomOffset(40f);
+        myPie.setDrawEntryLabels(false);
+        Description description = new Description();
+        description.setText(labels[4]+ year);
+        myPie.setDescription(description);
+        /*----------------------------------------------------------------*/
+        /*Sets up the legend------------------------------------*/
+        Legend legend = myPie.getLegend();
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setWordWrapEnabled(true);
+        legend.setDrawInside(false);
+        legend.getCalculatedLineSizes();
+        /*-----------------------------------------------------------*/
+        //Updates the graph
+        myPie.invalidate();
+        /*Puts the graph into an alert dialog---------------------------*/
+        AlertDialog ad = new AlertDialog.Builder(financeActivity.this).setView(vi).create();
+        ad.show();
+        Display display =((WindowManager)getSystemService(financeActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
+        int width = display.getWidth();
+        int height=display.getHeight();
+        ad.getWindow().setLayout(width*9/10,height/2);
+        /*-------------------------------------------------------------*/
+    }
     @Override
     public void update(Observable observable, Object o) {
         myMap = (HashMap<String,String>)o;
-
             String mydates = myMap.get("financialDates");
             mydates = mydates.substring(1,mydates.length()-1);
             String[] dates = mydates.split(", ");
             for(int i = 0 ; i< dates.length;i++){
                 this.dates.add(dates[i].substring(1,dates[i].length()-1));
             }
-        
+
     }
 }
 

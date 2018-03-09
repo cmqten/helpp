@@ -39,14 +39,6 @@ public class CharityTypeActivity extends AppCompatActivity {
         WelfareButton = findViewById(R.id.Welfare);
         AllButton  = findViewById(R.id.All);
         nextButton.setVisibility(View.INVISIBLE);
-        Button financeBut = findViewById(R.id.finance);
-        financeBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent= new Intent(getApplicationContext(), financeActivity.class);
-                startActivity(myIntent);
-            }
-        });
         Community = false;
         Education = false;
         Health = false;
