@@ -91,7 +91,10 @@
                         android:id="@+id/donobutton"
                         android:onClick="gotoDonoBtn"
                         android:layout_above="@+id/twbutton" />
-
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/financeInfo"/>
                 </LinearLayout>
 
                 <TextView

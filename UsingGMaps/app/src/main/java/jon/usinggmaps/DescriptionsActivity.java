@@ -103,6 +103,13 @@ public class DescriptionsActivity extends AppCompatActivity {
 
         // set the charity that my function needs to get
         this.charity = name;
+        findViewById(R.id.financeInfo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DescriptionsActivity.this,financeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
