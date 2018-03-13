@@ -38,6 +38,8 @@ dependencies {
 
     compile 'com.akexorcist:googledirectionlibrary:1.0.4'
 
+    compile 'com.github.clans:fab:1.6.4'
+    compile 'com.google.android.gms:play-services-ads:11.8.0'
 
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.google.android.gms:play-services-maps:11.8.0'
@@ -53,7 +55,6 @@ dependencies {
 
     compile 'com.android.support:design:26.1.0'
     compile 'com.sothree.slidinguppanel:library:3.4.0'
-
 
 //    // ose's imports
 //    compile 'org.jsoup:jsoup:1.11.2'

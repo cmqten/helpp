@@ -1,25 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jon.usinggmaps.DescriptionsActivity">
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/background_light"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/main.appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main.collapsing"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="270dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
+            >
 
+            <ImageView
+
+                android:contentDescription="@string/Logo"
+                android:id="@+id/logoImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"
+                />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                />
+        </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_descriptions" />
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/CharityName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="8dp"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:lineSpacingExtra="8dp"
+                android:padding="@dimen/activity_horizontal_margin" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+        <com.github.clans.fab.FloatingActionMenu
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:context="com.teamproblemsolver.fabsubmenu.MainActivity"
+            app:layout_anchor="@id/main.collapsing"
+            android:layout_gravity="bottom"
+            app:layout_anchorGravity="bottom|end"
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            fab:menu_fab_size="normal"
+            fab:menu_colorNormal="#DA4336"
+            fab:menu_colorRipple="#99FFFFFF"
+            fab:menu_animationDelayPerItem="50"
+            fab:menu_icon="@drawable/link"
+            fab:menu_openDirection="down"
+            fab:menu_backgroundColor="@android:color/transparent">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/twbutton"
+                fab:fab_colorNormal="@color/LightBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/twitter_logo"
+                android:onClick="gotoTwBtn"
+                android:visibility="gone"
+                fab:fab_size="mini"
+                fab:fab_label="Twitter" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fbbutton"
+                fab:fab_colorNormal="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/facebook"
+                android:visibility="gone"
+                android:onClick="gotoFbBtn"
+                fab:fab_size="mini"
+                fab:fab_label="Facebook" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/webbutton"
+                fab:fab_colorNormal="@color/Purple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/website"
+                android:visibility="gone"
+                android:onClick="gotoWebBtn"
+                fab:fab_size="mini"
+                fab:fab_label="Website" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/adsButton"
+                fab:fab_colorNormal="@color/Salmon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ads"
+                android:onClick="onWatchAds"
+                fab:fab_size="mini"
+                fab:fab_label="Watch Ad" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/donobutton"
+                fab:fab_colorNormal="@color/LimeGreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/donate"
+                android:visibility="gone"
+                android:onClick="gotoDonoBtn"
+                fab:fab_label="Donate"
+                fab:fab_size="mini" />
+
+        </com.github.clans.fab.FloatingActionMenu>
 </android.support.design.widget.CoordinatorLayout>

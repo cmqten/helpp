@@ -60,11 +60,6 @@ public class TypeActivity extends AppCompatActivity {
 
 
 
-
-    public void onWatchAds(View view){
-
-    }
-
     private void turnOnNext(){
         if(charitiesSelected || eventsSelected){
             nextButton.setVisibility(View.VISIBLE);

@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -48,14 +47,6 @@ import static android.content.ContentValues.TAG;
 public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         ListingsAdapter.ItemClickListener, OnMapReadyCallback {
 
-    private boolean Community;
-    private boolean Education;
-    private boolean Health;
-    private boolean Religion;
-    private boolean Welfare;
-    private boolean charitiesSelected;
-    private boolean eventsSelected;
-    private Intent typeIntent;
 
     private ArrayList<BasicCharity> basicCharities;
     private ListingsAdapter basicCharitiesAdapter;
@@ -81,16 +72,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        typeIntent = getIntent();
-        charitiesSelected = typeIntent.getBooleanExtra("charitiesSelected",true);
-        eventsSelected = typeIntent.getBooleanExtra("eventsSelected",true);
-        Community = typeIntent.getBooleanExtra("Community",true);
-        Education = typeIntent.getBooleanExtra("Education",true);
-        Health = typeIntent.getBooleanExtra("Health",true);
-        Religion = typeIntent.getBooleanExtra("Religion",true);
-        Welfare = typeIntent.getBooleanExtra("Welfare",true);
-
-
 
         basicCharities = new ArrayList<BasicCharity>();
         basicCharitiesView = findViewById(R.id.charitiesView);
@@ -105,8 +86,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
     }
 
-    public void redoSearch(View view){
-        view.animate().rotationBy(360f);
+    private void searchNearby(){
+
         bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
         neLat = Double.toString(bounds.northeast.latitude);
         neLng = Double.toString(bounds.northeast.longitude);
@@ -118,11 +99,18 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     }
 
 
+    public void redoSearch(View view){
+        view.animate().rotationBy(360f);
+        searchNearby();
+    }
+
+
     @Override
     public void onMapReady(final GoogleMap Map) {
         mMap = Map;
-        mMap.setMinZoomPreference(12);
+        mMap.setMinZoomPreference(15);
         mMap.setOnMarkerClickListener(new MarkerClickerListener(this));
+        searchNearby();
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -182,8 +170,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     }
 
 
-
-
     private class AsyncRetrieve extends AsyncTask<String, String, String> {
         HttpURLConnection conn;
         URL url = null;
@@ -201,7 +187,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 // Enter URL address where your php file resides
                 String x1;
 
-                url = new URL("http://72.139.72.18/getLongLat.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
+                url = new URL("http://72.139.72.18/301/getLongLat.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
