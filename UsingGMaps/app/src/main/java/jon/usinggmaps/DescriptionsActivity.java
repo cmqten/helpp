@@ -317,7 +317,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
 
             // my stuff
-            String base = "http://6hax.ca:3000/search/";
+            String base = "http://72.139.72.18:4000/getDescription/";
             String encodedCharity;
 
             try {
@@ -351,7 +351,8 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                     }
 
                     summary = data.getString("summary");
-                    logoLink = "https://logo.clearbit.com/" + data.getString("domain")+"?size=500";
+                    //logoLink = "https://logo.clearbit.com/" + data.getString("domain")+"?size=500";
+                    logoLink = data.getString("image") + "?size=500";
 
                     try {
                         // get img from link

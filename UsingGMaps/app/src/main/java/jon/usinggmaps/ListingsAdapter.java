@@ -74,11 +74,11 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     .unit(Unit.METRIC)
                     .execute(new DirectionListener(holder, basicCharities.get(position)));
         }
-//        if(basicCharities.get(position).getLogo() == null){
-//            //new stupidOse().execute(position);
-//        }else{
-//            //holder.myImageView.setImageBitmap(basicCharities.get(position).getLogo());
-//        }
+        if(basicCharities.get(position).getLogo() == null){
+            new stupidOse().execute(position);
+        }else{
+            holder.myImageView.setImageBitmap(basicCharities.get(position).getLogo());
+        }
 
     }
 
@@ -121,10 +121,13 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
 
     private class stupidOse extends AsyncTask<Integer, String, String> {
         @Override
-        protected String doInBackground(Integer... position) {
+        protected String doInBackground(Integer... arguments) {
+
             try {
-                String encodedCharity = URLEncoder.encode(basicCharities.get(position[0]).getName(), "UTF-8");
-                String myUrl = "http://6hax.ca:3000/search/" + encodedCharity;
+                String encodedCharity = URLEncoder.encode(basicCharities.get(arguments[0]).getName().trim(), "UTF-8");
+                encodedCharity = encodedCharity.replace("+", "%20");
+                String myUrl = "http://72.139.72.18:4000/getLogo/" +
+                        basicCharities.get(arguments[0]).getId() + "/" + encodedCharity;
                 HttpClient httpclient = new DefaultHttpClient();
 
                 HttpResponse response = httpclient.execute(new HttpGet(myUrl));
@@ -133,21 +136,19 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
                     response.getEntity().writeTo(out);
 
-                    // get json out of summary
-                    JSONObject data = new JSONObject(out.toString());
+                    // handle output from server
+                    String result = out.toString();
 
-                    // get server error value
-                    if (!data.getString("error").isEmpty()) {
+                    if (result.equals("None")) {
+                        // server error
                         Log.v(TAG, "Server error, Could not get charity");
+                    } else {
+                        // get img from link
+                        URL url = new URL(result + "?size=500");
+                        Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        Log.v(TAG, "past here");
+                        basicCharities.get(arguments[0]).setLogo(bmp);
                     }
-                    String logoLink = "https://logo.clearbit.com/" + data.getString("domain");
-
-                    // get img from link
-                    URL url = new URL(logoLink);
-                    Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    Log.v(TAG, "past here");
-                    basicCharities.get(position[0]).setLogo(bmp);
-
                     out.close();
 
                 } else {
@@ -156,16 +157,13 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     response.getEntity().getContent().close();
                     throw new IOException(statusLine.getReasonPhrase());
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 Log.v(TAG, e.toString());
             }
 
             return "";
         }
-
     }
-
-
 
 }
 
