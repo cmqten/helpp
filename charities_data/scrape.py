@@ -51,6 +51,16 @@ def remove_tags(contents):
     return contents_clean
 
 
+def clean_int_literal(int_str):
+    '''
+    Removes any whitespaces or commas.
+    '''
+    if not int_str:
+        return ''
+    
+    return re.sub('[^0-9]', '', int_str)
+
+
 def extract_currency(currency_str):
     '''
     Extracts the integer value from a string that represents currency.
@@ -217,6 +227,73 @@ def get_financial_dates(soup):
     return dates
 
 
+def get_compensation(soup):
+    '''
+    Scrapes compensation data for a charity.
+
+    Args:
+        soup (BeautifulSoup) : a data structure that represents an HTML document
+
+    Returns:
+        dict : dictionary containing compensation data
+    '''
+    data = dict()
+    
+    if not soup:
+        return data
+
+    compensation = soup.find(id='Compensation')
+
+    if not compensation:
+        return data
+
+    compensation_data = compensation.find_next_sibling('div')
+
+    if not compensation_data:
+        return data
+
+    compensation_list = compensation_data.find('ul')
+
+    if compensation_list:
+        compensation_list_data = compensation_list.find_all('li')
+
+        # Don't ask me about this monstrosity
+        data['total_compensation'] = \
+            extract_currency(''.join(remove_tags(compensation_list_data[0].find(
+                'div').findAll('div')[1].contents)).strip())
+        
+        data['full_time'] = \
+            clean_int_literal(''.join(remove_tags(compensation_list_data[1].find(
+                'div').findAll('div')[1].contents)).strip())
+        
+        data['full_time'] = int(data['full_time']) if data['full_time'] else 0
+            
+        data['part_time'] = \
+            clean_int_literal(''.join(remove_tags(compensation_list_data[2].find(
+                'div').findAll('div')[1].contents)).strip())
+
+        data['part_time'] = int(data['part_time']) if data['part_time'] else 0
+        
+        data['professional_consulting_fees'] = \
+            extract_currency(''.join(remove_tags(compensation_list_data[3].find(
+                'div').findAll('div')[1].contents)).strip())
+
+        compensated_full_time = compensation_list.find_next_sibling('div')
+
+        if compensated_full_time:
+            data['compensated_full_time'] = dict()
+            salaries = compensated_full_time.findAll('div', class_='row')
+            for salary in salaries:
+                salary_data = salary.findAll('div')
+                salary_range = ''.join(remove_tags(
+                    salary_data[0].contents)).strip()
+                salary_earners = int(''.join(remove_tags(
+                    salary_data[1].contents)).strip())
+                data['compensated_full_time'][salary_range] = salary_earners
+
+    return data
+
+
 def scrape_charity_data(reg_number, date=None):
     '''
     Scrapes expenses, revenue, and ongoing programs for a charity specified by
@@ -256,5 +333,6 @@ def scrape_charity_data(reg_number, date=None):
     data.update(get_expenses(soup))
     data['ongoingPrograms'] = get_ongoing_programs(soup)
     data['financialDates'] = get_financial_dates(soup)
+    data['compensation'] = get_compensation(soup)
     
     return data
