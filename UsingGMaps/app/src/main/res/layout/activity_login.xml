@@ -52,8 +52,10 @@
             android:id="@+id/textViewSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/Grey"
             android:text="Don't have an account? Sign up here."
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:layout_margin="@dimen/activity_vertical_margin" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

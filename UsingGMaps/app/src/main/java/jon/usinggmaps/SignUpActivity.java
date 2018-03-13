@@ -46,6 +46,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -70,11 +72,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private static final String TAGgoogle = "SIGN UP ACTIVITY";
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sign_up);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.push();
 
         mAuth = FirebaseAuth.getInstance();
 
