@@ -159,5 +159,14 @@
                 fab:fab_label="Donate"
                 fab:fab_size="mini" />
 
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/directions"
+                fab:fab_colorNormal="@color/Orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/directions"
+                android:onClick="getDirections"
+                fab:fab_label="Directions"
+                fab:fab_size="mini" />
         </com.github.clans.fab.FloatingActionMenu>
 </android.support.design.widget.CoordinatorLayout>

@@ -74,8 +74,8 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
     String fbURL;
     String twURL ;
 
-    public static String id;
-    public static String name;
+    private String id;
+    private String name;
 
     private RewardedVideoAd mRewardedVideoAd;
 
@@ -92,6 +92,11 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         donoBtn = findViewById(R.id.donobutton);
         fbBtn = findViewById(R.id.fbbutton);
         twBtn = findViewById(R.id.twbutton);
+
+
+        Intent fromTypeActivity = getIntent();
+        name =  fromTypeActivity.getStringExtra("Name");
+        id =  fromTypeActivity.getStringExtra("Id");
 
         charityNameBox.setText(name);
 
@@ -139,15 +144,17 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         return true;
     }
 
-    public void setCharityNameBox(String text){
-        charityNameBox.setText(text);
-    }
-
     // rio's button functions
     public void gotoDonoBtn(View view) {goToUrl (donoURL);}
     public void gotoWebBtn(View view) {goToUrl (webURL);}
     public void gotoFbBtn(View view) {goToUrl (fbURL);}
     public void gotoTwBtn(View view) {goToUrl (twURL);}
+
+    public void getDirections(View view){
+
+        this.startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q=" + name)));
+    }
 
     private void goToUrl (String url) {
         Uri uriUrl = Uri.parse(url);
@@ -155,19 +162,6 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         startActivity(launchBrowser);
     }
 
-    public void displaySummary(String err){
-        if (err == null) {
-            textPHP.setText(summary);
-
-            // set img
-            if (bmp != null) {
-                logoImg.setImageBitmap(bmp);
-            }
-
-        }else{
-            textPHP.setText(err);
-        }
-    }
 
 
 
@@ -230,7 +224,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
     }
 
     private class AsyncRetrieve extends AsyncTask<String, String, String> {
-        ProgressDialog pdLoading = new ProgressDialog(DescriptionsActivity.this);
+        ProgressDialog pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
         HttpURLConnection conn;
         URL url = null;
 
@@ -238,7 +232,6 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pdLoading.setMessage("\tLoading...");
             pdLoading.setCancelable(false);
             pdLoading.show();
         }
@@ -403,9 +396,8 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
             }catch (Exception e){
                 Log.v(TAG, e.toString());
             }
-
-            // call my post execute
-            displaySummary(error);
+            textPHP.setText(summary);
+            logoImg.setImageBitmap(bmp);
             pdLoading.dismiss();
 
             // get financial data

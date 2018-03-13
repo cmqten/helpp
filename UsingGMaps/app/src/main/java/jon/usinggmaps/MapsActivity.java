@@ -1,6 +1,7 @@
 package jon.usinggmaps;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -39,7 +40,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import jon.usinggmaps.listeners.MarkerClickerListener;
 import jon.usinggmaps.listeners.PlaceSelectListener;
 
 import static android.content.ContentValues.TAG;
@@ -109,7 +109,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     public void onMapReady(final GoogleMap Map) {
         mMap = Map;
         mMap.setMinZoomPreference(15);
-        mMap.setOnMarkerClickListener(new MarkerClickerListener(this));
         searchNearby();
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -162,10 +161,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     public void onItemClick(View view, int position, String id, String name) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(basicCharities.get(position).getLatLng(), 18));
 
+
         // call my activity
-        DescriptionsActivity.id = id;
-        DescriptionsActivity.name = name;
         Intent startNewActivity = new Intent(this, DescriptionsActivity.class);
+        startNewActivity.putExtra("Id", id);
+        startNewActivity.putExtra("Name", name);
         startActivity(startNewActivity);
     }
 
@@ -173,11 +173,15 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private class AsyncRetrieve extends AsyncTask<String, String, String> {
         HttpURLConnection conn;
         URL url = null;
+        ProgressDialog pdLoading = new ProgressDialog(MapsActivity.this,R.style.MyTheme);
+
 
         // This method will interact with UI, here display loading message
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pdLoading.setCancelable(false);
+            pdLoading.show();
         }
 
         // This method does not interact with UI, You need to pass result to onPostExecute to display
@@ -185,8 +189,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                String x1;
-
                 url = new URL("http://72.139.72.18/301/getLongLat.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
 
             } catch (MalformedURLException e) {
@@ -238,6 +240,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         // This method will interact with UI, display result sent from doInBackground method
         @Override
         protected void onPostExecute(String result) {
+            pdLoading.dismiss();
             if(!result.isEmpty()){
                 String a[] = result.split("~");
                 for(String i : a){
