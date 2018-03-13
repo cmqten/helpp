@@ -359,7 +359,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                         bmp = BitmapFactory.decodeStream(new URL(logoLink).openConnection().getInputStream());
                     }catch(Exception e){
                         Log.v(TAG, "Error setting logo link: " + e.toString());
-                        Log.v(TAG, "Logo link: " + logoLink.toString());
+                        Log.v(TAG, "Logo link: " + logoLink);
                     }
 
                     out.close();
