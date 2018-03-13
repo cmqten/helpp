@@ -159,10 +159,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
     @Override
     public void onItemClick(View view, int position, String id, String name) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(basicCharities.get(position).getLatLng(), 18));
-
-
-        // call my activity
         Intent startNewActivity = new Intent(this, DescriptionsActivity.class);
         startNewActivity.putExtra("Id", id);
         startNewActivity.putExtra("Name", name);
@@ -252,7 +248,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(temp);
-                    markerOptions.title(adr);
+                    markerOptions.title(s[1]);
                     mMap.addMarker(markerOptions);
                 }
 
