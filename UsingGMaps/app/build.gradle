@@ -17,7 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     useLibrary 'org.apache.http.legacy'
 
     configurations.all {
@@ -40,15 +39,14 @@ dependencies {
     })
 
 
-
-
     compile 'com.akexorcist:googledirectionlibrary:1.0.4'
 
     compile 'com.google.firebase:firebase-ads:11.8.0'
 
     compile 'com.google.android.gms:play-services-ads:11.8.0'
 
-    //noinspection GradleCompatible
+    compile 'com.github.clans:fab:1.6.4'
+    compile 'com.google.android.gms:play-services-ads:11.8.0'
 
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.google.android.gms:play-services-maps:11.8.0'
@@ -65,12 +63,6 @@ dependencies {
 
     compile 'com.android.support:design:26.1.0'
     compile 'com.sothree.slidinguppanel:library:3.4.0'
-
-//    // ose's imports
-//    compile 'org.jsoup:jsoup:1.11.2'
-//
-//    compile 'com.google.code.gson:gson:2.8.2'
-//    compile 'com.google.apis:google-api-services-customsearch:v1-rev60-1.23.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

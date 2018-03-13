@@ -1,6 +1,7 @@
 package jon.usinggmaps;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -39,7 +40,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import jon.usinggmaps.listeners.MarkerClickerListener;
 import jon.usinggmaps.listeners.PlaceSelectListener;
 
 import static android.content.ContentValues.TAG;
@@ -47,14 +47,6 @@ import static android.content.ContentValues.TAG;
 public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         ListingsAdapter.ItemClickListener, OnMapReadyCallback {
 
-    private boolean Community;
-    private boolean Education;
-    private boolean Health;
-    private boolean Religion;
-    private boolean Welfare;
-    private boolean charitiesSelected;
-    private boolean eventsSelected;
-    private Intent typeIntent;
 
     private ArrayList<BasicCharity> basicCharities;
     private ListingsAdapter basicCharitiesAdapter;
@@ -80,16 +72,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        typeIntent = getIntent();
-        charitiesSelected = typeIntent.getBooleanExtra("charitiesSelected",true);
-        eventsSelected = typeIntent.getBooleanExtra("eventsSelected",true);
-        Community = typeIntent.getBooleanExtra("Community",true);
-        Education = typeIntent.getBooleanExtra("Education",true);
-        Health = typeIntent.getBooleanExtra("Health",true);
-        Religion = typeIntent.getBooleanExtra("Religion",true);
-        Welfare = typeIntent.getBooleanExtra("Welfare",true);
-
-
 
         basicCharities = new ArrayList<BasicCharity>();
         basicCharitiesView = findViewById(R.id.charitiesView);
@@ -105,8 +87,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
     }
 
-    public void redoSearch(View view){
-        view.animate().rotationBy(360f);
+    private void searchNearby(){
+
         bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
         neLat = Double.toString(bounds.northeast.latitude);
         neLng = Double.toString(bounds.northeast.longitude);
@@ -117,7 +99,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         new AsyncRetrieve().execute();
     }
 
-
+    public void redoSearch(View view){
+        view.animate().rotationBy(360f);
+        searchNearby();
+    }
 
 
 
@@ -125,7 +110,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     public void onMapReady(final GoogleMap Map) {
         mMap = Map;
         mMap.setMinZoomPreference(15);
-        mMap.setOnMarkerClickListener(new MarkerClickerListener(this));
+        searchNearby();
+
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -175,26 +161,25 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
     @Override
     public void onItemClick(View view, int position, String id, String name) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(basicCharities.get(position).getLatLng(), 18));
-
-        // call my activity
-        DescriptionsActivity.id = id;
-        DescriptionsActivity.name = name;
         Intent startNewActivity = new Intent(this, DescriptionsActivity.class);
+        startNewActivity.putExtra("Id", id);
+        startNewActivity.putExtra("Name", name);
         startActivity(startNewActivity);
     }
-
-
 
 
     private class AsyncRetrieve extends AsyncTask<String, String, String> {
         HttpURLConnection conn;
         URL url = null;
+        ProgressDialog pdLoading = new ProgressDialog(MapsActivity.this,R.style.MyTheme);
+
 
         // This method will interact with UI, here display loading message
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pdLoading.setCancelable(false);
+            pdLoading.show();
         }
 
         // This method does not interact with UI, You need to pass result to onPostExecute to display
@@ -202,9 +187,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                String x1;
-
-                url = new URL("http://72.139.72.18/getLongLat.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
+                url = new URL("http://72.139.72.18/301/getLongLat.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
@@ -255,6 +238,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         // This method will interact with UI, display result sent from doInBackground method
         @Override
         protected void onPostExecute(String result) {
+            pdLoading.dismiss();
             if(!result.isEmpty()){
                 String a[] = result.split("~");
                 for(String i : a){
@@ -266,7 +250,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(temp);
-                    markerOptions.title(adr);
+                    markerOptions.title(s[1]);
                     mMap.addMarker(markerOptions);
                 }
 

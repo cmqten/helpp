@@ -1,31 +1,27 @@
 package jon.usinggmaps;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -35,9 +31,18 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
 
-public class DescriptionsActivity extends AppCompatActivity {
+public class DescriptionsActivity extends AppCompatActivity implements RewardedVideoAdListener {
 
 
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
@@ -51,70 +56,89 @@ public class DescriptionsActivity extends AppCompatActivity {
     TextView textPHP;
     ImageView logoImg;
     String logoLink;
-    String summary = "";
-    String title = "";
-    String charity = "Charity name here";
-    String error = "";
+    String summary;
+    String title;
+    String charity;
+    String error;
 
+    ProgressDialog pdLoading;
     // for the image
     Bitmap bmp = null;
 
     // rio's stuff
-    Button donoBtn;
-    Button webBtn;
-    Button fbBtn;
-    Button twBtn;
+    FloatingActionButton donoBtn;
+    FloatingActionButton webBtn;
+    FloatingActionButton fbBtn;
+    FloatingActionButton twBtn;
+    FloatingActionButton YTBtn;
+    FloatingActionButton InstaBtn;
 
-    String donoURL = "None";
-    String webURL = "None";
-    String fbURL = "None";
-    String twURL = "None";
+    String donoURL;
+    String webURL;
+    String fbURL;
+    String twURL;
+    String YTURL ;
+    String InstaURL ;
 
-    public static String id;
-    public static String name;
+    private String id;
+    private String name;
+
+    private RewardedVideoAd mRewardedVideoAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_descriptions);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
 
         charityNameBox = findViewById(R.id.CharityName);
         textPHP = findViewById(R.id.textView);
         logoImg = findViewById(R.id.logoImg);
+        webBtn = findViewById(R.id.webbutton);
+        donoBtn = findViewById(R.id.donobutton);
+        fbBtn = findViewById(R.id.fbbutton);
+        twBtn = findViewById(R.id.twbutton);
+        InstaBtn = findViewById(R.id.insta);
+        YTBtn = findViewById(R.id.youtube);
 
-        // use the id and rio's database to get other data
-        webBtn = (Button) findViewById(R.id.webbutton);
-        webBtn.setEnabled(false);
 
-        donoBtn = (Button) findViewById(R.id.donobutton);
-        donoBtn.setEnabled(false);
+        Intent fromTypeActivity = getIntent();
+        name =  fromTypeActivity.getStringExtra("Name");
+        id =  fromTypeActivity.getStringExtra("Id");
 
-        fbBtn = (Button) findViewById(R.id.fbbutton);
-        fbBtn.setEnabled(false);
-
-        twBtn = (Button) findViewById(R.id.twbutton);
-        twBtn.setEnabled(false);
+        charityNameBox.setText(name);
 
         //Make call to AsyncRetrieve
         new AsyncRetrieve().execute();
 
         // set the charity that my function needs to get
         this.charity = name;
-        findViewById(R.id.financeInfo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DescriptionsActivity.this,financeActivity.class);
-                startActivity(intent);
-            }
-        });
+        MobileAds.initialize(this,
+                "ca-app-pub-2650389847656790~2722040847");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        // Use an activity context to get the rewarded video instance.
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+
 
     }
+
+    public void getFinance(View view){
+        Intent intent = new Intent(this,financeActivity.class);
+        startActivity(intent);
+    }
+
+
+    public void onWatchAds(View view){
+        pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
+
+
+
+
+        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
+                new AdRequest.Builder().build());
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -138,15 +162,19 @@ public class DescriptionsActivity extends AppCompatActivity {
         return true;
     }
 
-    public void setCharityNameBox(String text){
-        charityNameBox.setText(text);
-    }
-
     // rio's button functions
     public void gotoDonoBtn(View view) {goToUrl (donoURL);}
     public void gotoWebBtn(View view) {goToUrl (webURL);}
     public void gotoFbBtn(View view) {goToUrl (fbURL);}
     public void gotoTwBtn(View view) {goToUrl (twURL);}
+    public void gotoInstaBtn(View view) {goToUrl (InstaURL);}
+    public void gotoYTBtn(View view) {goToUrl (YTURL);}
+
+    public void getDirections(View view){
+
+        this.startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q=" + name)));
+    }
 
     private void goToUrl (String url) {
         Uri uriUrl = Uri.parse(url);
@@ -154,23 +182,70 @@ public class DescriptionsActivity extends AppCompatActivity {
         startActivity(launchBrowser);
     }
 
-    public void displaySummary(String err){
-        if (err == null) {
-            textPHP.setText(summary);
-            setCharityNameBox(title);
 
-            // set img
-            if (bmp != null) {
-                logoImg.setImageBitmap(bmp);
-            }
 
-        }else{
-            textPHP.setText(err);
+
+    @Override
+    public void onRewarded(RewardItem reward) {
+        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+                reward.getAmount(), Toast.LENGTH_SHORT).show();
+        // Reward the user.
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+        Toast.makeText(this, "onRewardedVideoAdLeftApplication",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
+        Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
+        if (mRewardedVideoAd.isLoaded()) {
+             pdLoading.dismiss();
+            mRewardedVideoAd.show();
         }
     }
 
+    @Override
+    public void onRewardedVideoAdOpened() {
+        Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+        Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onResume() {
+        mRewardedVideoAd.resume(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mRewardedVideoAd.pause(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mRewardedVideoAd.destroy(this);
+        super.onDestroy();
+    }
+
     private class AsyncRetrieve extends AsyncTask<String, String, String> {
-        ProgressDialog pdLoading = new ProgressDialog(DescriptionsActivity.this);
+        ProgressDialog pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
         HttpURLConnection conn;
         URL url = null;
 
@@ -178,7 +253,6 @@ public class DescriptionsActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pdLoading.setMessage("\tLoading...");
             pdLoading.setCancelable(false);
             pdLoading.show();
         }
@@ -192,7 +266,7 @@ public class DescriptionsActivity extends AppCompatActivity {
 
             try {
                 // Enter URL address where your php file resides
-                url = new URL("http://72.139.72.18/getLink.php?id=" + id);
+                url = new URL("http://72.139.72.18/301/getLink.php?id=" + id);
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
@@ -225,14 +299,11 @@ public class DescriptionsActivity extends AppCompatActivity {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                     result = new StringBuilder();
                     String line;
-
                     while ((line = reader.readLine()) != null) {
                         result.append(line);
                     }
 
                 } else {
-
-                    Log.v(TAG, "unsuccessful");
                     return ("unsuccessful");
                 }
 
@@ -247,15 +318,9 @@ public class DescriptionsActivity extends AppCompatActivity {
 
             // my stuff
             String base = "http://6hax.ca:3000/search/";
-            //String baseLocal = "http://142.1.2.13:3000/search/";
-            String encodedCharity = "";
+            String encodedCharity;
 
             try {
-
-                // get the host of given link
-//                URI uri = new URI(charity);
-//                String domain = uri.getHost();
-
                 encodedCharity = URLEncoder.encode(charity, "UTF-8");
             }catch(Exception e){
                 error = e.toString();
@@ -263,7 +328,6 @@ public class DescriptionsActivity extends AppCompatActivity {
             }
 
             String myUrl = base + encodedCharity;
-
             try {
 
                 HttpClient httpclient = new DefaultHttpClient();
@@ -275,8 +339,7 @@ public class DescriptionsActivity extends AppCompatActivity {
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
                     response.getEntity().writeTo(out);
 
-                    String rawData = "";
-                    rawData = out.toString();
+                    String rawData = out.toString();
 
                     // get json out of summary
                     JSONObject data = new JSONObject(rawData);
@@ -287,20 +350,12 @@ public class DescriptionsActivity extends AppCompatActivity {
                         return ("none");
                     }
 
-                    title = data.getString("title");
-
-                    summary += data.getString("summary");
-
-                    summary += "\n";
-
-                    //summary +="\nLogo Link:\n";
-                    logoLink = "https://logo.clearbit.com/" + data.getString("domain");
-                    //summary += logoLink;
+                    summary = data.getString("summary");
+                    logoLink = "https://logo.clearbit.com/" + data.getString("domain")+"?size=500";
 
                     try {
                         // get img from link
-                        URL url = new URL(logoLink);
-                        bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        bmp = BitmapFactory.decodeStream(new URL(logoLink).openConnection().getInputStream());
                     }catch(Exception e){
                         Log.v(TAG, "Error setting logo link: " + e.toString());
                         Log.v(TAG, "Logo link: " + logoLink.toString());
@@ -322,7 +377,6 @@ public class DescriptionsActivity extends AppCompatActivity {
                 Log.v(TAG, e.toString());
                 return e.toString();
 
-
             }
 
             // Pass data to onPostExecute method
@@ -332,67 +386,42 @@ public class DescriptionsActivity extends AppCompatActivity {
         // This method will interact with UI, display result sent from doInBackground method
         @Override
         protected void onPostExecute(String result) {
-
             pdLoading.dismiss();
-
-            Log.v(TAG, result);
             try {
-                String[] links = result.split("!");
-
-                if (result.equals("")) {
-                    return;
+                if(!result.isEmpty()){
+                    String[] links = result.split("!");
+                    Log.d("Hi", Arrays.toString(links));
+                    if (!links[0].equals("None")) {
+                        webURL = links[0];
+                        webBtn.setVisibility(View.VISIBLE);
+                    }
+                    if (!links[1].equals("None")) {
+                        donoURL = links[1];
+                        donoBtn.setVisibility(View.VISIBLE);
+                    }
+                    if (!links[2].equals("None")) {
+                        fbURL = links[2];
+                        fbBtn.setVisibility(View.VISIBLE);
+                    }
+                    if (!links[3].equals("None")) {
+                        twURL = links[3];
+                        twBtn.setVisibility(View.VISIBLE);
+                    }
+                    if (!links[4].equals("None")) {
+                        YTURL = links[3];
+                        twBtn.setVisibility(View.VISIBLE);
+                    }
+                    if (!links[5].equals("None")) {
+                        InstaURL = links[3];
+                        twBtn.setVisibility(View.VISIBLE);
+                    }
                 }
-
-                webURL = links[0];
-                donoURL = links[1];
-                fbURL = links[2];
-                twURL = links[3];
-
-                //textPHP.setText(links[1]);
-                //result.equals("")
-
-                if (webURL.equals("None")) {
-                    webBtn.setEnabled(false);
-                } else {
-                    webBtn.setEnabled(true);
-                }
-
-                if (donoURL.equals("None")) {
-                    donoBtn.setEnabled(false);
-                } else {
-                    donoBtn.setEnabled(true);
-                }
-
-                if (fbURL.equals("None")) {
-                    fbBtn.setEnabled(false);
-                } else {
-                    fbBtn.setEnabled(true);
-                }
-
-                if (twURL.equals("None")) {
-                    twBtn.setEnabled(false);
-                } else {
-                    twBtn.setEnabled(true);
-                }
-
             }catch (Exception e){
                 Log.v(TAG, e.toString());
             }
-
-
-            // call my post execute
-            if(error != "") {
-                displaySummary(error);
-            }else {
-                displaySummary(null);
-            }
-
+            textPHP.setText(summary);
+            logoImg.setImageBitmap(bmp);
             pdLoading.dismiss();
-
-            // get financial data
-            //financialAsync = new FinancialAsync("101676864RR0001", pdLoading);
-
-            summary = "";
 
         }
     }

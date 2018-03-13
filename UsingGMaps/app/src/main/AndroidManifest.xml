@@ -46,8 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TypeActivity">
-        </activity>
         <activity android:name=".CharityTypeActivity" />
         <activity
 
@@ -59,13 +57,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="jon.usinggmaps.MapsActivity" />
         </activity>
-        <activity android:name=".AdsActivity">
 
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CharityTypeActivity" />
-        </activity>
         <activity
             android:name=".financeActivity"
             android:label="@string/title_activity_finance"
@@ -75,6 +67,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DescriptionActivity" />
         </activity>
+
+
+
     </application>
 
 </manifest>

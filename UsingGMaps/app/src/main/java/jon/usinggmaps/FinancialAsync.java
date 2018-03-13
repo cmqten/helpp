@@ -2,8 +2,6 @@ package jon.usinggmaps;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -56,7 +53,7 @@ public class FinancialAsync extends Observable {
     }
 
     private class AsyncRetrieve extends AsyncTask<String, String, String> {
-        //ProgressDialog pdLoading = new ProgressDialog(CharityPage.this);
+//        ProgressDialog pdLoading = new ProgressDialog(FinancialAsync.this);
         HttpURLConnection conn;
         URL url = null;
 
@@ -131,22 +128,15 @@ public class FinancialAsync extends Observable {
         @Override
         protected void onPostExecute(String result) {
 
-            String[] data = result.toString().split("!");
-
-            for (String s: data) {
-                String[] split = s.split(":");
-                //dataHash.clear();
-                dataHash.put(split[0],split[1]);
-            }
-
-            // log financial data
-            Log.v(TAG, dataHash.toString());
-            Log.v(TAG, dataHash.get("expenses_management_and_admin"));
-
-            // update observer
-            notifyObservers();
-            if (pdLoading != null && pdLoading.isShowing()) {
-                pdLoading.dismiss();
+            pdLoading.dismiss();
+            if(!result.isEmpty()){
+                String[] data = result.toString().split("!");
+                for (String s: data) {
+                    String[] split = s.split(":");
+                    //dataHash.clear();
+                    dataHash.put(split[0],split[1]);
+                }
+                notifyObservers();
             }
 
         }
