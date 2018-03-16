@@ -35,6 +35,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     public static Location location;
     private GoogleMap mMap;
     private ArrayList<Tab_fragment> charityTypes;
-    private String[] charityTypesNames = {"All", "Commuity", "Education", "Health", "Religion", "Welfare"};
+    private String[] charityTypesNames = {"All", "Community", "Education", "Health", "Religion", "Welfare"};
 
     private DrawerLayout mDrawerLayout;
 
@@ -99,7 +100,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         for(int i = 0; i< numberOfCharityTypes; i ++){
             Tab_fragment temp = new Tab_fragment();
             charityTypes.add(temp);
-            temp.setQueryURL("");
+            temp.setQueryURL(charityTypesNames[i]);
             adapter.addFragment(temp, charityTypesNames[i]);
         }
 
@@ -128,7 +129,27 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
             }
         });
 
+        SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 
+        layout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                Toolbar toolbar1 = findViewById(R.id.toolbar);
+                if(previousState == SlidingUpPanelLayout.PanelState.COLLAPSED){
+                    toolbar1.setVisibility(View.GONE);
+
+                }
+                else if(previousState == SlidingUpPanelLayout.PanelState.EXPANDED){
+                    toolbar1.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
     }
 
 
