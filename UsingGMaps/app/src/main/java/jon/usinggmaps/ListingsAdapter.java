@@ -59,7 +59,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
 
         // render default icon
         defaultIcon = BitmapFactory.decodeResource(parent.getResources(),
-                R.mipmap.ic_launcher_round);
+                R.drawable.charity_icon);
 
         this.parent = parent;
         return new ViewHolder(mInflater.inflate(R.layout.basic_charity_card, null,false));

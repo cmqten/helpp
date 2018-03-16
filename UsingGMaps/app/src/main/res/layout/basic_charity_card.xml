@@ -3,10 +3,10 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    app:cardUseCompatPadding="true"
-    >
+    android:layout_height="350dp"
+    app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,8 +14,9 @@
 
         <ImageView
             android:id="@+id/Logo"
-            android:layout_width="318dp"
-            android:layout_height="85dp"
+            android:layout_width="373dp"
+            android:layout_height="225dp"
+            android:scaleType="fitXY"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -34,12 +35,14 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_margin="12dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="Hello"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/travel_time"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
