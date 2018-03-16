@@ -317,7 +317,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
 
             // my stuff
-            String base = "http://72.139.72.18:4000/getDescription/";
+            String base = "http://72.139.72.18:4000/getData/";
             String encodedCharity;
 
             try {
@@ -327,7 +327,9 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 return e.toString();
             }
 
-            String myUrl = base + encodedCharity;
+            // add id and charity name
+            String myUrl = base + id + "/" + encodedCharity;
+
             try {
 
                 HttpClient httpclient = new DefaultHttpClient();
@@ -350,9 +352,14 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                         return ("none");
                     }
 
-                    summary = data.getString("summary");
+                    summary = data.getString("Summary");
                     //logoLink = "https://logo.clearbit.com/" + data.getString("domain")+"?size=500";
-                    logoLink = data.getString("image") + "?size=500";
+
+                    // check if its a facebook link, before we add size param
+                    logoLink = data.getString("Image");
+                    if (!logoLink.toLowerCase().contains("scontent")){
+                        logoLink = logoLink + "?size=500";
+                    }
 
                     try {
                         // get img from link

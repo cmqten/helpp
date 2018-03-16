@@ -40,6 +40,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
 
 
     private ViewGroup parent;
+    private Bitmap defaultIcon;
     private String charityName;
 
     private ArrayList<BasicCharity> basicCharities;
@@ -57,6 +58,11 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     // inflates the row layout from xml when needed
     @Override
     public ListingsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        // render default icon
+        defaultIcon = BitmapFactory.decodeResource(parent.getResources(),
+                R.mipmap.ic_launcher_round);
+
         this.parent = parent;
         return new ViewHolder(mInflater.inflate(R.layout.basic_charity_card, null,false));
     }
@@ -75,6 +81,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     .execute(new DirectionListener(holder, basicCharities.get(position)));
         }
         if(basicCharities.get(position).getLogo() == null){
+            holder.myImageView.setImageBitmap(defaultIcon);
             new stupidOse().execute(position);
         }else{
             holder.myImageView.setImageBitmap(basicCharities.get(position).getLogo());
@@ -124,9 +131,10 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
         protected String doInBackground(Integer... arguments) {
 
             try {
+                Log.v(TAG, basicCharities.get(arguments[0]).getName().trim());
                 String encodedCharity = URLEncoder.encode(basicCharities.get(arguments[0]).getName().trim(), "UTF-8");
-                encodedCharity = encodedCharity.replace("+", "%20");
-                String myUrl = "http://72.139.72.18:4000/getLogo/" +
+                //encodedCharity = encodedCharity.replace("+", "%20");
+                String myUrl = "http://72.139.72.18:4000/getData/" +
                         basicCharities.get(arguments[0]).getId() + "/" + encodedCharity;
                 HttpClient httpclient = new DefaultHttpClient();
 
@@ -137,14 +145,30 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     response.getEntity().writeTo(out);
 
                     // handle output from server
-                    String result = out.toString();
+                    String rawData = out.toString();
+
+                    // get json out of summary
+                    JSONObject data = new JSONObject(rawData);
+
+                    // set result default
+                    String result = "None";
+
+                    // set logo if error is empty
+                    if (data.getString("error").equals("")) {
+                        result = data.getString("Image");
+                    }
 
                     if (result.equals("None")) {
                         // server error
                         Log.v(TAG, "Server error, Could not get charity");
                     } else {
                         // get img from link
-                        URL url = new URL(result + "?size=500");
+
+                        // check if its a facebook link, before we add size param
+                        if (!result.toLowerCase().contains("scontent")){
+                            result = result + "?size=500";
+                        }
+                        URL url = new URL(result);
                         Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                         Log.v(TAG, "past here");
                         basicCharities.get(arguments[0]).setLogo(bmp);
