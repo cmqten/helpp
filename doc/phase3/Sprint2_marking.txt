@@ -1,0 +1,100 @@
+Team Name: Ugandan Knuckles
+
+
+Planning Meetings (SR1.md, sprint2.md) (Max 5 marks)
+-SR1.md (Sprint Retrospective)
+ [2 marks=Meeting is documented, participants are recorded, everyone has participated, analysis of good practices/bad practices wad made.]
+  =======
+  Your mark: 2
+  =======
+-Sprint Planning meeting (sprint2.md)
+
+ [3 marks=Meeting is documented, participants are recorded, everyone has participated, Sprint goals are specified and
+  there is sufficient references to user stories to be completed during the sprint]
+  =======
+  Your mark: 3
+  =======
+
+User Stories (PB.md, sprint2.md) (Max 10 marks)
+-Correctly formulated user stories
+ [2 marks=all stories in PB.md follow the User Story template]
+ =========
+ Your mark: 2
+ =========
+
+
+-Recorded on Pivotal Tracer
+ [2 marks=all new stories added at sprinty planning meeting in PB.md recorded on the Tracker]
+  =======
+  Your mark: 2
+  =======
+
+-Broken down into tasks
+ [2 marks=all Sprint2.md stories broken down into tasks]
+  =======
+  Your mark: 2
+  =======
+
+-Estimated
+ [2 marks=all stories in PB.md are point estimated and the point value is recorded in the Tracker]
+  =======
+  Your mark: 2
+  =======
+
+-Prioritized
+ [2 marks=all stories in PB.md are prioritized and the order of priority in PB.md matches the order of priority on the Tracker]
+  =======
+  Your mark: 2
+  =======
+
+Tracking on Pivotal Tracker:  (max 10 marks)
+- Are all your stories present on sprint2.md recorded  on the tracker?
+  [2=all stories recorded]
+  =======
+  Your mark: 2
+  =======
+
+- Did you start all stories for sprint two?
+  [2=all stories started or some stories not started, but logical explanation provided in the sprint2.md document]
+  =======
+  Your mark: 2
+  =======
+
+- Do the commits on github match the tasks listed in sprint2.md?
+  [2=no tasks are missing]
+  =======
+  Your mark: 2
+  =======
+
+- Is the commit done by the person to whom the task has been assigned to?
+  [2=all assignned tasks are completed]
+  =======
+  Your mark: 2
+  =======
+
+- Tasks Distribution
+  [1=at least one team member did not complete any task or did not have any task assigned]
+  =======
+  Your mark: 1
+  =======
+
+System Design - (PDF or MD file or other suitable format) (Max 5 marks)
+- Cover Page and Table of Contents
+  [2 marks: both are present]
+  =======
+  Your mark: 2
+  =======
+
+- Design Updates
+  [3 marks: Clear Evidence that the system design has been reviewed, relevant changes have been made, and CRC model changes indicate improvement]
+  =======
+  Your mark: 3
+  =======
+
+-Class Demo: [10 marks, see other rubric]
+ =======
+ Your mark: 10
+ =======
+
+
+ Total mark: 39/40
