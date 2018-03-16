@@ -1,22 +1,36 @@
 package jon.usinggmaps;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
@@ -40,9 +54,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class DescriptionsActivity extends AppCompatActivity implements RewardedVideoAdListener {
+public class DescriptionsActivity extends AppCompatActivity implements RewardedVideoAdListener, Observer {
 
 
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
@@ -60,11 +79,16 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
     String title;
     String charity;
     String error;
-
+    ArrayList<String> basicYears;
     ProgressDialog pdLoading;
     // for the image
     Bitmap bmp = null;
-
+    //kenny's stuff
+    private int year;
+    HashMap<String, String> myMap;
+    Context activity;
+    ArrayList<String> dates;
+    Observer obs;
     // rio's stuff
     FloatingActionButton donoBtn;
     FloatingActionButton webBtn;
@@ -79,7 +103,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
     String twURL;
     String YTURL ;
     String InstaURL ;
-
+    private int category;
     private String id;
     private String name;
 
@@ -120,14 +144,115 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
 
+        /*----------------------On Create for Finance Stuff-----------------*/
+        activity = this;
+        dates = new ArrayList<>();
+        year = 0;
+        obs = this;
+        category=-1;
+        basicYears = new ArrayList<>();
+        ProgressDialog myDiag = new ProgressDialog(this);
+        FinancialAsync myAsync = new FinancialAsync(id,myDiag,this,null);
+        findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if(year!="2018"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(0));}
+                category = 0;
+                setColorOfButt(R.id.button1);
 
+            }
+        });
+
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //if(year!="2017"){}
+                category = 1;
+                setColorOfButt(R.id.button2);
+            }
+        });
+
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if(year!="2016"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(2));}
+                category = 2;
+                setColorOfButt(R.id.button3);
+            }
+        });
+
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // if(year!="2015"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(3));}
+                category = 3;
+                setColorOfButt(R.id.button4);
+
+            }
+        });
+
+        findViewById(R.id.eight).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(0));
+                year = 0;
+                if(category==-1){category=0;}
+            }
+        });
+        findViewById(R.id.seven).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(1));
+                year = 1;
+                if(category==-1){category=0;}
+            }
+        });
+        findViewById(R.id.six).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(2));
+                year = 2;
+                if(category==-1){category=0;}
+            }
+        });
+        findViewById(R.id.five).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(3));
+                year = 3;
+                if(category==-1){category=0;}
+            }
+        });
+
+        findViewById(R.id.four).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(4));
+                year = 4;
+                if(category==-1){category=0;}
+            }
+        });
     }
 
-    public void getFinance(View view){
-        Intent intent = new Intent(this,financeActivity.class);
-        startActivity(intent);
-    }
+    public void setColorOfButt(int id){
+        int[] myIds = {R.id.button1, R.id.button2,R.id.button3,R.id.button4};
+        for(int ids : myIds){
+            Button myBut1 = (Button)findViewById(ids);
+            if(ids==id){
+                myBut1.setTextColor(getResources().getColor(R.color.Pink));
+            }else{
+                myBut1.setTextColor(getResources().getColor(R.color.Shadow));
+            }
+        }
 
+    }
+    public void setTextOfButt(){
+
+
+
+
+    }
 
     public void onWatchAds(View view){
         pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
@@ -242,6 +367,105 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
     public void onDestroy() {
         mRewardedVideoAd.destroy(this);
         super.onDestroy();
+    }
+    @Override
+    public void update(Observable observable, Object o) {
+        myMap = (HashMap<String,String>)o;
+        String mydates = myMap.get("financialDates");
+        mydates = mydates.substring(1,mydates.length()-1);
+        String[] dates = mydates.split(", ");
+        for(int i = 0 ; i< dates.length;i++){
+            this.dates.add(dates[i].substring(1,dates[i].length()-1));
+        }
+        if(basicYears.isEmpty()){
+            for(String s : this.dates){
+                basicYears.add(s.substring(0,4));
+            }
+            int[] myIds = {R.id.eight, R.id.seven,R.id.six,R.id.five,R.id.four};
+            int i = 0;
+            for(int ids : myIds){
+                Button myBut1 = (Button)findViewById(ids);
+                myBut1.setText(basicYears.get(i));
+                i++;
+            }
+        }
+
+        switch(category){
+            case 0:
+                AlertDialog ad = new AlertDialog.Builder(DescriptionsActivity.this).setMessage("Ongoing Programs: "+myMap.get("ongoingPrograms")).create();
+                ad.show();
+                Display display =((WindowManager)getSystemService(DescriptionsActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
+                int width = display.getWidth();
+                int height=display.getHeight();
+                ad.getWindow().setLayout(width*9/10,height/2);
+                break;
+            case 1:
+                String[] portions= {"revenue_total","revenue_government_funding",
+                        "revenue_non_receipted_donations","revenue_receipted_donations"
+                        ,"revenue_other"};
+                String [] labels = {"Government Funding","Non Receipted Donations",
+                        "Receipted Donations","Other","Revenues for year "};
+                DrawPie(portions,labels);
+                break;
+            case 2:
+                String [] portions2 = {"expenses_total","expenses_management_and_admin",
+                        "expenses_fundraising","expenses_other","expenses_charitable_program"};
+                String [] labels2 = {"Management and Admin","Fundraising","Other","Charitable Programs","Expenses for year "};
+                DrawPie(portions2,labels2);
+                break;
+        }
+    }
+    public void DrawPie(String[] portions, String[] labels){
+        /*Inflates the layout so we can use the PieChart*/
+        LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View vi = inflater.inflate(R.layout.pie_chart,null);
+        PieChart myPie = (PieChart)vi.findViewById(R.id.myPie);
+        /*------------------------------------------------------------*/
+        /*Generates the portions of the pie chart and sets the data*/
+        List<PieEntry> entries = new ArrayList<>();
+        Float revTot = Float.parseFloat(myMap.get(portions[0]));
+        System.out.println(revTot);
+        Float revGvnmtFnd = Float.parseFloat(myMap.get(portions[1]));
+        Float revNonRecDon = Float.parseFloat(myMap.get(portions[2]));
+        Float revRecDon = Float.parseFloat(myMap.get(portions[3]));
+        Float revOther = Float.parseFloat(myMap.get(portions[4]));
+        entries.add(new PieEntry(revGvnmtFnd / revTot,labels[0]));
+        entries.add(new PieEntry(revNonRecDon / revTot,labels[1]));
+        entries.add(new PieEntry(revRecDon / revTot,labels[2]));
+        entries.add(new PieEntry(revOther / revTot, labels[3]));
+        PieDataSet set = new PieDataSet(entries, "");
+        int mycolors[] = {Color.parseColor("#68E861"),Color.parseColor("#61ABE8"),Color.parseColor("#E261E8")
+                ,Color.parseColor("#E89F61")};
+        set.setColors(mycolors);
+        set.setDrawValues(false);
+        PieData data = new PieData(set);
+        /*-------------------------------------------------------------*/
+        /*Sets up graph options---------------------------------------*/
+        myPie.setLayoutParams(new LinearLayout.LayoutParams(500,600));
+        myPie.setData(data);
+        myPie.setExtraBottomOffset(40f);
+        myPie.setDrawEntryLabels(false);
+        Description description = new Description();
+        description.setText(labels[4]+ basicYears.get(year));
+        myPie.setDescription(description);
+        /*----------------------------------------------------------------*/
+        /*Sets up the legend------------------------------------*/
+        Legend legend = myPie.getLegend();
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setWordWrapEnabled(true);
+        legend.setDrawInside(false);
+        legend.getCalculatedLineSizes();
+        /*-----------------------------------------------------------*/
+        //Updates the graph
+        myPie.invalidate();
+        /*Puts the graph into an alert dialog---------------------------*/
+        AlertDialog ad = new AlertDialog.Builder(DescriptionsActivity.this).setView(vi).create();
+        ad.show();
+        Display display =((WindowManager)getSystemService(DescriptionsActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
+        int width = display.getWidth();
+        int height=display.getHeight();
+        ad.getWindow().setLayout(width*9/10,height/2);
+        /*-------------------------------------------------------------*/
     }
 
     private class AsyncRetrieve extends AsyncTask<String, String, String> {

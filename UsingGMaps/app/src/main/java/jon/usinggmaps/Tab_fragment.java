@@ -107,7 +107,7 @@ public class Tab_fragment extends Fragment  {
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL("http://72.139.72.18/301/getLongLat.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
+                url = new URL("http://72.139.72.18/301/getLongLat.php?type=All&x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
