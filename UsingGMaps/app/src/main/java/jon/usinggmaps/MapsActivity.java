@@ -1,18 +1,23 @@
 package jon.usinggmaps;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -22,22 +27,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import jon.usinggmaps.listeners.PlaceSelectListener;
@@ -47,56 +46,121 @@ import static android.content.ContentValues.TAG;
 public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         ListingsAdapter.ItemClickListener, OnMapReadyCallback {
 
-
-    private ArrayList<BasicCharity> basicCharities;
-    private ListingsAdapter basicCharitiesAdapter;
-    private RecyclerView basicCharitiesView;
-
-
+    public static Location location;
     private GoogleMap mMap;
-    private String neLat;
-    private String neLng;
-    private String swLat;
-    private String swLng;
-    private LatLngBounds bounds;
-    private String s[];
+    private ArrayList<Tab_fragment> charityTypes;
+    private String[] charityTypesNames = {"All", "Community", "Education", "Health", "Religion", "Welfare"};
 
+    private DrawerLayout mDrawerLayout;
 
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 15000;
+    FloatingActionButton myLocation;
+    private final int numberOfCharityTypes = 6;
+    private int currentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map);
+        setContentView(R.layout.main_drawer);
+        myLocation = (FloatingActionButton) findViewById(R.id.myLocationButton);
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        basicCharities = new ArrayList<BasicCharity>();
-        basicCharitiesView = findViewById(R.id.charitiesView);
-        basicCharitiesView.setHasFixedSize(true);
-
-
-        LinearLayoutManager lm = new LinearLayoutManager(this);
-        basicCharitiesView.setLayoutManager(lm);
-        basicCharitiesAdapter = new ListingsAdapter(this, basicCharities);
-        basicCharitiesView.setAdapter(basicCharitiesAdapter);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView myNavView = findViewById(R.id.nav);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        actionbar.setDisplayShowTitleEnabled(false);
 
 
 
+        myNavView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                }
+        );
+
+
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        charityTypes = new ArrayList<Tab_fragment>();
+        for(int i = 0; i< numberOfCharityTypes; i ++){
+            Tab_fragment temp = new Tab_fragment();
+            charityTypes.add(temp);
+            temp.setQueryURL(charityTypesNames[i]);
+            adapter.addFragment(temp, charityTypesNames[i]);
+        }
+
+        ViewPager mViewPager =  findViewById(R.id.container);
+        mViewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab){
+                int position = tab.getPosition();
+                currentPosition = position;
+                charityTypes.get(position).runSearch();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+
+        layout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                Toolbar toolbar1 = findViewById(R.id.toolbar);
+                if(newState == SlidingUpPanelLayout.PanelState.EXPANDED || newState == SlidingUpPanelLayout.PanelState.DRAGGING){
+                    toolbar1.setVisibility(View.GONE);
+                }
+                else if(newState == SlidingUpPanelLayout.PanelState.COLLAPSED){
+                    toolbar1.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+        });
     }
 
-    private void searchNearby(){
 
-        bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-        neLat = Double.toString(bounds.northeast.latitude);
-        neLng = Double.toString(bounds.northeast.longitude);
-        swLat = Double.toString(bounds.southwest.latitude);
-        swLng = Double.toString(bounds.southwest.longitude);
-        basicCharities.clear();
-        mMap.clear();
-        new AsyncRetrieve().execute();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void redoSearch(View view){
@@ -104,28 +168,35 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         searchNearby();
     }
 
-
+    public void toMyLocation(View view){
+        LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+        mMap.animateCamera(cameraUpdate);
+    }
 
     @Override
     public void onMapReady(final GoogleMap Map) {
         mMap = Map;
+        mMap.setPadding(40,40,40,200);
         mMap.setMinZoomPreference(15);
-        searchNearby();
-
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectListener(mMap));
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
             mMap.setOnMyLocationButtonClickListener(this);
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 14));
-                                MapsActivity.this.basicCharitiesAdapter.setLocation(location);
+                        public void onSuccess(Location userlocation) {
+                            if (userlocation != null) {
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userlocation.getLatitude(), userlocation.getLongitude()), 15));
+                                location = userlocation;
+                                myLocation.setVisibility(View.VISIBLE);
+                                searchNearby();
                             }
                             else {
                                 GoogleApiClient googleApiClient = new GoogleApiClient.Builder(MapsActivity.this).addApi(LocationServices.API).build();
@@ -154,11 +225,25 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
     }
 
+
+
     @Override
     public boolean onMyLocationButtonClick() {
         return false;
     }
 
+
+    private void searchNearby(){
+        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
+        for(Tab_fragment tab_fragment : charityTypes){
+            tab_fragment.setMapValues(mMap,
+                    Double.toString(bounds.northeast.latitude),
+                    Double.toString(bounds.northeast.longitude),
+                    Double.toString(bounds.southwest.latitude),
+                    Double.toString(bounds.southwest.longitude));
+        }
+        charityTypes.get(currentPosition).runSearch();
+    }
     @Override
     public void onItemClick(View view, int position, String id, String name) {
         Intent startNewActivity = new Intent(this, DescriptionsActivity.class);
@@ -166,102 +251,4 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         startNewActivity.putExtra("Name", name);
         startActivity(startNewActivity);
     }
-
-
-    private class AsyncRetrieve extends AsyncTask<String, String, String> {
-        HttpURLConnection conn;
-        URL url = null;
-        ProgressDialog pdLoading = new ProgressDialog(MapsActivity.this,R.style.MyTheme);
-
-
-        // This method will interact with UI, here display loading message
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pdLoading.setCancelable(false);
-            pdLoading.show();
-        }
-
-        // This method does not interact with UI, You need to pass result to onPostExecute to display
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                // Enter URL address where your php file resides
-                url = new URL("http://72.139.72.18/301/getLongLat.php?x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
-
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return e.toString();
-            }
-            try {
-                // Setup HttpURLConnection class to send and receive data from php
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(READ_TIMEOUT);
-                conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                conn.setRequestMethod("GET");
-                // setDoOutput to true as we recieve data from json file
-                conn.setDoOutput(true);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-                return e1.toString();
-            }
-            try {
-                int response_code = conn.getResponseCode();
-
-                // Check if successful connection made
-                if (response_code == HttpURLConnection.HTTP_OK) {
-
-                    // Read data sent from server
-                    InputStream input = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    StringBuilder result = new StringBuilder();
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-                    // Pass data to onPostExecute method
-                    return (result.toString());
-                } else {
-                    return ("unsuccessful");
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return e.toString();
-            } finally {
-                conn.disconnect();
-            }
-        }
-
-        // This method will interact with UI, display result sent from doInBackground method
-        @Override
-        protected void onPostExecute(String result) {
-            pdLoading.dismiss();
-            if(!result.isEmpty()){
-                String a[] = result.split("~");
-                for(String i : a){
-                    s = i.split("@@@");
-
-                    LatLng temp = new LatLng(Float.parseFloat(s[9]),Float.parseFloat(s[10]));
-                    String adr = s[2] + "\t" + s[3]  + ",\t" + s[4] +",\t"+ s[5] + ",\t" + s[6];
-                    basicCharities.add(new BasicCharity(s[0],s[1],adr,s[7],s[8], temp, "N/A"));
-
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(temp);
-                    markerOptions.title(s[1]);
-                    mMap.addMarker(markerOptions);
-                }
-
-                basicCharitiesAdapter.notifyDataSetChanged();
-
-            }
-
-        }
-    }
-
-
-
-
 }

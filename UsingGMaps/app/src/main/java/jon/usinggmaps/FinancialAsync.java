@@ -74,8 +74,8 @@ public class FinancialAsync extends Observable {
 
 
                 if(date==null){
-                    url = new URL("http://72.139.72.18/getData.php/?id=" + charityID);
-                }else{url = new URL("http://72.139.72.18/getData.php/?id=" + charityID+ "&date=" + date);}
+                    url = new URL("http://72.139.72.18/301/getData.php/?id=" + charityID);
+                }else{url = new URL("http://72.139.72.18/301/getData.php/?id=" + charityID+ "&date=" + date);}
                 //
 
             } catch (MalformedURLException e) {

@@ -3,7 +3,6 @@ package jon.usinggmaps;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
@@ -35,6 +33,7 @@ import java.util.ArrayList;
 import jon.usinggmaps.listeners.DirectionListener;
 
 import static android.content.ContentValues.TAG;
+import static jon.usinggmaps.MapsActivity.location;
 
 public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHolder> {
 
@@ -46,7 +45,6 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     private ArrayList<BasicCharity> basicCharities;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private Location location;
     public ListingsAdapter(Context context, ArrayList<BasicCharity> basicCharities) {
         this.basicCharities = basicCharities;
         this.mClickListener = (ItemClickListener)context;
@@ -87,10 +85,6 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
             holder.myImageView.setImageBitmap(basicCharities.get(position).getLogo());
         }
 
-    }
-
-    public void setLocation(Location location){
-        this.location = location;
     }
 
     @Override
