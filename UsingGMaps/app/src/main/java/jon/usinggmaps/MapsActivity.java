@@ -6,6 +6,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,6 +44,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private ArrayList<Tab_fragment> charityTypes;
     private String[] charityTypesNames = {"All", "Commuity", "Education", "Health", "Religion", "Welfare"};
 
+    FloatingActionButton myLocation;
     private final int numberOfCharityTypes = 6;
     private int currentPosition = 0;
 
@@ -49,6 +52,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
+        myLocation = (FloatingActionButton) findViewById(R.id.myLocationButton);
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -100,24 +105,34 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
     }
 
+    public void toMyLocation(View view){
+        LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+        mMap.animateCamera(cameraUpdate);
+    }
+
     @Override
     public void onMapReady(final GoogleMap Map) {
         mMap = Map;
+        mMap.setPadding(40,40,40,200);
         mMap.setMinZoomPreference(15);
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectListener(mMap));
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
             mMap.setOnMyLocationButtonClickListener(this);
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location userlocation) {
                             if (userlocation != null) {
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userlocation.getLatitude(), userlocation.getLongitude()), 14));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userlocation.getLatitude(), userlocation.getLongitude()), 15));
                                 location = userlocation;
+                                myLocation.setVisibility(View.VISIBLE);
                                 searchNearby();
                             }
                             else {
@@ -146,6 +161,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         }
 
     }
+
+
 
     @Override
     public boolean onMyLocationButtonClick() {
