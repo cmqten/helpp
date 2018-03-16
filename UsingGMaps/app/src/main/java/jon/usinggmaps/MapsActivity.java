@@ -7,11 +7,17 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,6 +50,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private ArrayList<Tab_fragment> charityTypes;
     private String[] charityTypesNames = {"All", "Commuity", "Education", "Health", "Religion", "Welfare"};
 
+    private DrawerLayout mDrawerLayout;
+
     FloatingActionButton myLocation;
     private final int numberOfCharityTypes = 6;
     private int currentPosition = 0;
@@ -51,13 +59,39 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map);
+        setContentView(R.layout.main_drawer);
         myLocation = (FloatingActionButton) findViewById(R.id.myLocationButton);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView myNavView = findViewById(R.id.nav);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        actionbar.setDisplayShowTitleEnabled(false);
 
+
+
+        myNavView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                }
+        );
 
 
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
@@ -98,6 +132,15 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public void redoSearch(View view){
         view.animate().rotationBy(360f);
