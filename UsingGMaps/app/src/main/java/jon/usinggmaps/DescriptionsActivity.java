@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -420,6 +421,9 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View vi = inflater.inflate(R.layout.pie_chart,null);
         PieChart myPie = (PieChart)vi.findViewById(R.id.myPie);
+        Display display =((WindowManager)getSystemService(DescriptionsActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
+        int width = display.getWidth();
+        int height=display.getHeight();
         /*------------------------------------------------------------*/
         /*Generates the portions of the pie chart and sets the data*/
         List<PieEntry> entries = new ArrayList<>();
@@ -438,13 +442,15 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 ,Color.parseColor("#E89F61")};
         set.setColors(mycolors);
         set.setDrawValues(false);
+        set.setSliceSpace(5f);
         PieData data = new PieData(set);
         /*-------------------------------------------------------------*/
         /*Sets up graph options---------------------------------------*/
-        myPie.setLayoutParams(new LinearLayout.LayoutParams(500,600));
+        myPie.setLayoutParams(new LinearLayout.LayoutParams(3*width/4,600));
         myPie.setData(data);
-        myPie.setExtraBottomOffset(40f);
+        //myPie.setExtraBottomOffset(70f);
         myPie.setDrawEntryLabels(false);
+
         Description description = new Description();
         description.setText(labels[4]+ basicYears.get(year));
         myPie.setDescription(description);
@@ -455,16 +461,16 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         legend.setWordWrapEnabled(true);
         legend.setDrawInside(false);
         legend.getCalculatedLineSizes();
+        //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         /*-----------------------------------------------------------*/
         //Updates the graph
         myPie.invalidate();
         /*Puts the graph into an alert dialog---------------------------*/
         AlertDialog ad = new AlertDialog.Builder(DescriptionsActivity.this).setView(vi).create();
         ad.show();
-        Display display =((WindowManager)getSystemService(DescriptionsActivity.this.WINDOW_SERVICE)).getDefaultDisplay();
-        int width = display.getWidth();
-        int height=display.getHeight();
-        ad.getWindow().setLayout(width*9/10,height/2);
+        ad.getWindow().setLayout(6*width/7,3*height/5);
         /*-------------------------------------------------------------*/
     }
 
