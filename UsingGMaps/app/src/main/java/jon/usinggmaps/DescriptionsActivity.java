@@ -129,11 +129,11 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
     }
 
 
+
     public void onWatchAds(View view){
         pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
-
-
-
+        pdLoading.setCancelable(false);
+        pdLoading.show();
 
         mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
                 new AdRequest.Builder().build());

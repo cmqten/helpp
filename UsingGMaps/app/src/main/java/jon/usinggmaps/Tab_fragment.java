@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class Tab_fragment extends Fragment  {
@@ -69,9 +67,7 @@ public class Tab_fragment extends Fragment  {
     }
 
     public void setQueryURL(String queryURL){
-
         this.queryURL = queryURL;
-        this.queryURL = "All";
     }
 
 
@@ -165,7 +161,6 @@ public class Tab_fragment extends Fragment  {
             pdLoading.dismiss();
             if(!result.isEmpty()){
                 String a[] = result.split("~");
-                Log.d("Hey", Arrays.toString(a));
                 for(String i : a){
                     String s[] = i.split("@@@");
 

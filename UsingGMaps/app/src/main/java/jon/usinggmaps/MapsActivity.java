@@ -49,7 +49,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     public static Location location;
     private GoogleMap mMap;
     private ArrayList<Tab_fragment> charityTypes;
-    private String[] charityTypesNames = {"All", "Community", "Education", "Health", "Religion", "Welfare"};
+    private String[] charityTypesNames = {"All", "Community", "Education", "Health", "Religion", "Welfare", "Other"};
 
     private DrawerLayout mDrawerLayout;
 
