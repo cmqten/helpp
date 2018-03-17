@@ -54,14 +54,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="jon.usinggmaps.MapsActivity" />
         </activity>
-        <activity
-            android:name=".financeActivity"
-            android:label="@string/title_activity_finance"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DescriptionActivity" />
-        </activity>
 
         <activity android:name=".SignUpActivity" >
         </activity>
