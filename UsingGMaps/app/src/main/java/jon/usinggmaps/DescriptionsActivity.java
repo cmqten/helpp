@@ -433,10 +433,11 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         Float revNonRecDon = Float.parseFloat(myMap.get(portions[2]));
         Float revRecDon = Float.parseFloat(myMap.get(portions[3]));
         Float revOther = Float.parseFloat(myMap.get(portions[4]));
-        entries.add(new PieEntry(revGvnmtFnd / revTot,labels[0]));
-        entries.add(new PieEntry(revNonRecDon / revTot,labels[1]));
-        entries.add(new PieEntry(revRecDon / revTot,labels[2]));
-        entries.add(new PieEntry(revOther / revTot, labels[3]));
+        //ArrayList<String> newLabels = calculateWidth(labels);
+        entries.add(new PieEntry(revGvnmtFnd / revTot,labels[0] + "     |   $"+revGvnmtFnd));
+        entries.add(new PieEntry(revNonRecDon / revTot,labels[1] + "     |   $"+revNonRecDon));
+        entries.add(new PieEntry(revRecDon / revTot,labels[2] + "     |   $"+revRecDon));
+        entries.add(new PieEntry(revOther / revTot, labels[3] + "     |   $"+revOther));
         PieDataSet set = new PieDataSet(entries, "");
         int mycolors[] = {Color.parseColor("#68E861"),Color.parseColor("#61ABE8"),Color.parseColor("#E261E8")
                 ,Color.parseColor("#E89F61")};
@@ -464,6 +465,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        legend.setXEntrySpace((float)width/2);
         /*-----------------------------------------------------------*/
         //Updates the graph
         myPie.invalidate();
@@ -473,7 +475,24 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         ad.getWindow().setLayout(6*width/7,3*height/5);
         /*-------------------------------------------------------------*/
     }
-
+    public ArrayList<String> calculateWidth(String[] portions){
+        int max = 0;
+        ArrayList<String> myNewLabels = new ArrayList<>();
+        for(String s : portions){
+            if(s.length()>max){
+                max = s.length();
+            }
+        }
+        for(String s: portions){
+            StringBuilder sb = new StringBuilder();
+            sb.append(s);
+            while(s.length()<max){
+                sb.append(" ");
+            }
+            myNewLabels.add(sb.toString());
+        }
+        return myNewLabels;
+    }
     private class AsyncRetrieve extends AsyncTask<String, String, String> {
         ProgressDialog pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
         HttpURLConnection conn;
