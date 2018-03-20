@@ -2,6 +2,7 @@ package jon.usinggmaps;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class FinancialAsync extends Observable {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pdLoading.setMessage("\tGetting financial data...");
+            pdLoading.setMessage("\tGetting data...");
             pdLoading.setCancelable(false);
             pdLoading.show();
         }
@@ -129,16 +130,20 @@ public class FinancialAsync extends Observable {
         protected void onPostExecute(String result) {
 
             pdLoading.dismiss();
-            if(!result.isEmpty()){
-                String[] data = result.toString().split("!");
-                for (String s: data) {
-                    String[] split = s.split(":");
-                    //dataHash.clear();
-                    dataHash.put(split[0],split[1]);
-                }
-                notifyObservers();
-            }
 
+            try {
+                if (!result.isEmpty()) {
+                    String[] data = result.toString().split("!");
+                    for (String s : data) {
+                        String[] split = s.split(":");
+                        //dataHash.clear();
+                        dataHash.put(split[0], split[1]);
+                    }
+                    notifyObservers();
+                }
+            } catch (Exception e) {
+                Log.v(TAG, e.toString());
+            }
         }
     }
 
