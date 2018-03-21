@@ -165,6 +165,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         prepareSearchLogic();
     }
 
+    boolean focused = false;
     private void prepareSearchLogic() {
         nameSearch = findViewById(R.id.search_name);
         autocompleteHolder = findViewById(R.id.autocomplete_holder);
@@ -176,31 +177,21 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
             public void onClick(View view) {
                 autocompleteHolder.setVisibility(View.VISIBLE);
                 nameSearch.onActionViewExpanded();
-                System.out.println("onclick");
-            }
-        });
-        nameSearch.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                autocompleteHolder.setVisibility(View.VISIBLE);
-                nameSearch.onActionViewExpanded();
-                System.out.println("ONSEARCHCLICK");
             }
         });
         nameSearch.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    autocompleteHolder.setVisibility(View.VISIBLE);
-                } else {
+                if (!b) {
                     autocompleteHolder.setVisibility(View.GONE);
+                } else {
+                    autocompleteHolder.setVisibility(View.VISIBLE);
                 }
             }
         });
         nameSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                //nameSearch.onActionViewCollapsed();
                 nameSearch.clearFocus();
                 nameSearch.setQuery(s, false);
                 return false;
@@ -209,14 +200,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
             @Override
             public boolean onQueryTextChange(String s) {
                 return false;
-            }
-        });
-        nameSearch.setIconifiedByDefault(true);
-        nameSearch.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                System.out.println("===ON CLOSE===");
-                return true;
             }
         });
     }
