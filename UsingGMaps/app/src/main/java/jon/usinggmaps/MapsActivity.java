@@ -85,7 +85,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
-
+                        switch (menuItem.getItemId()) {
+                            case R.id.createEvent:
+                                Intent i = new Intent(MapsActivity.this, createEventActivity.class);
+                                MapsActivity.this.startActivity(i);
+                                break;
+                        }
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
 
@@ -150,6 +155,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
             }
         });
+
     }
 
 
@@ -159,6 +165,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

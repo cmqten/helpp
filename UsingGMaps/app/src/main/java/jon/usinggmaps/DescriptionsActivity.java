@@ -160,7 +160,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 //if(year!="2018"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(0));}
                 category = 0;
                 setColorOfButt(R.id.button1);
-
+                setColorOfButtYear(-1);
             }
         });
 
@@ -171,6 +171,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 //if(year!="2017"){}
                 category = 1;
                 setColorOfButt(R.id.button2);
+                setColorOfButtYear(-1);
             }
         });
 
@@ -180,6 +181,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 //if(year!="2016"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(2));}
                 category = 2;
                 setColorOfButt(R.id.button3);
+                setColorOfButtYear(-1);
             }
         });
 
@@ -189,6 +191,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                // if(year!="2015"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(3));}
                 category = 3;
                 setColorOfButt(R.id.button4);
+                setColorOfButtYear(-1);
 
             }
         });
@@ -196,42 +199,57 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         findViewById(R.id.eight).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(0));
-                year = 0;
+                setColorOfButtYear(R.id.eight);
                 if(category==-1){category=0;}
+                year = 0;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(0));
+
+
             }
         });
         findViewById(R.id.seven).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(1));
-                year = 1;
+                setColorOfButtYear(R.id.seven);
                 if(category==-1){category=0;}
+                year = 1;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(1));
+
+
             }
         });
         findViewById(R.id.six).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(2));
-                year = 2;
+                setColorOfButtYear(R.id.six);
                 if(category==-1){category=0;}
+                year = 2;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(2));
+
+
             }
         });
         findViewById(R.id.five).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(3));
-                year = 3;
+                setColorOfButtYear(R.id.five);
                 if(category==-1){category=0;}
+                year = 3;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(3));
+
+
             }
         });
 
         findViewById(R.id.four).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(4));
-                year = 4;
+                setColorOfButtYear(R.id.four);
                 if(category==-1){category=0;}
+                year = 4;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(4));
+
+
             }
         });
     }
@@ -248,10 +266,16 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         }
 
     }
-    public void setTextOfButt(){
-
-
-
+    public void setColorOfButtYear(int id){
+        int[] myIds = {R.id.four, R.id.five,R.id.six,R.id.seven,R.id.eight};
+        for(int ids : myIds){
+            Button myBut1 = (Button)findViewById(ids);
+            if(ids==id){
+                myBut1.setTextColor(getResources().getColor(R.color.Orange));
+            }else{
+                myBut1.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+        }
 
     }
 
