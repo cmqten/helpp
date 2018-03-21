@@ -6,6 +6,8 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -15,10 +17,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -56,6 +62,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     FloatingActionButton myLocation;
     private final int numberOfCharityTypes = 6;
     private int currentPosition = 0;
+
+    SearchView nameSearch;
+    LinearLayout autocompleteHolder;
+    PlaceAutocompleteFragment autocompleteFragment;
+    ToggleButton toggleCharityEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +161,64 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
             }
         });
+
+        prepareSearchLogic();
+    }
+
+    private void prepareSearchLogic() {
+        nameSearch = findViewById(R.id.search_name);
+        autocompleteHolder = findViewById(R.id.autocomplete_holder);
+        toggleCharityEvent = findViewById(R.id.toggle2);
+        autocompleteHolder.setVisibility(View.GONE);
+
+        nameSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autocompleteHolder.setVisibility(View.VISIBLE);
+                nameSearch.onActionViewExpanded();
+                System.out.println("onclick");
+            }
+        });
+        nameSearch.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autocompleteHolder.setVisibility(View.VISIBLE);
+                nameSearch.onActionViewExpanded();
+                System.out.println("ONSEARCHCLICK");
+            }
+        });
+        nameSearch.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    autocompleteHolder.setVisibility(View.VISIBLE);
+                } else {
+                    autocompleteHolder.setVisibility(View.GONE);
+                }
+            }
+        });
+        nameSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //nameSearch.onActionViewCollapsed();
+                nameSearch.clearFocus();
+                nameSearch.setQuery(s, false);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        nameSearch.setIconifiedByDefault(true);
+        nameSearch.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                System.out.println("===ON CLOSE===");
+                return true;
+            }
+        });
     }
 
 
@@ -180,10 +249,20 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         mMap.setPadding(40,40,40,200);
         mMap.setMinZoomPreference(15);
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectListener(mMap));
+
+
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    nameSearch.onActionViewCollapsed();
+                    autocompleteHolder.setVisibility(View.GONE);
+                }
+            });
 
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
