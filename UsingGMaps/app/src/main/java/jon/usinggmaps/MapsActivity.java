@@ -52,6 +52,8 @@ import static android.content.ContentValues.TAG;
 public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         ListingsAdapter.ItemClickListener, OnMapReadyCallback {
 
+    public static final String SEARCH_FILTER_HINT = "Search Charity";
+
     public static Location location;
     private GoogleMap mMap;
     private ArrayList<Tab_fragment> charityTypes;
@@ -165,12 +167,21 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         prepareSearchLogic();
     }
 
-    boolean focused = false;
+    /**
+     * Use this to grab the filter.
+     * @return
+     */
+    public String getFilterField() {
+        return nameSearch.getQuery().toString();
+    }
+
     private void prepareSearchLogic() {
         nameSearch = findViewById(R.id.search_name);
         autocompleteHolder = findViewById(R.id.autocomplete_holder);
         toggleCharityEvent = findViewById(R.id.toggle2);
         autocompleteHolder.setVisibility(View.GONE);
+
+        nameSearch.setQueryHint(SEARCH_FILTER_HINT);
 
         nameSearch.setOnClickListener(new View.OnClickListener() {
             @Override
