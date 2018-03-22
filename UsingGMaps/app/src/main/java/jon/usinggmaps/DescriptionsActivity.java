@@ -73,7 +73,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
     private static final String TAG = "descriptionGetter";
 
     // set a flag for if we are using events as data
-    private boolean usingActivities = false;
+    private boolean usingActivities = true;
 
     TextView charityNameBox;
     TextView textPHP;
@@ -255,6 +255,9 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
             }
         });
+
+        // call financial data, so we can populate descriptions
+        new FinancialAsync(id,new ProgressDialog(activity),obs,null);
     }
 
     public void setColorOfButt(int id){
@@ -443,7 +446,14 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 break;
         }
 
+        // update summary with on going data if needed
         if(usingActivities){
+            if(!myMap.containsKey("ongoingPrograms")){
+                String displayText = "Ongoing Programs:\n " + gSummary;
+                textPHP.setText(displayText);
+                return;
+            }
+
             if(!myMap.get("ongoingPrograms").isEmpty()) {
                 String displayText = "Ongoing Programs:\n " + myMap.get("ongoingPrograms");
                 textPHP.setText(displayText);
@@ -610,6 +620,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 encodedCharity = URLEncoder.encode(charity, "UTF-8");
             }catch(Exception e){
                 error = e.toString();
+                Log.v(TAG, error);
                 return e.toString();
             }
 
@@ -640,18 +651,16 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
                     // check if a better summary was gotten
                     if(data.getString("flag").equals("set")){
+
+                        // if it does
+                        usingActivities = false;
+
                         summary = data.getString("SummaryBetter").
                                 replace("\n\n", "$*#$").
                                 replace("\n","").
                                 replace("$*#$", "\n")
                                 .replaceAll(" +", " ");
                     }else{
-
-                        // try and get on going events
-                        usingActivities = true;
-
-                        // try and get on going events
-                        new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(0));
 
                         // keep the bad google summary for now
                         gSummary = data.getString("Summary");
@@ -673,6 +682,11 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                     logoLink = data.getString("Image");
                     if (!logoLink.toLowerCase().contains("scontent")){
                         logoLink = logoLink + "?size=500";
+                    }
+
+                    // don't show chimp links
+                    if (logoLink.contains("chimp.net")){
+                        logoLink = null;
                     }
 
                     try {

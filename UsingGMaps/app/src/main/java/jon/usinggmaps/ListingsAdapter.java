@@ -163,9 +163,15 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                         Log.v(TAG, basicCharities.get(arguments[0]).getName().trim() + ", Link: "+result);
                     }
 
+                    // check if logo is chimp
+                    // don't show chimp links
+                    if (result.contains("chimp.net")){
+                        result = "";
+                    }
+
                     if (result.equals("None")) {
                         // server error
-                        Log.v(TAG, "Server error, Could not get charity");
+                        Log.v(TAG, "Server error, Could not get logo for charity");
                     } else {
                         // get img from link
 
