@@ -7,15 +7,20 @@
     tools:context="jon.usinggmaps.LoginActivity">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="508dp"
         android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="3dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView"
@@ -42,11 +47,20 @@
             android:hint="@string/password_hint"
             android:inputType="textPassword" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
         <Button
             android:id="@+id/buttonSignin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/roundbuttonlightblue"
             android:text="Log in" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
 
         <TextView
             android:id="@+id/textViewSignUp"
@@ -57,10 +71,15 @@
             android:textAlignment="center"
             tools:layout_margin="@dimen/activity_vertical_margin" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
         <Button
             android:id="@+id/skipLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/roundbuttonbeige"
             android:onClick="skipLogin"
             android:text="Skip Login" />
     </LinearLayout>

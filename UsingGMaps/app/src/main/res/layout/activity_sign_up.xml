@@ -25,6 +25,7 @@
             android:layout_height="25dp"
             android:background="@drawable/back_button"
 
+            android:onClick="onBack"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="4dp" />
 

@@ -154,6 +154,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
+    public void onBack(View view){
+        onBackPressed();
+    }
     // google sign in method
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);

@@ -10,6 +10,19 @@
         android:orientation="vertical"
         android:layout_height="match_parent"
         >
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:text="New Event"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            android:lineSpacingExtra="8dp"
+            android:padding="@dimen/activity_horizontal_margin" />
+
         <EditText
             android:id="@+id/EventName"
             android:layout_height="wrap_content"
@@ -243,6 +256,7 @@
             android:id="@+id/ButtonSendFeedback"
             android:layout_height="wrap_content"
             android:text="@string/event_submit"
+            android:background="@drawable/roundbuttongreen"
             android:onClick="createEvent"
             android:layout_gravity="center"
             android:layout_width="fill_parent">
