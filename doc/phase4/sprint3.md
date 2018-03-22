@@ -26,21 +26,30 @@ In this sprint, we focused on finalizing the app by integrating the multiple pie
 #### Scrape logo and website link for each charity
 - Assigned to : Edmond Umolu
 - Tasks :
+  - Use nodejs to cache server responses
+  - adjust code on android
 #### Integrate multiple servers that serve content into one server
 - Assigned to : Edmond Umolu, Shuprio Shourov
 - Tasks :
+  - talk to rio about server access
+  - put code on rio's server
 #### Visualize revenue, expenses, compensation data, and activities for each charity
 - Assigned to : Shuprio Shourov
 - Tasks :
 #### Display upcoming events for a chosen charity
 - Assigned to : Jonathan Wang, Kenny Chen
 - Tasks :
+  - Make a new events page
+  - Integrate the event into the database
 #### Add category picker button on search bar, options for selecting categories pop up when pressed
 - Assigned to : Jonathan Wang
 - Tasks :
 #### Integrate google admob as a feature in the app 
 - Assigned to : Jonathan Wang
 - Tasks :
+  - figure out how to use admob
+  - create the watch ads activity
+  - create the different fragments for the different types of ads people would watch
 #### Add category picker button on search bar, options for selecting categories pop up when pressed
 - Assigned to : Jonathan Wang
 - Tasks :

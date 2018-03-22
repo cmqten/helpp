@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categorytypelist">
+        <item>@string/category1</item>
+        <item>@string/category2</item>
+        <item>@string/category3</item>
+        <item>@string/category4</item>
+        <item>@string/category5</item>
+    </string-array>
+</resources>

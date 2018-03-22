@@ -160,7 +160,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 //if(year!="2018"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(0));}
                 category = 0;
                 setColorOfButt(R.id.button1);
-
+                setColorOfButtYear(-1);
             }
         });
 
@@ -171,6 +171,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 //if(year!="2017"){}
                 category = 1;
                 setColorOfButt(R.id.button2);
+                setColorOfButtYear(-1);
             }
         });
 
@@ -180,6 +181,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 //if(year!="2016"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(2));}
                 category = 2;
                 setColorOfButt(R.id.button3);
+                setColorOfButtYear(-1);
             }
         });
 
@@ -189,6 +191,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                // if(year!="2015"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(3));}
                 category = 3;
                 setColorOfButt(R.id.button4);
+                setColorOfButtYear(-1);
 
             }
         });
@@ -196,42 +199,57 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         findViewById(R.id.eight).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(0));
-                year = 0;
+                setColorOfButtYear(R.id.eight);
                 if(category==-1){category=0;}
+                year = 0;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(0));
+
+
             }
         });
         findViewById(R.id.seven).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(1));
-                year = 1;
+                setColorOfButtYear(R.id.seven);
                 if(category==-1){category=0;}
+                year = 1;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(1));
+
+
             }
         });
         findViewById(R.id.six).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(2));
-                year = 2;
+                setColorOfButtYear(R.id.six);
                 if(category==-1){category=0;}
+                year = 2;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(2));
+
+
             }
         });
         findViewById(R.id.five).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(3));
-                year = 3;
+                setColorOfButtYear(R.id.five);
                 if(category==-1){category=0;}
+                year = 3;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(3));
+
+
             }
         });
 
         findViewById(R.id.four).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(4));
-                year = 4;
+                setColorOfButtYear(R.id.four);
                 if(category==-1){category=0;}
+                year = 4;
+                new FinancialAsync(id,new ProgressDialog(activity),obs,dates.get(4));
+
+
             }
         });
     }
@@ -248,19 +266,24 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         }
 
     }
-    public void setTextOfButt(){
-
-
-
-
+    public void setColorOfButtYear(int id){
+        int[] myIds = {R.id.four, R.id.five,R.id.six,R.id.seven,R.id.eight};
+        for(int ids : myIds){
+            Button myBut1 = (Button)findViewById(ids);
+            if(ids==id){
+                myBut1.setTextColor(getResources().getColor(R.color.Orange));
+            }else{
+                myBut1.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+        }
 
     }
 
-
     public void onWatchAds(View view){
         pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
-        pdLoading.setCancelable(false);
-        pdLoading.show();
+
+
+
 
         mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
                 new AdRequest.Builder().build());
@@ -476,7 +499,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         ad.getWindow().setLayout(6*width/7,3*height/5);
         /*-------------------------------------------------------------*/
     }
-    /*public ArrayList<String> calculateWidth(String[] portions){
+    public ArrayList<String> calculateWidth(String[] portions){
         int max = 0;
         ArrayList<String> myNewLabels = new ArrayList<>();
         for(String s : portions){
@@ -493,7 +516,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
             myNewLabels.add(sb.toString());
         }
         return myNewLabels;
-    }*/
+    }
     private class AsyncRetrieve extends AsyncTask<String, String, String> {
         ProgressDialog pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
         HttpURLConnection conn;
@@ -567,7 +590,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
 
             // my stuff
-            String base = "http://72.139.72.18:4000/getData/";
+            String base = "http://6hax.ca:3000/search/";
             String encodedCharity;
 
             try {
@@ -577,9 +600,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 return e.toString();
             }
 
-            // add id and charity name
-            String myUrl = base + id + "/" + encodedCharity;
-
+            String myUrl = base + encodedCharity;
             try {
 
                 HttpClient httpclient = new DefaultHttpClient();
@@ -602,21 +623,15 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                         return ("none");
                     }
 
-                    summary = data.getString("Summary");
-                    //logoLink = "https://logo.clearbit.com/" + data.getString("domain")+"?size=500";
-
-                    // check if its a facebook link, before we add size param
-                    logoLink = data.getString("Image");
-                    if (!logoLink.toLowerCase().contains("scontent")){
-                        logoLink = logoLink + "?size=500";
-                    }
+                    summary = data.getString("summary");
+                    logoLink = "https://logo.clearbit.com/" + data.getString("domain")+"?size=500";
 
                     try {
                         // get img from link
                         bmp = BitmapFactory.decodeStream(new URL(logoLink).openConnection().getInputStream());
                     }catch(Exception e){
                         Log.v(TAG, "Error setting logo link: " + e.toString());
-                        Log.v(TAG, "Logo link: " + logoLink);
+                        Log.v(TAG, "Logo link: " + logoLink.toString());
                     }
 
                     out.close();
@@ -683,4 +698,5 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
         }
     }
+
 }
