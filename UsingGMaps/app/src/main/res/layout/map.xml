@@ -50,20 +50,44 @@
             sothree:layout_constraintTop_toTopOf="parent"
             sothree:layout_constraintVertical_bias="0.041">
 
+            <android.support.v7.widget.SearchView
+                android:id="@+id/search_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false">
+
+            </android.support.v7.widget.SearchView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/autocomplete_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/roundbuttonwhite"
+            android:orientation="vertical"
+            sothree:layout_constraintEnd_toEndOf="parent"
+            sothree:layout_constraintStart_toStartOf="parent"
+            sothree:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
             <fragment
                 android:id="@+id/place_autocomplete_fragment"
                 android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="48dp"
+
+                android:layout_weight="1"
 
                 android:background="@android:color/transparent"
-
-                tools:layout_editor_absoluteY="8dp" />
+                tools:layout_editor_absoluteX="111dp"
+                tools:layout_editor_absoluteY="296dp" />
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/myLocationButton"
-            android:visibility="gone"
             android:layout_width="42dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -74,6 +98,7 @@
             android:focusable="true"
             android:onClick="toMyLocation"
             android:src="@android:drawable/ic_menu_mylocation"
+            android:visibility="gone"
             sothree:backgroundTint="@color/LimeGreen"
             sothree:fabSize="mini"
             sothree:layout_constraintBottom_toTopOf="@+id/floatingActionButton3"
@@ -105,13 +130,11 @@
             sothree:srcCompat="@android:drawable/ic_menu_rotate" />
 
 
-
         <ToggleButton
-            android:id="@+id/toggle"
+            android:id="@+id/toggle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -120,7 +143,7 @@
             android:textOn="@string/Events"
             sothree:layout_constraintEnd_toEndOf="parent"
             sothree:layout_constraintStart_toStartOf="parent"
-            sothree:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            sothree:layout_constraintTop_toBottomOf="@+id/autocomplete_holder" />
 
     </android.support.constraint.ConstraintLayout>
 

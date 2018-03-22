@@ -1,4 +1,3 @@
-
 package jon.usinggmaps;
 
 import android.Manifest;
@@ -16,10 +15,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -44,6 +46,7 @@ import jon.usinggmaps.listeners.PlaceSelectListener;
 
 import static android.content.ContentValues.TAG;
 
+
 public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         ListingsAdapter.ItemClickListener, OnMapReadyCallback {
 
@@ -57,6 +60,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     FloatingActionButton myLocation;
     private final int numberOfCharityTypes = 6;
     private int currentPosition = 0;
+
+    SearchView nameSearch;
+    LinearLayout autocompleteHolder;
+    PlaceAutocompleteFragment autocompleteFragment;
+    ToggleButton toggleCharityEvent;
+
+    public static final String SEARCH_FILTER_HINT = "Search Charity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +169,55 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
             }
         });
+        prepareSearchLogic();
+    }
+
+    /**
+     * Use this to grab the filter.
+     * @return
+     */
+    public String getFilterField() {
+        return nameSearch.getQuery().toString();
+    }
+
+    private void prepareSearchLogic() {
+        nameSearch = findViewById(R.id.search_name);
+        autocompleteHolder = findViewById(R.id.autocomplete_holder);
+        toggleCharityEvent = findViewById(R.id.toggle2);
+        autocompleteHolder.setVisibility(View.GONE);
+
+        nameSearch.setQueryHint(SEARCH_FILTER_HINT);
+
+        nameSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autocompleteHolder.setVisibility(View.VISIBLE);
+                nameSearch.onActionViewExpanded();
+            }
+        });
+        nameSearch.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b) {
+                    autocompleteHolder.setVisibility(View.GONE);
+                } else {
+                    autocompleteHolder.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        nameSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                nameSearch.clearFocus();
+                nameSearch.setQuery(s, false);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
 
@@ -187,6 +247,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         mMap = Map;
         mMap.setPadding(40,40,40,200);
         mMap.setMinZoomPreference(15);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng latLng) {
+                nameSearch.onActionViewCollapsed();
+                autocompleteHolder.setVisibility(View.GONE);
+            }
+        });
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -260,3 +328,4 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         startActivity(startNewActivity);
     }
 }
+
