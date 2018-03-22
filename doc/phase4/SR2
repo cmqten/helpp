@@ -1,0 +1,16 @@
+Participants: Kenny Chen, Jon Wang, Osemudian Umolu, Gary Liton, Carl Marquez, Shuprio Shourev
+
+Unfinished tasks:
+- Adding/creating events
+
+New User Stories:
+- Register with own email account and specifying first and last names
+- Display secondary search bar when user intends to search, bottom search bar acts as the location-filter, top search bar acts as the general-filter
+- Auto log in after logging in for the first time
+- "Skip log in screen" button
+- Add a profile sandwich button
+- Move refresh and center-on-location button to bottom
+- Add a charity/event toggle below search bar
+- Add category picker button on search bar, options for selecting categories pop up when pressed
+
+Communication is something that we need to really focus on in the next sprint as we integrate the different parts of the application into one application. Something that we need to improve on is cohesion of our work, as in the past 2 sprints, our work was disjoint, therefore, we have to spend extra effor this sprint to make every part work with each other.
