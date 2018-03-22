@@ -72,12 +72,15 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
     // loging data
     private static final String TAG = "descriptionGetter";
 
+    // set a flag for if we are using events as data
+    private boolean usingActivities = true;
+
     TextView charityNameBox;
     TextView textPHP;
     ImageView logoImg;
     String logoLink;
     String summary;
-    String title;
+    String gSummary;
     String charity;
     String error;
     ArrayList<String> basicYears;
@@ -252,6 +255,9 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
             }
         });
+
+        // call financial data, so we can populate descriptions
+        new FinancialAsync(id,new ProgressDialog(activity),obs,null);
     }
 
     public void setColorOfButt(int id){
@@ -439,6 +445,23 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 DrawPie(portions2,labels2);
                 break;
         }
+
+        // update summary with on going data if needed
+        if(usingActivities){
+            if(!myMap.containsKey("ongoingPrograms")){
+                String displayText = "Ongoing Programs:\n " + gSummary;
+                textPHP.setText(displayText);
+                return;
+            }
+
+            if(!myMap.get("ongoingPrograms").isEmpty()) {
+                String displayText = "Ongoing Programs:\n " + myMap.get("ongoingPrograms");
+                textPHP.setText(displayText);
+            }else{
+                String displayText = "Ongoing Programs:\n " + gSummary;
+                textPHP.setText(displayText);
+            }
+        }
     }
     public void DrawPie(String[] portions, String[] labels){
         /*Inflates the layout so we can use the PieChart*/
@@ -597,6 +620,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                 encodedCharity = URLEncoder.encode(charity, "UTF-8");
             }catch(Exception e){
                 error = e.toString();
+                Log.v(TAG, error);
                 return e.toString();
             }
 
@@ -625,13 +649,44 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
                         return ("none");
                     }
 
-                    summary = data.getString("Summary");
+                    // check if a better summary was gotten
+                    if(data.getString("flag").equals("set")){
+
+                        // if it does
+                        usingActivities = false;
+
+                        summary = data.getString("SummaryBetter").
+                                replace("\n\n", "$*#$").
+                                replace("\n","").
+                                replace("$*#$", "\n")
+                                .replaceAll(" +", " ");
+                    }else{
+
+                        // keep the bad google summary for now
+                        gSummary = data.getString("Summary");
+
+//                        // if you can't then post the regular google description
+//                        String ongoing = myMap.get("ongoingPrograms");
+//                        if (!ongoing.isEmpty()){
+//                            summary = ongoing;
+//                        }
+//                        // if you can't then post the regular google description
+//                        else{
+//                            summary = data.getString("Summary");
+//                        }
+                    }
+
                     //logoLink = "https://logo.clearbit.com/" + data.getString("domain")+"?size=500";
 
                     // check if its a facebook link, before we add size param
                     logoLink = data.getString("Image");
                     if (!logoLink.toLowerCase().contains("scontent")){
                         logoLink = logoLink + "?size=500";
+                    }
+
+                    // don't show chimp links
+                    if (logoLink.contains("chimp.net")){
+                        logoLink = null;
                     }
 
                     try {
