@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jon.usinggmaps.CharityTypeActivity">
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="347dp"
+        android:layout_height="89dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/roundbutton"
+        android:onClick="onNext"
+        android:text="@string/Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <GridLayout
+        android:id="@+id/gridLayout2"
+        android:layout_width="353dp"
+        android:layout_height="309dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:columnCount="2"
+        android:rowCount="3"
+        app:layout_constraintBottom_toTopOf="@+id/nextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/Community"
+            android:layout_width="175dp"
+            android:layout_height="91dp"
+            android:background="@drawable/roundbuttonred"
+            android:onClick="onCommunity"
+            android:text="@string/Community" />
+
+        <Button
+            android:id="@+id/Health"
+            android:layout_width="175dp"
+            android:layout_height="91dp"
+            android:background="@drawable/roundbuttongreen"
+            android:onClick="onHealth"
+            android:text="@string/Health" />
+
+        <Button
+            android:id="@+id/Education"
+            android:layout_width="175dp"
+            android:layout_height="91dp"
+            android:background="@drawable/roundbuttonyellow"
+            android:onClick="onEducation"
+            android:text="@string/Education" />
+
+        <Button
+            android:id="@+id/Religion"
+            android:layout_width="175dp"
+            android:layout_height="91dp"
+            android:background="@drawable/roundbuttonblue"
+            android:onClick="onReligion"
+            android:text="@string/Religion" />
+
+        <Button
+            android:id="@+id/Welfare"
+            android:layout_width="175dp"
+            android:layout_height="91dp"
+            android:background="@drawable/roundbuttonpurple"
+            android:onClick="onWelfare"
+            android:text="@string/Welfare" />
+
+        <Button
+            android:id="@+id/All"
+            android:layout_width="175dp"
+            android:layout_height="91dp"
+            android:background="@drawable/roundbuttonbeige"
+            android:onClick="onAll"
+            android:text="@string/All" />
+    </GridLayout>
+
+</android.support.constraint.ConstraintLayout>

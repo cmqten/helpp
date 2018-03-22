@@ -55,5 +55,26 @@
     <string name="facebook_app_id">159459124766043</string>
     <string name="fb_login_protocol_scheme">fb159459124766043</string>
 
-
+    <!--String variables for Event Form-->
+    <string name="form_description">Please fill in all parts of the form:</string>
+    <string name="name">Name:</string>
+    <string name="email">Email:</string>
+    <string name="cat">Event Category:</string>
+    <string name="description">Description:</string>
+    <string name="spinner_description">Category</string>
+    <string name="event_description">Details</string>
+    <string name="event_submit">Create</string>
+    <string name="form_user_name">Host Name</string>
+    <string name="form_email">Email</string>
+    <string name="category1">Category1</string>
+    <string name="category2">Category2</string>
+    <string name="category3">Category3</string>
+    <string name="category4">Category4</string>
+    <string name="category5">Category5</string>
+    <string name="event_name">Event Name</string>
+    <string name="form_location">Location</string>
+    <string name="form_timeS">Start Time</string>
+    <string name="form_dateS">Start Date</string>
+    <string name="form_timeE">End Time</string>
+    <string name="form_dateE">End Date</string>
 </resources>
