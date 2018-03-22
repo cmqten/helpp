@@ -36,6 +36,7 @@ In this sprint, we focused on finalizing the app by integrating the multiple pie
 #### Visualize revenue, expenses, compensation data, and activities for each charity
 - Assigned to : Shuprio Shourov
 - Tasks :
+  - Combine financial data and charity information
 #### Display upcoming events for a chosen charity
 - Assigned to : Jonathan Wang, Kenny Chen
 - Tasks :
