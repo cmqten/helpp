@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -119,36 +118,25 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         setContentView(R.layout.activity_descriptions);
 
 
-        charityNameBox = findViewById(R.id.CharityName);
-        textPHP = findViewById(R.id.textView);
-        logoImg = findViewById(R.id.logoImg);
-        webBtn = findViewById(R.id.webbutton);
-        donoBtn = findViewById(R.id.donobutton);
-        fbBtn = findViewById(R.id.fbbutton);
-        twBtn = findViewById(R.id.twbutton);
-        InstaBtn = findViewById(R.id.insta);
-        YTBtn = findViewById(R.id.youtube);
-
-
+        getViews();
         Intent fromTypeActivity = getIntent();
         name =  fromTypeActivity.getStringExtra("Name");
         id =  fromTypeActivity.getStringExtra("Id");
-
         charityNameBox.setText(name);
-
         //Make call to AsyncRetrieve
         new AsyncRetrieve().execute();
-
-        // set the charity that my function needs to get
-        this.charity = name;
         MobileAds.initialize(this,
                 "ca-app-pub-2650389847656790~2722040847");
-
         // Use an activity context to get the rewarded video instance.
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
 
-        /*----------------------On Create for Finance Stuff-----------------*/
+        setUpFinancial();
+
+    }
+
+    private void setUpFinancial(){
+         /*----------------------On Create for Finance Stuff-----------------*/
         activity = this;
         dates = new ArrayList<>();
         year = 0;
@@ -191,7 +179,7 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // if(year!="2015"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(3));}
+                // if(year!="2015"){new FinancialAsync("101676864RR0001",new ProgressDialog(activity),obs,dates.get(3));}
                 category = 3;
                 setColorOfButt(R.id.button4);
                 setColorOfButtYear(-1);
@@ -258,6 +246,20 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
         // call financial data, so we can populate descriptions
         new FinancialAsync(id,new ProgressDialog(activity),obs,null);
+
+    }
+
+    private void getViews(){
+        charityNameBox = findViewById(R.id.CharityName);
+        textPHP = findViewById(R.id.textView);
+        logoImg = findViewById(R.id.logoImg);
+        webBtn = findViewById(R.id.webbutton);
+        donoBtn = findViewById(R.id.donobutton);
+        fbBtn = findViewById(R.id.fbbutton);
+        twBtn = findViewById(R.id.twbutton);
+        InstaBtn = findViewById(R.id.insta);
+        YTBtn = findViewById(R.id.youtube);
+
     }
 
     public void setColorOfButt(int id){
@@ -287,14 +289,14 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
 
     public void onWatchAds(View view){
         pdLoading = new ProgressDialog(DescriptionsActivity.this,R.style.MyTheme);
-
-
-
-
         mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
                 new AdRequest.Builder().build());
     }
 
+
+    public void onBack(View view){
+        onBackPressed();
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -318,12 +320,16 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         return true;
     }
 
-    // rio's button functions
     public void gotoDonoBtn(View view) {goToUrl (donoURL);}
+
     public void gotoWebBtn(View view) {goToUrl (webURL);}
+
     public void gotoFbBtn(View view) {goToUrl (fbURL);}
+
     public void gotoTwBtn(View view) {goToUrl (twURL);}
+
     public void gotoInstaBtn(View view) {goToUrl (InstaURL);}
+
     public void gotoYTBtn(View view) {goToUrl (YTURL);}
 
     public void getDirections(View view){
@@ -337,9 +343,6 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
         startActivity(launchBrowser);
     }
-
-
-
 
     @Override
     public void onRewarded(RewardItem reward) {
@@ -449,17 +452,13 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         // update summary with on going data if needed
         if(usingActivities){
             if(!myMap.containsKey("ongoingPrograms")){
-                String displayText = "Ongoing Programs:\n " + gSummary;
-                textPHP.setText(displayText);
-                return;
+                textPHP.setText(gSummary);
             }
 
             if(!myMap.get("ongoingPrograms").isEmpty()) {
-                String displayText = "Ongoing Programs:\n " + myMap.get("ongoingPrograms");
-                textPHP.setText(displayText);
+                textPHP.setText(myMap.get("ongoingPrograms"));
             }else{
-                String displayText = "Ongoing Programs:\n " + gSummary;
-                textPHP.setText(displayText);
+                textPHP.setText(gSummary);
             }
         }
     }

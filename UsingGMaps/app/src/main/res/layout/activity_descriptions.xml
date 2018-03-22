@@ -43,7 +43,17 @@
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_collapseMode="pin"
-                />
+                >
+
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/back_button"
+                    android:onClick="onBack" />
+            </android.support.v7.widget.Toolbar>
+
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -74,6 +84,16 @@
                     android:textSize="30sp" />
             </LinearLayout>
 
+
+
+            <TextView
+                android:id="@+id/DescriptioTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28sp"
+                android:text="Description: "
+                android:padding="@dimen/activity_horizontal_margin" />
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
@@ -81,136 +101,146 @@
                 android:textSize="20sp"
                 android:lineSpacingExtra="8dp"
                 android:padding="@dimen/activity_horizontal_margin" />
-            <HorizontalScrollView
-                android:id="@+id/Horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
 
-                >
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/financeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28sp"
+                    android:text="Financial Overview: "
+                    android:padding="@dimen/activity_horizontal_margin" />
+                <HorizontalScrollView
+                    android:id="@+id/Horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    >
 
-                    <Button
-                        android:id="@+id/button1"
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/button1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/White"
+                            android:text="  Activities  "
+                            android:textColor="@color/Pink"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/button2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:background="@color/White"
+                            android:text="  Revenue  "
+                            android:textColor="@color/Shadow"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/button3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:background="@color/White"
+                            android:text="  Expenses  "
+                            android:textColor="@color/Shadow"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/button4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:background="@color/White"
+                            android:text="  Compensation  "
+                            android:textColor="@color/Shadow"
+                            android:textSize="20sp" />
+
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/Horizontal"
+                    >
+
+                    <TableRow
+                        android:id="@+id/TableRow01"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/White"
-                        android:text="  Activities  "
-                        android:textColor="@color/Pink"
-                        android:textSize="20sp" />
+                        android:layout_height="0dp"
+                        android:layout_weight="1" >
 
-                    <Button
-                        android:id="@+id/button2"
+                        <Button
+                            android:id="@+id/eight"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+                            android:layout_weight="1"
+                            android:background="@drawable/card_layout"
+                            android:text="2018"
+                            />
+
+                        <Button
+                            android:id="@+id/seven"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/card_layout"
+                            android:layout_weight="1"
+
+                            android:text="2017" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRow1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" >
 
-                        android:background="@color/White"
-                        android:text="  Revenue  "
-                        android:textColor="@color/Shadow"
-                        android:textSize="20sp" />
+                        <Button
+                            android:id="@+id/six"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/card_layout"
+                            android:text="2016"
+                            />
 
-                    <Button
-                        android:id="@+id/button3"
+                        <Button
+                            android:id="@+id/five"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/card_layout"
+                            android:text="2015"
+                            />
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" >
 
-                        android:background="@color/White"
-                        android:text="  Expenses  "
-                        android:textColor="@color/Shadow"
-                        android:textSize="20sp" />
-
-                    <Button
-                        android:id="@+id/button4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:background="@color/White"
-                        android:text="  Compensation  "
-                        android:textColor="@color/Shadow"
-                        android:textSize="20sp" />
+                        <Button
+                            android:id="@+id/four"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/card_layout"
+                            android:text="2014"
+                            />
 
 
-                </LinearLayout>
-
-            </HorizontalScrollView>
-            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/Horizontal"
-                >
-
-                <TableRow
-                    android:id="@+id/TableRow01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" >
-
-                    <Button
-                        android:id="@+id/eight"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        android:layout_weight="1"
-                        android:background="@drawable/card_layout"
-                        android:text="2018"
-                        />
-
-                    <Button
-                        android:id="@+id/seven"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/card_layout"
-                        android:layout_weight="1"
-
-                        android:text="2017" />
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" >
-
-                    <Button
-                        android:id="@+id/six"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/card_layout"
-                        android:text="2016"
-                       />
-
-                    <Button
-                        android:id="@+id/five"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/card_layout"
-                        android:text="2015"
-                       />
-                </TableRow>
-                <TableRow
-                    android:id="@+id/tableRow2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" >
-
-                    <Button
-                        android:id="@+id/four"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/card_layout"
-                        android:text="2014"
-                        />
+                    </TableRow>
+                </TableLayout>
 
 
-                </TableRow>
-            </TableLayout>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

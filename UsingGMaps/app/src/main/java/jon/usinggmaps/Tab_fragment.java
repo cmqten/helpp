@@ -108,6 +108,7 @@ public class Tab_fragment extends Fragment  {
             try {
                 // Enter URL address where your php file resides
 
+
                 url = new URL("http://72.139.72.18/301/getLongLat.php?type=" +queryURL+ "&x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
 
 
