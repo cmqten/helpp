@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import jon.usinggmaps.listeners.DirectionListener;
 
@@ -42,6 +43,8 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     private ViewGroup parent;
     private Bitmap defaultIcon;
     private String charityName;
+
+    private HashMap<String, Bitmap> logoMap = new HashMap<>();
 
     private ArrayList<BasicCharity> basicCharities;
     private LayoutInflater mInflater;
@@ -68,6 +71,16 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        Log.v(TAG, basicCharities.get(position).getName() + " is in? " +logoMap.containsKey(basicCharities.get(position).getName()));
+        if(!logoMap.containsKey(basicCharities.get(position).getName())){
+            holder.myImageView.setImageBitmap(defaultIcon);
+            new stupidOse().execute(position);
+        }else{
+            holder.myImageView.setImageBitmap(basicCharities.get(position).getLogo());
+            Log.v(TAG, "Setting " + basicCharities.get(position).getName());
+        }
+
         holder.nameView.setText(basicCharities.get(position).getName());
         holder.travelView.setText("Transit Time: " + basicCharities.get(position).getTravelTime());
 
@@ -79,12 +92,8 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     .unit(Unit.METRIC)
                     .execute(new DirectionListener(holder, basicCharities.get(position)));
         }
-        if(basicCharities.get(position).getLogo() == null){
-            holder.myImageView.setImageBitmap(defaultIcon);
-            new stupidOse().execute(position);
-        }else{
-            holder.myImageView.setImageBitmap(basicCharities.get(position).getLogo());
-        }
+
+
 
     }
 
@@ -151,6 +160,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                     // set logo if error is empty
                     if (data.getString("error").equals("")) {
                         result = data.getString("Image");
+                        Log.v(TAG, basicCharities.get(arguments[0]).getName().trim() + ", Link: "+result);
                     }
 
                     if (result.equals("None")) {
@@ -165,6 +175,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                         }
                         URL url = new URL(result);
                         Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        logoMap.put(basicCharities.get(arguments[0]).getName().trim(), bmp);
                         Log.v(TAG, "past here");
                         basicCharities.get(arguments[0]).setLogo(bmp);
                     }
