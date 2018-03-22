@@ -54,27 +54,38 @@ In this sprint, we focused on finalizing the app by integrating the multiple pie
 #### Add category picker button on search bar, options for selecting categories pop up when pressed
 - Assigned to : Jonathan Wang
 - Tasks :
+  - Understanding fragments
+  - Creating dynamic number of tabs
+  - Query for different catagory based off current tab
 #### Log in with Facebook or Google accounts
 - Assigned to : Gary Liton
 - Tasks :
+  - created a button for google login and facebook login
 #### Auto log in after logging in for the first time
 - Assigned to : Gary Liton
 - Tasks :
+  - keep track of the last user logged in
 #### Register with own email account and specifying first and last names
 - Assigned to : Gary Liton
 - Tasks :
+  - authenticate a user given their email and password
 #### "Skip log in screen" button
 - Assigned to : Gary Liton
 - Tasks :
+  - created a button that skips the login process
 #### Add a profile sandwich button
 - Assigned to : Maxim Chipeev
 - Tasks :
+  - adjusted the layout within the ui
 #### Move refresh and center-on-location button to bottom
 - Assigned to : Maxim Chipeev
 - Tasks :
+  - moved the button to a different location in the ui
 #### Add a charity/event toggle below search bar
 - Assigned to : Maxim Chipeev
 - Tasks :
+  - added an charity/event button
 #### Display secondary search bar when user intends to search, bottom search bar acts as the location-filter, top search bar acts as the general-filter
 - Assigned to : Maxim Chipeev
 - Tasks :
+  - created a second search bar for location
