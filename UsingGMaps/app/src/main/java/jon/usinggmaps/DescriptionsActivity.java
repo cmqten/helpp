@@ -425,8 +425,6 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         }
 
 
-
-
         switch(category){
             case 0:
                 AlertDialog ad = new AlertDialog.Builder(DescriptionsActivity.this).setMessage("Ongoing Programs: "+myMap.get("ongoingPrograms")).create();
