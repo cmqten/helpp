@@ -2,86 +2,135 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jon.usinggmaps.LoginActivity">
+    android:background="@color/LogoBlue"
+    tools:context="jon.usinggmaps.SignUpActivity">
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="508dp"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="8dp"
+        android:id="@+id/linear1"
+        android:layout_width="383dp"
+        android:layout_height="68dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="20dp"
+
+            android:background="@drawable/back_button"
+            android:onClick="onBack"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="4dp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/name" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="300dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:capitalize="none"
+        android:fontFamily="cursive"
+        android:gravity="center"
+        android:text="Sign In"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/White"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/linear1" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:text="User Login"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/linear4"
+        android:layout_width="match_parent"
+        android:layout_height="255dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <EditText
             android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/edittextshape"
             android:ems="10"
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/edittextshape"
             android:ems="10"
             android:hint="@string/password_hint"
             android:inputType="textPassword" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
         <Button
             android:id="@+id/buttonSignin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundbuttonlightblue"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@color/White"
             android:text="Log in" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="25dp" />
-
-        <TextView
-            android:id="@+id/textViewSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/Grey"
-            android:text="Don't have an account? Sign up here."
-            android:textAlignment="center"
-            tools:layout_margin="@dimen/activity_vertical_margin" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
 
         <Button
             android:id="@+id/skipLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundbuttonbeige"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@color/White"
             android:onClick="skipLogin"
             android:text="Skip Login" />
+
+        <TextView
+            android:id="@+id/textViewSignUp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:fontFamily="cursive"
+            android:text="Don't have an account? Sign up"
+            android:textAlignment="center"
+            android:textColor="@color/White"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
     </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>
