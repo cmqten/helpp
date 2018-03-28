@@ -277,16 +277,6 @@
                 fab:fab_label="Twitter" />
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/financeInfo"
-                fab:fab_colorNormal="@color/Green"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/finance"
-                android:onClick="getFinance"
-                fab:fab_size="mini"
-                fab:fab_label="Financial Data (not working rn)" />
-
-            <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fbbutton"
                 fab:fab_colorNormal="@color/colorPrimary"
                 android:layout_width="wrap_content"

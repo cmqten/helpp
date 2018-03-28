@@ -177,13 +177,14 @@
                 <EditText
                     android:id="@+id/EditTextLocation"
                     android:layout_height="wrap_content"
-                    android:hint="@string/form_location"
+                    android:hint="Address"
                     android:inputType="textPersonName"
                     android:layout_width="match_parent"
                     android:textSize="17dp"
                     android:layout_weight="0.8"
                     android:layout_marginRight="35dp">
                 </EditText>
+
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"

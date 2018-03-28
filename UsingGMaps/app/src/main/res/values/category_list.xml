@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categorytypelist">
-        <item>@string/category1</item>
-        <item>@string/category2</item>
-        <item>@string/category3</item>
-        <item>@string/category4</item>
-        <item>@string/category5</item>
+        <item>@string/Community</item>
+        <item>@string/Education</item>
+        <item>@string/Health</item>
+        <item>@string/Religion</item>
+        <item>@string/Welfare</item>
     </string-array>
 </resources>
