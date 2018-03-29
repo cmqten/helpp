@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (firebaseAuth.getCurrentUser() != null){
             // start profile activity
             finish();
-            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            startActivity(new Intent(getApplicationContext(), MapsActivity.class));
         }
 
         progressDialog = new ProgressDialog(this);
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         if (task.isSuccessful()){
                             finish();
-                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                            startActivity(new Intent(getApplicationContext(), MapsActivity.class));
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();

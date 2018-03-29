@@ -9,28 +9,39 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent"
+        android:background="@color/LogoBlue"
         >
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_gravity="center"
+            android:layout_width="300dp"
+            android:layout_height="47dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:capitalize="none"
+            android:fontFamily="cursive"
+            android:gravity="center"
             android:text="New Event"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="@color/White"
+            android:textSize="30sp"
             android:textStyle="bold"
-            android:lineSpacingExtra="8dp"
-            android:padding="@dimen/activity_horizontal_margin" />
+            android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/EventName"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
+
             android:hint="@string/event_name"
             android:inputType="textPersonName"
-            android:layout_width="match_parent"
-            android:textSize="25dp">
-        </EditText>
+            android:textSize="25dp"
+            android:layout_gravity="center"
+            android:background="@drawable/edittextshape"
+            android:textColorHint="@color/White"
+            android:textColor="@color/White"></EditText>
         <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,38 +57,47 @@
                     android:src="@drawable/ic_host"
                     android:layout_weight="0.2"
                     android:paddingTop="13dp"/>
+
                 <EditText
                     android:id="@+id/EditTextName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/edittextshape"
                     android:hint="@string/form_user_name"
                     android:inputType="textPersonName"
-                    android:layout_width="match_parent"
+                    android:textColorHint="@color/White"
                     android:textSize="17dp"
-                    android:layout_weight="0.8"
-                    android:layout_marginRight="35dp">
-                </EditText>
+                    android:textColor="@color/White"></EditText>
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                >
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_email_black_24dp"
                     android:layout_weight="0.2"
                     android:paddingTop="13dp"/>
+
                 <EditText
                     android:id="@+id/EditTextEmail"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/edittextshape"
                     android:hint="@string/form_email"
                     android:inputType="textEmailAddress"
-                    android:layout_width="match_parent"
+                    android:textColorHint="@color/White"
                     android:textSize="17dp"
-                    android:layout_weight="0.8"
-                    android:layout_marginRight="35dp">
-                </EditText>
+                    android:textColor="@color/White"></EditText>
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
@@ -90,16 +110,20 @@
                     android:src="@drawable/ic_date"
                     android:layout_weight="0.2"
                     android:paddingTop="13dp"/>
+
                 <EditText
                     android:id="@+id/EditTextDateS"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/edittextshape"
                     android:hint="@string/form_dateS"
                     android:inputType="date"
-                    android:layout_width="match_parent"
+                    android:textColorHint="@color/White"
                     android:textSize="17dp"
-                    android:layout_weight="0.8"
-                    android:layout_marginRight="35dp">
-                </EditText>
+                    android:textColor="@color/White"></EditText>
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
@@ -110,16 +134,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"/>
+
                 <EditText
                     android:id="@+id/EditTextDateE"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/edittextshape"
                     android:hint="@string/form_dateE"
                     android:inputType="date"
-                    android:layout_width="match_parent"
+                    android:textColorHint="@color/White"
                     android:textSize="17dp"
-                    android:layout_weight="0.8"
-                    android:layout_marginRight="35dp">
-                </EditText>
+                    android:textColor="@color/White"></EditText>
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
@@ -132,16 +160,20 @@
                     android:src="@drawable/ic_time"
                     android:layout_weight="0.2"
                     android:paddingTop="13dp"/>
+
                 <EditText
                     android:id="@+id/EditTextTimeS"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/edittextshape"
                     android:hint="@string/form_timeS"
                     android:inputType="datetime"
-                    android:layout_width="match_parent"
+                    android:textColorHint="@color/White"
                     android:textSize="17dp"
-                    android:layout_weight="0.8"
-                    android:layout_marginRight="35dp">
-                </EditText>
+                    android:textColor="@color/White"></EditText>
             </TableRow>
 
             <TableRow
@@ -161,7 +193,10 @@
                         android:hint="@string/form_timeE"
                         android:inputType="datetime"
                         android:layout_weight="0.8"
-                        android:textSize="17dp"/>
+                        android:textSize="17dp"
+                    android:textColor="@color/White"
+                    android:background="@drawable/edittextshape"
+                    android:textColorHint="@color/White"/>
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
@@ -174,16 +209,20 @@
                     android:src="@drawable/ic_location"
                     android:layout_weight="0.2"
                     android:paddingTop="13dp"/>
+
                 <EditText
                     android:id="@+id/EditTextLocation"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/edittextshape"
                     android:hint="Address"
                     android:inputType="textPersonName"
-                    android:layout_width="match_parent"
-                    android:textSize="17dp"
-                    android:layout_weight="0.8"
-                    android:layout_marginRight="35dp">
-                </EditText>
+                    android:textColorHint="@color/White"
+                    android:textColor="@color/White"
+                    android:textSize="17dp"></EditText>
 
             </TableRow>
             <TableRow
@@ -205,7 +244,9 @@
                     android:entries="@array/categorytypelist"
                     android:layout_weight="0.8"
                     android:layout_marginRight="35dp"
-                    android:paddingTop="13dp">
+                    android:paddingTop="13dp"
+
+                    >
                 </Spinner>
             </TableRow>
             <TableRow
@@ -229,7 +270,10 @@
                     android:layout_width="match_parent"
                     android:textSize="17dp"
                     android:layout_weight="0.8"
-                    android:layout_marginRight="35dp">
+                    android:layout_marginRight="35dp"
+                    android:background="@drawable/edittextshape"
+                    android:textColor="@color/White"
+                    android:textColorHint="@color/White">
                 </EditText>
             </TableRow>
         </TableLayout>

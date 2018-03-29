@@ -80,14 +80,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if (firebaseAuth.getCurrentUser() != null) {
             // start profile activity
             finish();
-            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            startActivity(new Intent(getApplicationContext(), MapsActivity.class));
         }
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() !=null){
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MapsActivity.class));
                 }
             }
         };
@@ -223,7 +223,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void updateUI() {
         Toast.makeText(SignUpActivity.this, "You are logged in", Toast.LENGTH_LONG).show();
-        Intent accountIntent = new Intent(SignUpActivity.this, ProfileActivity.class);
+        Intent accountIntent = new Intent(SignUpActivity.this, MapsActivity.class);
         startActivity(accountIntent);
         finish();
 
@@ -268,7 +268,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             finish();
-                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                            startActivity(new Intent(getApplicationContext(), MapsActivity.class));
 
                         } else{
                             Toast.makeText(SignUpActivity.this, "Could not register. Please try again.", Toast.LENGTH_SHORT).show();

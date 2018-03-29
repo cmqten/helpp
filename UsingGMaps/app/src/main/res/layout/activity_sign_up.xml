@@ -137,7 +137,9 @@
             android:background="@drawable/edittextshape"
             android:ems="10"
             android:hint="@string/email_hint"
-            android:inputType="textEmailAddress" />
+            android:textColorHint="@color/White"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/White"/>
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -148,14 +150,16 @@
             android:background="@drawable/edittextshape"
             android:ems="10"
             android:hint="@string/password_hint"
-            android:inputType="textPassword" />
+            android:textColorHint="@color/White"
+            android:inputType="textPassword"
+            android:textColor="@color/White"/>
 
         <Button
             android:id="@+id/buttonRegister"
             android:layout_width="150dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
-            android:background="@color/White"
+            android:background="@drawable/buttonshape"
             android:text="Sign Up" />
 
         <TextView
