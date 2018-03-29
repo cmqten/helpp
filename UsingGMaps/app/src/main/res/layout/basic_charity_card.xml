@@ -16,17 +16,17 @@
             android:id="@+id/Logo"
             android:layout_width="373dp"
             android:layout_height="225dp"
-            android:scaleType="fitXY"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:contentDescription="Logo"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toTopOf="@+id/charity_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            app:srcCompat="@drawable/charity_icon" />
 
         <TextView
             android:id="@+id/charity_name"
