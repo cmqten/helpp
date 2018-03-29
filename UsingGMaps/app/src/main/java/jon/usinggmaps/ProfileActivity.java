@@ -1,12 +1,8 @@
 package jon.usinggmaps;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
-
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -116,6 +112,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }else {
             Toast.makeText(this, "Invalid", Toast.LENGTH_LONG).show();
         }
+    }
+    public void onBack(View view){
+        super.onBackPressed();
     }
 
     @Override

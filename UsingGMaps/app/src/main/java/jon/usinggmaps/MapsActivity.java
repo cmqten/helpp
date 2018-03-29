@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
@@ -66,6 +67,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     PlaceAutocompleteFragment autocompleteFragment;
     ToggleButton toggleCharityEvent;
 
+    private boolean isEvents;
+
     public static final String SEARCH_FILTER_HINT = "Search Charity";
 
 
@@ -87,6 +90,15 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         actionbar.setDisplayShowTitleEnabled(false);
 
+        ToggleButton toggleAlarm = (ToggleButton) findViewById(R.id.toggle);
+
+        toggleAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isEvents = isChecked;
+
+            }
+        });
 
 
 
@@ -100,8 +112,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                         mDrawerLayout.closeDrawers();
                         switch (menuItem.getItemId()) {
                             case R.id.createEvent:
-                                Intent i = new Intent(MapsActivity.this, createEventActivity.class);
-                                MapsActivity.this.startActivity(i);
+                                MapsActivity.this.startActivity(new Intent(MapsActivity.this, createEventActivity.class));
+                                break;
+
+                            case R.id.nav_share:
+                                MapsActivity.this.startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
                                 break;
                         }
                         // Add code here to update the UI based on the item selected
@@ -183,7 +198,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private void prepareSearchLogic() {
         nameSearch = findViewById(R.id.search_name);
         autocompleteHolder = findViewById(R.id.autocomplete_holder);
-        toggleCharityEvent = findViewById(R.id.toggle2);
+        toggleCharityEvent = findViewById(R.id.toggle);
         autocompleteHolder.setVisibility(View.GONE);
 
         nameSearch.setQueryHint(SEARCH_FILTER_HINT);
@@ -316,16 +331,41 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                     Double.toString(bounds.northeast.latitude),
                     Double.toString(bounds.northeast.longitude),
                     Double.toString(bounds.southwest.latitude),
-                    Double.toString(bounds.southwest.longitude));
+                    Double.toString(bounds.southwest.longitude),
+                    isEvents
+
+
+            );
         }
         charityTypes.get(currentPosition).runSearch();
     }
     @Override
-    public void onItemClick(View view, int position, String id, String name) {
-        Intent startNewActivity = new Intent(this, DescriptionsActivity.class);
-        startNewActivity.putExtra("Id", id);
-        startNewActivity.putExtra("Name", name);
-        startActivity(startNewActivity);
+    public void onItemClick(View view, BasicCharity bC) {
+
+        //public void onItemClick(View view, int position, String id, String name) {
+        if(isEvents) {
+            Intent startNewActivity = new Intent(this, EventInfo.class);
+            startNewActivity.putExtra("Id", bC.getId());
+            startNewActivity.putExtra("Name", bC.getName());
+            startNewActivity.putExtra("imageName", bC.getImageName());
+            startNewActivity.putExtra("add", bC.getAdd());
+            startNewActivity.putExtra("sDate", bC.getsDate());
+            startNewActivity.putExtra("eDate", bC.geteDate());
+            startNewActivity.putExtra("sTime", bC.getsTime());
+            startNewActivity.putExtra("eTime", bC.geteTime());
+            startNewActivity.putExtra("det", bC.getDet());
+            startNewActivity.putExtra("eDate", bC.geteDate());
+            startNewActivity.putExtra("Email", bC.getEmail());
+            startNewActivity.putExtra("pName", bC.getpName());
+            startNewActivity.putExtra("Cat", bC.getCat());
+
+            startActivity(startNewActivity);
+        }else{
+            Intent startNewActivity = new Intent(this, DescriptionsActivity.class);
+            startNewActivity.putExtra("Id", bC.getId());
+            startNewActivity.putExtra("Name", bC.getName());
+            startActivity(startNewActivity);
+        }
     }
 }
 

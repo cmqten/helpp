@@ -51,6 +51,8 @@
                 android:value="jon.usinggmaps.MapsActivity" />
         </activity>
         <activity android:name=".SignUpActivity" />
+        <activity android:name=".EventInfo" />
+
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".createEventActivity" />

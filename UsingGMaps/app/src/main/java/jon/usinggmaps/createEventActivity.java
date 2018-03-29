@@ -4,12 +4,15 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -43,6 +46,9 @@ public class createEventActivity extends AppCompatActivity implements View.OnFoc
     private int mYear, mMonth, mDay, mHour, mMinute;
     Spinner mySpinner;
     Uri globUrl;
+    double lat,lng;
+    String myUri;
+    String[]myArr;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,9 +177,19 @@ public class createEventActivity extends AppCompatActivity implements View.OnFoc
         ||txtTimeE.getText().toString().matches("")
         ||txt9.getText().toString().matches("")
         ){
+
             Toast.makeText(this, "Please enter all the fields for this event! An image is optional",
                     Toast.LENGTH_LONG).show();
         }else{
+            Geocoder coder = new Geocoder(this);
+            try {
+                Address location=coder.getFromLocationName(txt4.getText().toString(),5).get(0);
+                lat = location.getLatitude();
+                lng = location.getLongitude();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if(myImage.getDrawable() != null){
 
             }
@@ -182,6 +198,32 @@ public class createEventActivity extends AppCompatActivity implements View.OnFoc
         }
 
 
+    }
+    public String convert(String myString){
+        String a[] = myString.split(" ");
+        StringBuilder sb = new StringBuilder();
+        if(a.length>1){
+            sb.append(a[0]);
+            for(int i = 1; i< a.length; i++){
+                sb.append("%20");
+                sb.append(a[i]);
+            }
+            return sb.toString();
+        }
+        return a[0];
+    }
+    public String convert2(String myString){
+        String a[] = myString.split("'");
+        StringBuilder sb = new StringBuilder();
+        if(a.length>1){
+            sb.append(a[0]);
+            for(int i = 1; i< a.length; i++){
+                sb.append("%27");
+                sb.append(a[i]);
+            }
+            return sb.toString();
+        }
+        return a[0];
     }
 
     private class updateDB extends AsyncTask<String, String, String> {
@@ -194,15 +236,19 @@ public class createEventActivity extends AppCompatActivity implements View.OnFoc
         @Override
         protected String doInBackground(String... params) {
             try {
+                myUri = globUrl.toString();
+                myArr = myUri.split("/");
                 // Enter URL address where your php file resides
-                url = new URL("http://72.139.72.18/301/events/eventInsert.php?user_id=333&event_name="+txt1.getText().toString()
-                        +"&person_name="+txt2.getText().toString()+"&email="+txt3.getText().toString()
-                        +"&location="+txt4.getText().toString()
+                Log.e("tagtag",Double.toString(lat));
+                Log.e("tagtag2",Double.toString(lng));
+                url = new URL("http://shuprio.com/301/events/eventInsert.php?user_id=333&event_name="+convert2(convert(txt1.getText().toString()))
+                        +"&person_name="+convert2(convert(txt2.getText().toString()))+"&email="+txt3.getText().toString()
+                        +"&location="+convert2(convert(txt4.getText().toString()))
                         +"&start_date="+txtDateS.getText().toString()+"&end_date="+txtDateE.getText().toString()
                         +"&start_time="+txtTimeS.getText().toString()+"&end_time="+txtTimeE.getText().toString()
-                        +"&details="+txt9.getText().toString()+"&cat="+mySpinner.getSelectedItem().toString()+"&image=None");
-
-                //
+                        +"&details="+convert2(convert(txt9.getText().toString()))+"&cat="+mySpinner.getSelectedItem().toString()+"&image="+myArr[myArr.length-1]
+                        +"&lat="+Double.toString(lat)+"&lng="+Double.toString(lng));
+                Log.e("length",url.toString());
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
@@ -287,8 +333,7 @@ public class createEventActivity extends AppCompatActivity implements View.OnFoc
 
                 ftpClient.enterLocalPassiveMode();
 
-                String myUri = globUrl.toString();
-                String[]myArr = myUri.split("/");
+
                 ftpClient.storeFile(myArr[myArr.length-1], buffIn);
                 buffIn.close();
                 ftpClient.logout();

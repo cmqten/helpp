@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class Tab_fragment extends Fragment  {
     private String neLng;
     private String swLat;
     private String swLng;
-
+    private  boolean isEvents;
     private boolean mapSet = false;
 
     public static final int CONNECTION_TIMEOUT = 10000;
@@ -71,19 +72,21 @@ public class Tab_fragment extends Fragment  {
     }
 
 
-    public void setMapValues(GoogleMap mMap, String neLat, String neLng, String swLat, String swLng){
+    public void setMapValues(GoogleMap mMap, String neLat, String neLng, String swLat, String swLng, boolean isEvents){
         this.mMap = mMap;
         this.neLat = neLat;
         this.neLng = neLng;
         this.swLat = swLat;
         this.swLng = swLng;
         mapSet = true;
+        this.isEvents = isEvents;
 
 
     }
 
     public void runSearch(){
         basicCharities.clear();
+        basicCharitiesAdapter.notifyDataSetChanged();
         mMap.clear();
         new AsyncRetrieve().execute();
     }
@@ -108,13 +111,11 @@ public class Tab_fragment extends Fragment  {
             try {
                 // Enter URL address where your php file resides
 
-
-                url = new URL("http://72.139.72.18/301/getLongLat.php?type=" +queryURL+ "&x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
-
-
-
-                //url = new URL("http://72.139.72.18/301/getLongLat.php?type=All&x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
-
+                if(isEvents) {
+                    url = new URL("http://shuprio.com/301/events/eventGet.php?uid=333&type=" +queryURL);
+                    //url = new URL("http://shuprio.com/301/events/eventGet.php?uid=All&type=" +queryURL+ "&x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);
+                }
+                else {url = new URL("http://shuprio.com/301/getLongLat.php?type=" +queryURL+ "&x1="+ neLat + "&y1=" + neLng + "&x2=" + swLat + "&y2="+swLng);}
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
@@ -166,14 +167,39 @@ public class Tab_fragment extends Fragment  {
         @Override
         protected void onPostExecute(String result) {
             pdLoading.dismiss();
+            Log.e("sup",result);
             if(!result.isEmpty()){
                 String a[] = result.split("~");
+
                 for(String i : a){
                     String s[] = i.split("@@@");
+                    LatLng temp;
 
-                    LatLng temp = new LatLng(Float.parseFloat(s[9]),Float.parseFloat(s[10]));
-                    String adr = s[2] + "\t" + s[3]  + ",\t" + s[4] +",\t"+ s[5] + ",\t" + s[6];
-                    basicCharities.add(new BasicCharity(s[0],s[1],adr,s[7],s[8], temp, "N/A"));
+                    if(isEvents){
+                        Log.e("blahblah",result);
+                        //id,user_id,name, person name, email, adrs, startd, end d, start t, end t, dets, cat, im, lat, lng
+                        Log.e("Lat",s[13]);
+                        Log.e("Lat",s[14]);
+
+                        temp = new LatLng(Float.parseFloat(s[13]),Float.parseFloat(s[14]));
+                        BasicCharity myBA = new BasicCharity(s[0],s[2],s[5],s[11],"", temp, "N/A");
+                        myBA.setImageName(s[12]);
+                        myBA.seteDate(s[7]);
+                        myBA.setsDate(s[6]);
+                        myBA.seteTime(s[9]);
+                        myBA.setsTime(s[8]);
+                        myBA.setDet(s[10]);
+                        myBA.setEmail(s[4]);
+                        myBA.setpName(s[3]);
+                        basicCharities.add(myBA);
+                    }
+                    else{
+                        temp = new LatLng(Float.parseFloat(s[9]),Float.parseFloat(s[10]));
+                        String adr = s[2] + "\t" + s[3]  + ",\t" + s[4] +",\t"+ s[5] + ",\t" + s[6];
+                        basicCharities.add(new BasicCharity(s[0],s[1],adr,s[7],s[8], temp, "N/A"));
+                    }
+
+
 
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(temp);
@@ -183,11 +209,12 @@ public class Tab_fragment extends Fragment  {
 
                 basicCharitiesAdapter.notifyDataSetChanged();
 
+
+
             }
 
         }
     }
-
 
 
 
