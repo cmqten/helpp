@@ -496,13 +496,13 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         PieData data = new PieData(set);
         /*-------------------------------------------------------------*/
         /*Sets up graph options---------------------------------------*/
-        myPie.setLayoutParams(new LinearLayout.LayoutParams(3*width/4,600));
+        myPie.setLayoutParams(new LinearLayout.LayoutParams(3*width/4,1100));
         myPie.setData(data);
         //myPie.setExtraBottomOffset(70f);
         myPie.setDrawEntryLabels(false);
-
         Description description = new Description();
-        description.setText(labels[4]+ basicYears.get(year));
+        description.setText("");
+
         myPie.setDescription(description);
         /*----------------------------------------------------------------*/
         /*Sets up the legend------------------------------------*/
@@ -511,8 +511,6 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         legend.setWordWrapEnabled(true);
         legend.setDrawInside(false);
         legend.getCalculatedLineSizes();
-        //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        //legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         legend.setXEntrySpace((float)width/2);
         /*-----------------------------------------------------------*/
@@ -520,8 +518,9 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
         myPie.invalidate();
         /*Puts the graph into an alert dialog---------------------------*/
         AlertDialog ad = new AlertDialog.Builder(DescriptionsActivity.this).setView(vi).create();
+        ad.setTitle(labels[4]+ basicYears.get(year));
         ad.show();
-        ad.getWindow().setLayout(6*width/7,3*height/5);
+        ad.getWindow().setLayout(width-100,1300);
         /*-------------------------------------------------------------*/
     }
     public ArrayList<String> calculateWidth(String[] portions){

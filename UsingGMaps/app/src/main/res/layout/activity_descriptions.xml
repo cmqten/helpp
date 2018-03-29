@@ -164,80 +164,60 @@
                 </LinearLayout>
 
             </HorizontalScrollView>
-            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/Horizontal"
-                >
-
-                <TableRow
-                    android:id="@+id/TableRow01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" >
-
-                    <Button
-                        android:id="@+id/eight"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        android:layout_weight="1"
-                        android:background="@drawable/card_layout"
-                        android:text="2018"
-                        />
-
-                    <Button
-                        android:id="@+id/seven"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/card_layout"
-                        android:layout_weight="1"
-
-                        android:text="2017" />
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" >
-
-                    <Button
-                        android:id="@+id/six"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/card_layout"
-                        android:text="2016"
-                        />
-
-                    <Button
-                        android:id="@+id/five"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/card_layout"
-                        android:text="2015"
-                        />
-                </TableRow>
-                <TableRow
-                    android:id="@+id/tableRow2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" >
-
-                    <Button
-                        android:id="@+id/four"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/card_layout"
-                        android:text="2014"
-                        />
+                android:orientation="vertical">
 
 
-                </TableRow>
-            </TableLayout>
+                <Button
+                    android:id="@+id/eight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/card_layout"
+                    android:text="2018" />
+
+                <Button
+                    android:id="@+id/seven"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_layout"
+
+                    android:text="2017" />
+
+
+                <Button
+                    android:id="@+id/six"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_layout"
+                    android:text="2016" />
+
+                <Button
+                    android:id="@+id/five"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_layout"
+                    android:text="2015" />
+
+
+                <Button
+                    android:id="@+id/four"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_layout"
+                    android:text="2014" />
+
+            </LinearLayout>
 
 
 
