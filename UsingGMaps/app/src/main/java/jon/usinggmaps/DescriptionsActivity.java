@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,13 +37,23 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -604,98 +615,98 @@ public class DescriptionsActivity extends AppCompatActivity implements RewardedV
             }
 
 
-//            // my stuff
-//            String base = "http://72.139.72.18:4000/getData/";
-//            String encodedCharity;
-//
-//            try {
-//                encodedCharity = URLEncoder.encode(charity, "UTF-8");
-//            }catch(Exception e){
-//                error = e.toString();
-//                Log.v(TAG, error);
-//                return e.toString();
-//            }
-//
-//            // add id and charity name
-//            String myUrl = base + id + "/" + encodedCharity;
-//
-//            try {
-//
-//                HttpClient httpclient = new DefaultHttpClient();
-//                HttpResponse response;
-//
-//                response = httpclient.execute(new HttpGet(myUrl));
-//                StatusLine statusLine = response.getStatusLine();
-//                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-//                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-//                    response.getEntity().writeTo(out);
-//
-//                    String rawData = out.toString();
-//
-//                    // get json out of summary
-//                    JSONObject data = new JSONObject(rawData);
-//
-//                    // get server error value
-//                    if (!data.getString("error").equals("")) {
-//                        summary = "Server error, Could not get charity";
-//                        return ("none");
-//                    }
-//
-//                    // check if a better summary was gotten
-//                    if(data.getString("flag").equals("set")){
-//
-//                        // if it does
-//                        usingActivities = false;
-//
-//                        summary = data.getString("SummaryBetter").
-//                                replace("\n\n", "$*#$").
-//                                replace("\n","").
-//                                replace("$*#$", "\n")
-//                                .replaceAll(" +", " ");
-//                    }else{
-//
-//                        // keep the bad google summary for now
-//                        gSummary = data.getString("Summary");
-//
-//                    }
-//
-//
-//                    // check if its a facebook link, before we add size param
-//                    logoLink = data.getString("Image");
-//                    if (!logoLink.toLowerCase().contains("scontent")){
-//                        logoLink = logoLink + "?size=500";
-//                    }
-//
-//                    // don't show chimp links
-//                    if (logoLink.contains("chimp.net")){
-//                        logoLink = null;
-//                    }
-//
-//                    try {
-//                        // get img from link
-//                        bmp = BitmapFactory.decodeStream(new URL(logoLink).openConnection().getInputStream());
-//                    }catch(Exception e){
-//                        Log.v(TAG, "Error setting logo link: " + e.toString());
-//                        Log.v(TAG, "Logo link: " + logoLink);
-//                    }
-//
-//                    out.close();
-//
-//                } else {
-//                    //Closes the connection.
-//                    summary = "Could not connect to server, Could not get charity";
-//                    Log.v(TAG, "Could not connect to server, Could not get charity");
-//                    response.getEntity().getContent().close();
-//                    throw new IOException(statusLine.getReasonPhrase());
-//                }
-//
-//            }catch (Exception e) {
-//                // TODO Auto-generated catch block
-//                summary = "An error occurred parsing, Could not get charity";
-//                Log.v(TAG, e.toString());
-//                return e.toString();
-//
-//            }
+            // my stuff
+            String base = "http://72.139.72.18:4000/getData/";
+            String encodedCharity;
+
+            try {
+                encodedCharity = URLEncoder.encode(name, "UTF-8");
+            }catch(Exception e){
+                error = e.toString();
+                Log.v(TAG, error);
+                return e.toString();
+            }
+
+            // add id and charity name
+            String myUrl = base + id + "/" + encodedCharity;
+
+            try {
+
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpResponse response;
+
+                response = httpclient.execute(new HttpGet(myUrl));
+                StatusLine statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+
+                    String rawData = out.toString();
+
+                    // get json out of summary
+                    JSONObject data = new JSONObject(rawData);
+
+                    // get server error value
+                    if (!data.getString("error").equals("")) {
+                        summary = "Server error, Could not get charity";
+                        return ("none");
+                    }
+
+                    // check if a better summary was gotten
+                    if(data.getString("flag").equals("set")){
+
+                        // if it does
+                        usingActivities = false;
+
+                        summary = data.getString("SummaryBetter").
+                                replace("\n\n", "$*#$").
+                                replace("\n","").
+                                replace("$*#$", "\n")
+                                .replaceAll(" +", " ");
+                    }else{
+
+                        // keep the bad google summary for now
+                        gSummary = data.getString("Summary");
+
+                    }
+
+
+                    // check if its a facebook link, before we add size param
+                    logoLink = data.getString("Image");
+                    if (!logoLink.toLowerCase().contains("scontent")){
+                        logoLink = logoLink + "?size=500";
+                    }
+
+                    // don't show chimp links
+                    if (logoLink.contains("chimp.net")){
+                        logoLink = null;
+                    }
+
+                    try {
+                        // get img from link
+                        bmp = BitmapFactory.decodeStream(new URL(logoLink).openConnection().getInputStream());
+                    }catch(Exception e){
+                        Log.v(TAG, "Error setting logo link: " + e.toString());
+                        Log.v(TAG, "Logo link: " + logoLink);
+                    }
+
+                    out.close();
+
+                } else {
+                    //Closes the connection.
+                    summary = "Could not connect to server, Could not get charity";
+                    Log.v(TAG, "Could not connect to server, Could not get charity");
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+
+            }catch (Exception e) {
+                // TODO Auto-generated catch block
+                summary = "An error occurred parsing, Could not get charity";
+                Log.v(TAG, e.toString());
+                return e.toString();
+
+            }
 
             // Pass data to onPostExecute method
             return result.toString();
